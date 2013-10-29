@@ -40,8 +40,8 @@ public abstract class CollectionResource<
     public DTO postResource(final DTO elementDto) {
         DTO result = null;
         try {
-            // when creating a new resource, the DTO's uri field must be null
-            if (!(elementDto.getUri() == null)) {
+            // when creating a new resource, the DTO's selfRef field must be null
+            if (!(elementDto.getSelfRef() == null)) {
                 throw new IllegalArgumentException("when creating a new resource, the value of the uri field must be " +
                         "null");
             }
