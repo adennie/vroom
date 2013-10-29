@@ -28,7 +28,7 @@ public abstract class ObjectAdapter<DTO extends ObjectDto, DO extends DomainObje
      * @return the domain object's ID
      */
     public long getId(final ObjectDto dto) {
-        return getId(dto.getUri());
+        return getId(dto.getSelfRef());
     }
 
     /**
