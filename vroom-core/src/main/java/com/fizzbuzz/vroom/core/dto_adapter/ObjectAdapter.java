@@ -39,8 +39,8 @@ public abstract class ObjectAdapter<DTO extends ObjectDto, DO extends DomainObje
      */
     public long getId(final String uri) {
         // normally the "uri" field in the DTO must be formatted correctly, but in the special case of creating a new
-        // object, it can be left blank.  In that case, we'll set the ID of the domain object to 0 temporarily.
-        return uri.isEmpty() ? 0L : UriHelper.getLongTokenValue(uri, getUriTemplate(), mIdToken);
+        // object, it will be null.  In that case, we'll set the ID of the domain object to -1 temporarily.
+        return uri == null ? -1L : UriHelper.getLongTokenValue(uri, getUriTemplate(), mIdToken);
     }
 
     public abstract String getCanonicalUri(DO domainObject);

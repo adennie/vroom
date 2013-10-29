@@ -40,10 +40,10 @@ public abstract class CollectionResource<
     public DTO postResource(final DTO elementDto) {
         DTO result = null;
         try {
-            // when creating a new resource, the DTO's uri field must be blank
-            if (!elementDto.getUri().isEmpty()) {
+            // when creating a new resource, the DTO's uri field must be null
+            if (!(elementDto.getUri() == null)) {
                 throw new IllegalArgumentException("when creating a new resource, the value of the uri field must be " +
-                        "a blank string");
+                        "null");
             }
             DO domainObject = (getDomainCollection())
                     .add(mElementAdapter.toDomain(elementDto));
