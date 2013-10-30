@@ -1,13 +1,11 @@
 package com.fizzbuzz.vroom.core.resource;
 
-import com.fizzbuzz.vroom.core.dto_adapter.ObjectAdapter;
 import com.fizzbuzz.vroom.core.domain.DomainObject;
+import com.fizzbuzz.vroom.core.dto_adapter.ObjectAdapter;
 import com.fizzbuzz.vroom.core.persist.ObjectPersist;
 import com.fizzbuzz.vroom.dto.ObjectDto;
 import org.restlet.data.Status;
 import org.restlet.resource.Delete;
-import org.restlet.resource.Get;
-import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
 /*
@@ -22,7 +20,6 @@ public abstract class ObjectResource<
     private P mPersist;
     private ObjectAdapter<DTO, DO> mDtoAdapter;
 
-    @Get("json")
     public DTO getResource() {
         DTO result = null;
         try {
@@ -34,7 +31,6 @@ public abstract class ObjectResource<
         return result;
     }
 
-    @Put("json")
     public void putResource(final DTO dto) {
         try {
             // by default, return 204, since we're not returning any representation. Subclasses that override
