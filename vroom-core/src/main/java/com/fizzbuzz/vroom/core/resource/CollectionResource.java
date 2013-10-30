@@ -11,8 +11,6 @@ import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Delete;
-import org.restlet.resource.Get;
-import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 
 public abstract class CollectionResource<
@@ -25,7 +23,6 @@ public abstract class CollectionResource<
     private CollectionAdapter<DTC, DTO, DC, DO> mCollectionAdapter;
     private ObjectAdapter<DTO, DO> mElementAdapter;
 
-    @Get("json")
     public DTC getResource() {
         DTC result = null;
         try {
@@ -36,7 +33,6 @@ public abstract class CollectionResource<
         return result;
     }
 
-    @Post("json:json")
     public DTO postResource(final DTO elementDto) {
         DTO result = null;
         try {
