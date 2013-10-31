@@ -8,7 +8,10 @@ import com.google.appengine.api.utils.SystemProperty;
 import org.restlet.Application;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.engine.header.Header;
+import org.restlet.engine.header.HeaderConstants;
 import org.restlet.routing.Router;
+import org.restlet.util.Series;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +25,16 @@ public abstract class VroomApplication
     public enum ExecutionContext {
         DEVELOPMENT,
         PRODUCTION
+    }
+
+    private boolean mCorsEnabled = false;
+
+    public boolean isCorsEnabled() {
+        return mCorsEnabled;
+    }
+
+    public void setCorsEnabled(final boolean corsEnabled) {
+        mCorsEnabled = corsEnabled;
     }
 
     private static ExecutionContext mExecutionContext;
@@ -56,6 +69,15 @@ public abstract class VroomApplication
     public void handle(final Request request, final Response response) {
         mLogger.info("VroomApplication.handle: request received - {}", request);
         super.handle(request, response);
+
+        if (mCorsEnabled) {
+            addCustomResponseHeader(response, "Access-Control-Allow-Origin", "*");
+            addCustomResponseHeader(response, "Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+            addCustomResponseHeader(response, "Access-Control-Allow-Headers", "Content-Type");
+            addCustomResponseHeader(response, "Access-Control-Allow-Headers", "authCode");
+            addCustomResponseHeader(response, "Access-Control-Allow-Headers", "origin, x-requested-with, content-type");
+        }
+
     }
 
     @Override
@@ -70,6 +92,18 @@ public abstract class VroomApplication
         mLogger.debug("attaching path template {} to {}", pathTemplate, target);
         router.attach(pathTemplate, target);
     }
+
+    protected void addCustomResponseHeader(final Response response, final String header, final String value) {
+        Series<Header> responseHeaders = (Series<Header>)
+                response.getAttributes().get(HeaderConstants.ATTRIBUTE_HEADERS);
+        if (responseHeaders == null) {
+            responseHeaders = new Series(Header.class);
+            response.getAttributes().put(HeaderConstants.ATTRIBUTE_HEADERS,
+                    responseHeaders);
+        }
+        responseHeaders.add(new Header(header, value));
+    }
+
 
     /**
      * Returns the application's OfyService object.  Subclasses of VroomApplication must implement this method.
