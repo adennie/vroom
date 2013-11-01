@@ -5,6 +5,7 @@ import com.fizzbuzz.vroom.core.exception.ConflictException;
 import com.fizzbuzz.vroom.core.exception.InvalidResourceUriException;
 import com.fizzbuzz.vroom.core.exception.NotFoundException;
 import org.restlet.data.Status;
+import org.restlet.resource.Options;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 import org.slf4j.Logger;
@@ -18,6 +19,10 @@ import java.util.Map;
 
 public abstract class BaseResource<D extends DomainObject> extends ServerResource {
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
+
+    @Options
+    public void doOptions() {
+    }
 
     protected void doCatch(final RuntimeException e) {
         Class<?> exceptionClass = e.getClass();
