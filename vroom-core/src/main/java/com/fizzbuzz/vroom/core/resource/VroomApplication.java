@@ -15,6 +15,9 @@ import org.restlet.util.Series;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Copyright (c) 2013 Fizz Buzz LLC
  */
@@ -27,16 +30,6 @@ public abstract class VroomApplication
         PRODUCTION
     }
 
-    private boolean mCorsEnabled = false;
-
-    public boolean isCorsEnabled() {
-        return mCorsEnabled;
-    }
-
-    public void setCorsEnabled(final boolean corsEnabled) {
-        mCorsEnabled = corsEnabled;
-    }
-
     private static ExecutionContext mExecutionContext;
 
     static {
@@ -47,6 +40,8 @@ public abstract class VroomApplication
     }
 
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
+    private boolean mCorsEnabled = false;
+    private List<String> mAllowedOrigins = new ArrayList<>();
 
     public static ExecutionContext getExecutionContext() {
         return mExecutionContext;
@@ -65,14 +60,34 @@ public abstract class VroomApplication
         return modulesService.getModuleHostname(modulesService.getCurrentModule(), modulesService.getCurrentVersion());
     }
 
+    public List<String> getAllowedOrigins() {
+        return mAllowedOrigins;
+    }
+
+    public void setAllowedOrigins(final List<String> allowedOrigins) {
+        mAllowedOrigins = allowedOrigins;
+    }
+
+    public boolean isCorsEnabled() {
+        return mCorsEnabled;
+    }
+
+    public void setCorsEnabled(final boolean corsEnabled) {
+        mCorsEnabled = corsEnabled;
+    }
+
     @Override
     public void handle(final Request request, final Response response) {
         mLogger.info("VroomApplication.handle: request received - {}", request);
         super.handle(request, response);
 
         if (mCorsEnabled) {
-            addCustomResponseHeader(response, "Access-Control-Allow-Origin", "*");
-            addCustomResponseHeader(response, "Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+            Series<Header> requestHeaders = (Series<Header>)
+                    request.getAttributes().get(HeaderConstants.ATTRIBUTE_HEADERS);
+            String origin = requestHeaders.getFirstValue("Origin", true);
+            if (getAllowedOrigins().contains(origin)) {
+                addCustomResponseHeader(response, "Access-Control-Allow-Origin", origin);
+            }
             addCustomResponseHeader(response, "Access-Control-Allow-Headers", "Content-Type");
             addCustomResponseHeader(response, "Access-Control-Allow-Headers", "authCode");
             addCustomResponseHeader(response, "Access-Control-Allow-Headers", "origin, x-requested-with, content-type");
@@ -103,7 +118,6 @@ public abstract class VroomApplication
         }
         responseHeaders.add(new Header(header, value));
     }
-
 
     /**
      * Returns the application's OfyService object.  Subclasses of VroomApplication must implement this method.
