@@ -25,7 +25,7 @@ public abstract class BaseCollectionPersist<
     private final Class<DAO> mDaoClass;
 
     protected BaseCollectionPersist(final Class<DO> domainObjectClass,
-                          final Class<DAO> daoClass) {
+                                    final Class<DAO> daoClass) {
         mDomainClass = domainObjectClass;
         mDaoClass = daoClass;
     }
@@ -38,22 +38,18 @@ public abstract class BaseCollectionPersist<
 
     @Override
     public DO add(final DO domainObject) {
-        // TODO: remove this commented out code
-        /*
-        if (domainObject.getId() != -1)
-            throw new IllegalArgumentException("Cannot save a domain object with an existing ID; the ID will be " +
-                    "assigned by the persistence layer on the initial save operation.");
-        */
+
+        //TODO: add() - seriously consider making this method return void.
 
         // construct an appropriate DAO from the domain object, but clear the ID since we're going to be saving a new
         // entity and we want an auto-generated ID assigned.
         DAO dao = createDao(domainObject);
-        dao.clearId();
 
-        getOfyService().ofy().save().entity(dao).now();
+        addDao(dao);
 
         // saving the DAO assigned it an ID as a side-effect; copy that to the domain object
         domainObject.setId(dao.getId());
+
         return domainObject;
     }
 
@@ -76,9 +72,33 @@ public abstract class BaseCollectionPersist<
         deleteKeys(keys);
     }
 
-    DAO createDao(DO domainObject) {
+    /**
+     * Instantiates a DAO from a DomainObject
+     *
+     * @param domainObject the DomainObject
+     * @return the DAO
+     */
+    protected DAO createDao(DO domainObject) {
+        if (domainObject.getId() != -1)
+            throw new IllegalArgumentException("Cannot create a domain object with an existing ID; the ID will be " +
+                    "assigned by the persistence layer on the initial save operation.");
+
         // instantiate the appropriate kind of DAO, using the constructor that takes a single domain object argument
-        return Reflections.newInstance(getDaoClass(), mDomainClass, domainObject);
+        DAO result = Reflections.newInstance(getDaoClass(), mDomainClass, domainObject);
+
+        // the DAO should have a null ID prior to saving it, so that the datastore will auto-assign one
+        result.clearId();
+
+        return result;
+    }
+
+    /**
+     * Creates a new Entity in the datastore
+     *
+     * @param dao
+     */
+    protected void addDao(DAO dao) {
+        getOfyService().ofy().save().entity(dao).now();
     }
 
     List<DO> toDomainCollection(List<DAO> daoCollection) {

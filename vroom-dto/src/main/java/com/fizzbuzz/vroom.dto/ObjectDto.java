@@ -26,13 +26,40 @@ public class ObjectDto {
 
     /**
      * Validates the state of the DTO.  This method is intended for use in performing first-pass validation on DTOs
-     * received from a client.  Validation in this context should be limited to that which can be performed
-     * without referring to domain objects or the persistence layer.  Examples include:
+     * received from a client.  Examples include:
      * - verifying that values representing enumerations are one of the allowed values
      * - verifying that strings which must conform to a regular expression do so
      * - verifying that numbers are in a permitted range
      * - verifying that collections which must be non-empty are non-empty
      */
     public void validate() {
+    }
+
+    /**
+     * Validates the state of the DTO as it relates to its required state when supplied in a PUT request.  Examples
+     * include:
+     * - verifying that fields which are assigned server-side at creation time are non-null
+     */
+    public void validatePost() {
+        validate();
+
+        if (selfRef != null) {
+            throw new IllegalArgumentException("selfRef field must be null in a POST request.  The value will be " +
+                    "assigned server-side at creation time.");
+        }
+    }
+
+    /**
+     * Validates the state of the DTO as it relates to its required state when supplied in a POST request.  Examples
+     * include:
+     * - verifying that fields which are assigned server-side at creation time are null
+     */
+    public void validatePut() {
+        validate();
+
+        if (selfRef == null) {
+            throw new IllegalArgumentException("selfRef field must be non-null in a POST request.  The value should " +
+                    "be the one assigned server-side at creation time.");
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.fizzbuzz.vroom.core.persist;
 
 import com.fizzbuzz.vroom.core.domain.DomainObject;
 import com.fizzbuzz.vroom.core.domain.ParentedDomainObject;
-import com.fizzbuzz.vroom.core.util.Reflections;
 import com.googlecode.objectify.Key;
 
 import java.util.List;
@@ -56,11 +55,5 @@ public abstract class BaseParentedCollectionPersist<
         List<CDAO> daos = getOfyService().ofy().load().type(getDaoClass())
                 .filter("mParentDao", Key.create(mParentDaoClass, mParentId)).list();
         return toDomainCollection(daos);
-    }
-
-    @Override
-    CDAO createDao(CDO domainObject) {
-        // instantiate the appropriate kind of DAO, using the constructor that takes a single domain object argument
-        return Reflections.newInstance(getDaoClass(), getDomainClass(), domainObject);
     }
 }
