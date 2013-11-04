@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.dto_adapter;
+package com.fizzbuzz.vroom.core.dto_converter;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -19,10 +19,10 @@ import com.fizzbuzz.vroom.core.resource.UriHelper;
 import com.fizzbuzz.vroom.dto.Dto;
 
 
-public abstract class IdObjectAdapter<DTO extends Dto, IO extends IdObject> extends ObjectAdapter<DTO, IO> {
+public abstract class IdObjectConverter<DTO extends Dto, IO extends IdObject> extends ObjectConverter<DTO, IO> {
     private final String mIdToken;
 
-    public IdObjectAdapter(final String uriRoot, final String canonicalUriPathTemplate, final String idToken) {
+    public IdObjectConverter(final String uriRoot, final String canonicalUriPathTemplate, final String idToken) {
         super(uriRoot, canonicalUriPathTemplate);
         mIdToken = idToken;
     }
@@ -34,7 +34,7 @@ public abstract class IdObjectAdapter<DTO extends Dto, IO extends IdObject> exte
      * @param dto a DTO representing a resource
      * @return the domain object's ID
      */
-    public long getId(final Dto dto) {
+    public long getIdFromDto(final Dto dto) {
         return getId(dto.getSelfRef());
     }
 

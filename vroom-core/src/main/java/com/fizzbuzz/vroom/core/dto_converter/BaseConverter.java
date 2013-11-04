@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.dto_adapter;
+package com.fizzbuzz.vroom.core.dto_converter;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,32 +14,23 @@ package com.fizzbuzz.vroom.core.dto_adapter;
  * limitations under the License.
  */
 
-public abstract class BaseAdapter {
+public abstract class BaseConverter {
     private final String mUriRoot;
     private final String mCanonicalUriPathTemplate;
 
-    protected BaseAdapter(final String uriRoot, final String canonicalUriPathTemplate) {
+    protected BaseConverter(final String uriRoot, final String canonicalUriPathTemplate) {
         mUriRoot = uriRoot;
         mCanonicalUriPathTemplate = canonicalUriPathTemplate;
-
-    }
-
-    public String getCanonicalUriPathTemplate() {
-        return mCanonicalUriPathTemplate;
-    }
-
-    public String getUriRoot() {
-        return mUriRoot;
     }
 
     // this implementation handles DTOs with no tokens in their URI templates.  Adapters for DTOs with tokens in
     // their URI templates will need to override this method and implement the token substitution.
     public String getCanonicalUriPath() {
         // make sure there are no tokens in the template
-        if (getCanonicalUriPathTemplate().contains("{"))
+        if (mCanonicalUriPathTemplate.contains("{"))
             throw new IllegalStateException("this resource's URI template contains tokens which must be filled in with"
                     + " values from a model object.  Use getCanonicalUriPath(PersistentObject) instead.");
-        return getCanonicalUriPathTemplate();
+        return mCanonicalUriPathTemplate;
     }
 
     protected String getCanonicalUriTemplate() {

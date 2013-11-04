@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.dto_adapter;
+package com.fizzbuzz.vroom.core.dto_converter;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -22,14 +22,14 @@ import com.fizzbuzz.vroom.dto.Dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CollectionAdapter<
+public abstract class CollectionConverter<
         DTC extends CollectionDto<DTO>,
         DTO extends Dto,
-        DO extends DomainObject> extends BaseAdapter {
+        DO extends DomainObject> extends BaseConverter {
 
-    private ObjectAdapter<DTO, DO> mElementAdapter;
+    private ObjectConverter<DTO, DO> mElementAdapter;
     private Class<DTC> mDtcClass;
-    public CollectionAdapter(final String uriRoot, final String uriPathTemplate, final Class<DTC> dtcClass, final ObjectAdapter<DTO, DO> elementAdapter) {
+    public CollectionConverter(final String uriRoot, final String uriPathTemplate, final Class<DTC> dtcClass, final ObjectConverter<DTO, DO> elementAdapter) {
         super(uriRoot, uriPathTemplate);
         mElementAdapter = elementAdapter;
         mDtcClass = dtcClass;

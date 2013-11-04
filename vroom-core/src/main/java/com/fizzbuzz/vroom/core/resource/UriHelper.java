@@ -16,6 +16,8 @@ package com.fizzbuzz.vroom.core.resource;
 
 import com.fizzbuzz.vroom.core.exception.InvalidResourceUriException;
 import com.google.common.collect.ImmutableMap;
+import org.restlet.data.Status;
+import org.restlet.resource.ResourceException;
 import org.restlet.routing.Template;
 
 import java.net.MalformedURLException;
@@ -40,7 +42,12 @@ public class UriHelper {
     }
 
     public static long getLongTokenValue(final String uri, final String uriTemplate, final String token) {
-        long result = Long.parseLong((String) (getUriTokenValues(uri, uriTemplate).get(token)));
+        long result;
+        try {
+            result = Long.parseLong((String) (getUriTokenValues(uri, uriTemplate).get(token)));
+        } catch (Exception e) {
+            throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "invalid " + token + " URL component: " + uri);
+        }
         return result;
     }
 

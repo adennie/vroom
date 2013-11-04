@@ -15,7 +15,10 @@ package com.fizzbuzz.vroom.core.resource;
  */
 
 import com.fizzbuzz.vroom.core.domain.DomainObject;
+import com.fizzbuzz.vroom.core.dto_converter.CollectionConverter;
 import com.fizzbuzz.vroom.core.dto_converter.ObjectConverter;
+import com.fizzbuzz.vroom.core.util.Reflections;
+import com.fizzbuzz.vroom.dto.CollectionDto;
 import com.fizzbuzz.vroom.dto.Dto;
 import org.restlet.data.MediaType;
 import org.restlet.engine.converter.ConverterHelper;
@@ -26,23 +29,28 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Resource;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class VroomConverterHelper<DTO extends Dto, DO extends DomainObject>
+public class VroomCollectionConverterHelper<DTC extends CollectionDto<DTO>, DTO extends Dto, DO extends DomainObject,
+        EC extends ObjectConverter<DTO, DO>>
         extends ConverterHelper {
 
     private final Class<DO> mDomainObjectClass;
-    private final Class<DTO> mDtoClass;
-    private final ObjectConverter<DTO, DO> mDtoConverter;
+    private final Class<DTC> mDtoCollectionClass;
+    private final CollectionConverter<DTC, DTO, DO> mCollectionConverter;
+    private final ObjectConverter<DTO, DO> mElementConverter;
     private final MediaType[] mSupportedMediaTypes;
 
-    public VroomConverterHelper(Class<DTO> dtoClass,
-                                Class<DO> domainObjectClass,
-                                ObjectConverter<DTO, DO> dtoConverter,
-                                MediaType... supportedMediaTypes) {
+    public VroomCollectionConverterHelper(Class<DTC> dtoCollectionClass,
+                                          Class<DO> domainObjectClass,
+                                          CollectionConverter<DTC, DTO, DO> collectionConverter,
+                                          ObjectConverter<DTO, DO> elementConverter,
+                                          MediaType... supportedMediaTypes) {
         mDomainObjectClass = domainObjectClass;
-        mDtoClass = dtoClass;
-        mDtoConverter = dtoConverter;
+        mDtoCollectionClass = dtoCollectionClass;
+        mCollectionConverter = collectionConverter;
+        mElementConverter = elementConverter;
         mSupportedMediaTypes = supportedMediaTypes;
     }
 
@@ -126,18 +134,22 @@ public class VroomConverterHelper<DTO extends Dto, DO extends DomainObject>
 
     @SuppressWarnings("unchecked")
     @Override
-    public <DO> DO toObject(final Representation source,
-                            final Class<DO> target,
-                            final Resource resource) throws IOException {
-        DO result = null;
+    public <T> T toObject(final Representation source,
+                          final Class<T> target,
+                          final Resource resource) throws IOException {
+        List<DO> result = new ArrayList<DO>();
 
-        // Convert from JSON to DTO
-        JacksonRepresentation<?> jacksonSource = new JacksonRepresentation<DTO>(source, mDtoClass);
-        DTO dto = (DTO) jacksonSource.getObject();
+        // Convert from JSON to DTC
+        JacksonRepresentation<?> jacksonSource = new JacksonRepresentation<DTC>(source, mDtoCollectionClass);
+        DTC dtc = (DTC) jacksonSource.getObject();
 
-        // convert from DTO to DO
-        result = (DO) mDtoConverter.toDomain(dto);
-        return result;
+        // convert from DTC to List<DO>
+        for (DTO dto : dtc) {
+            DO domainObject = mElementConverter.toDomain(dto);
+            result.add(domainObject);
+        }
+
+        return (T) result;
     }
 
     @Override
@@ -145,11 +157,15 @@ public class VroomConverterHelper<DTO extends Dto, DO extends DomainObject>
                                            final Variant target,
                                            final Resource resource) throws IOException {
 
-        DTO dto = mDtoConverter.toDto((DO) source);
+        // source is a List<DO>.  First convert to a DTC
+        DTC dtc = Reflections.newInstance(mDtoCollectionClass);
+        for (DO domainObject : (List<DO>) source) {
+            DTO dto = mElementConverter.toDto(domainObject);
+            dtc.add(dto);
+        }
 
-        // create a JacksonRepresentation
-        JacksonRepresentation<?> jacksonRep = new JacksonRepresentation<DTO>(target.getMediaType(),
-                (DTO) dto);
+        // create a JacksonRepresentation for the DTC
+        JacksonRepresentation<?> jacksonRep = new JacksonRepresentation<DTC>(target.getMediaType(), dtc);
 
         return jacksonRep;
     }

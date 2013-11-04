@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.dto_adapter;
+package com.fizzbuzz.vroom.core.dto_converter;
 
 import org.junit.Test;
 
@@ -6,9 +6,9 @@ import org.junit.Test;
  * Copyright (c) 2013 Fizz Buzz LLC
  */
 
-public class BaseAdapterTest {
+public class BaseConverterTest {
     @Test(expected = IllegalStateException.class)
     public void testGetCanonicalUriPathThrowsWithTokenInUriTemplate() throws Exception {
-        new BaseAdapter("http://test.com", "/{token}") {}.getCanonicalUriPath();
+        new BaseConverter("http://test.com", "/{token}") {}.getCanonicalUriPath();
     }
 }

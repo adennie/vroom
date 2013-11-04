@@ -16,8 +16,6 @@ package com.fizzbuzz.vroom.core.resource;
 
 import com.fizzbuzz.vroom.core.biz.IdObjectBiz;
 import com.fizzbuzz.vroom.core.domain.IdObject;
-import com.fizzbuzz.vroom.core.dto_adapter.IdObjectAdapter;
-import com.fizzbuzz.vroom.dto.Dto;
 import org.restlet.data.Status;
 import org.restlet.resource.Delete;
 import org.restlet.resource.ResourceException;
@@ -26,26 +24,23 @@ import org.restlet.resource.ResourceException;
  * Base server resource class for objects with IDs (fetched from the URL).
  */
 public abstract class IdResource<
-        DTO extends Dto,
         B extends IdObjectBiz<DO>,
         DO extends IdObject>
         extends BaseResource {
     private long mId;
     private B mBiz;
-    private IdObjectAdapter<DTO, DO> mDtoAdapter;
 
-    public DTO getResource() {
-        DTO result = null;
+    public DO getResource() {
+        DO result = null;
         try {
-            DO domainObject = mBiz.get(mId);
-            result = mDtoAdapter.toDto(domainObject);
+            result = mBiz.get(mId);
         } catch (RuntimeException e) {
             doCatch(e);
         }
         return result;
     }
 
-    public void putResource(final DTO dto) {
+    public void putResource(final DO domainObject) {
         try {
             // by default, return 204, since we're not returning any representation. Subclasses that override
             // putResource() can change the response status if needed.
@@ -53,12 +48,12 @@ public abstract class IdResource<
 
             // make sure the client isn't trying to PUT a resource value with an ID that doesn't match the one
             // identified by the request URL.
-            if (mDtoAdapter.getId(dto) != mId) {
+            if (domainObject.getId() != mId) {
                 throw new IllegalArgumentException("The ID of the resource in the request body does not match the ID " +
                         "of the resource in the request URL");
             }
 
-            mBiz.update(mDtoAdapter.toDomain(dto));
+            mBiz.update(domainObject);
         } catch (RuntimeException e) {
             doCatch(e);
         }
@@ -73,16 +68,14 @@ public abstract class IdResource<
         }
     }
 
-    protected void doInit(final B biz,
-                          final IdObjectAdapter<DTO, DO> dtoAdapter) throws ResourceException {
+    protected void doInit(final B biz, final String idToken) throws ResourceException {
 
         super.doInit();
 
-        mDtoAdapter = dtoAdapter;
         mBiz = biz;
 
         // get the resource ID from the URL
-        mId = dtoAdapter.getId(getRequest().getOriginalRef().toString());
+        mId = getLongTokenValue(idToken);
     }
 
     protected long getId() {

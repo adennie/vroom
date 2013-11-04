@@ -16,8 +16,8 @@ package com.fizzbuzz.vroom.core.resource;
 
 import com.fizzbuzz.vroom.core.biz.CollectionBiz;
 import com.fizzbuzz.vroom.core.domain.DomainObject;
-import com.fizzbuzz.vroom.core.dto_adapter.CollectionAdapter;
-import com.fizzbuzz.vroom.core.dto_adapter.ObjectAdapter;
+import com.fizzbuzz.vroom.core.dto_converter.CollectionConverter;
+import com.fizzbuzz.vroom.core.dto_converter.ObjectConverter;
 import com.fizzbuzz.vroom.dto.CollectionDto;
 import com.fizzbuzz.vroom.dto.Dto;
 import org.restlet.data.Method;
@@ -36,8 +36,8 @@ public abstract class CollectionResource<
         DO extends DomainObject>
         extends BaseResource {
     private CollectionBiz<DO> mCollectionBiz;
-    private CollectionAdapter<DTC, DTO, DO> mCollectionAdapter;
-    private ObjectAdapter<DTO, DO> mElementAdapter;
+    private CollectionConverter<DTC, DTO, DO> mCollectionAdapter;
+    private ObjectConverter<DTO, DO> mElementAdapter;
 
     public DTC getResource() {
         DTC result = null;
@@ -87,14 +87,14 @@ public abstract class CollectionResource<
     }
 
     protected void doInit(final CB collectionBiz,
-                          final CollectionAdapter<DTC, DTO, DO> collectionAdapter,
-                          final ObjectAdapter<DTO, DO> elementAdapter) throws ResourceException {
+                          final CollectionConverter<DTC, DTO, DO> collectionAdapter,
+                          final ObjectConverter<DTO, DO> elementAdapter) throws ResourceException {
         mCollectionBiz = collectionBiz;
         mCollectionAdapter = collectionAdapter;
         mElementAdapter = elementAdapter;
     }
 
-    protected CollectionAdapter<DTC, DTO, DO> getCollectionAdapter() {
+    protected CollectionConverter<DTC, DTO, DO> getCollectionAdapter() {
         return mCollectionAdapter;
     }
 
