@@ -1,51 +1,30 @@
 package com.fizzbuzz.vroom.core.dto_adapter;
 
-/**
+/*
  * Copyright (c) 2013 Fizz Buzz LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.resource.UriHelper;
 import com.fizzbuzz.vroom.core.domain.DomainObject;
-import com.fizzbuzz.vroom.dto.ObjectDto;
+import com.fizzbuzz.vroom.dto.Dto;
 
-
-public abstract class ObjectAdapter<DTO extends ObjectDto, DO extends DomainObject> extends BaseAdapter {
-    private final String mIdToken;
-
-    public ObjectAdapter(final String uriTemplate, final String idToken) {
-        super(uriTemplate);
-        mIdToken = idToken;
+public abstract class ObjectAdapter< DTO extends Dto, DO extends DomainObject> extends BaseAdapter {
+    protected ObjectAdapter(final String uriRoot, final String uriPathTemplate) {
+        super(uriRoot, uriPathTemplate);
     }
 
-    abstract public DTO toDto(final DO modelObject);
+    abstract public DTO toDto(final DO domainObject);
 
     abstract public DO toDomain(final DTO dto);
 
-    /**
-     * Returns the ID of the domain object represented by a DTO by parsing a token value from its URI
-     *
-     * @param dto a DTO representing a domain object
-     * @return the domain object's ID
-     */
-    public long getId(final ObjectDto dto) {
-        return getId(dto.getSelfRef());
-    }
-
-    /**
-     * Returns the ID of the domain object by parsing a token value from a DTO's URI
-     *
-     * @param uri a URI representing a domain object
-     * @return the domain object's ID
-     */
-    public long getId(final String uri) {
-        // normally the "uri" field in the DTO must be formatted correctly, but in the special case of creating a new
-        // object, it will be null.  In that case, we'll set the ID of the domain object to -1 temporarily.
-        return uri == null ? -1L : UriHelper.getLongTokenValue(uri, getUriTemplate(), mIdToken);
-    }
-
-    public abstract String getCanonicalUri(DO domainObject);
-
-    public String getIdToken() {
-        return mIdToken;
-    }
+    abstract public String getCanonicalUriPath(DO domainObject);
 }

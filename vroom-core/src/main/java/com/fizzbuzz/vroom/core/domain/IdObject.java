@@ -14,5 +14,21 @@ package com.fizzbuzz.vroom.core.domain;
  * limitations under the License.
  */
 
-public abstract class DomainObject {
+public class IdObject extends DomainObject {
+    private long mId;
+
+    public IdObject(final long id) {
+        mId = id;
+    }
+
+    public long getId() {
+        return mId;
+    }
+
+    public void setId(final long id) {
+        mId = id;
+    }
+
+    public void validate() {
+    }
 }

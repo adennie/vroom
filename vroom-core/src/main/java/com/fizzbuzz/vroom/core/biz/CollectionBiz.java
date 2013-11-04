@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.persist;
+package com.fizzbuzz.vroom.core.biz;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,42 +14,32 @@ package com.fizzbuzz.vroom.core.persist;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IdObject;
+import com.fizzbuzz.vroom.core.domain.DomainObject;
 
 import java.util.List;
 
-/**
- * Interface for "persist" classes that manage collections of domain objects
- */
-public interface CollectionPersist<
-        DO extends IdObject> {
-
+public interface CollectionBiz<DO extends DomainObject> {
     /**
-     * Retrieves the domain objects in a collection
-     *
+     * Returns a list of the domain objects in the collection
      * @return the domain objects in the collection
      */
-    public List<DO> getDomainElements();
+    public List<DO> getElements();
 
     /**
-     * Add a domain object to a persistent collection.  Note: the provided PersistentObject should not have an
-     * assigned ID field at invocation time (its value should be -1); however, on successful return,
-     * the ID field will be assigned.
+     * Adds a domain object to the collection.
      *
      * @param domainObject
      */
-    public DO addElement(final DO domainObject);
+    public DO add(final DO domainObject);
 
     /**
-     * Deletes all domain objects in a collection
+     * Deletes all domain objects in the collection
      */
     public void deleteAll();
 
     /**
-     * Deletes a list of domain objects in a collection
-     *
-     * @param domainObjects the domain objects to delete
+     * Deletes a list of domain objects in the collection
+     * @param domainObjects
      */
     public void delete(List<DO> domainObjects);
-
 }

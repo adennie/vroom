@@ -1,10 +1,20 @@
 package com.fizzbuzz.vroom.core.persist;
 
-/**
+/*
  * Copyright (c) 2013 Fizz Buzz LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.DomainObject;
+import com.fizzbuzz.vroom.core.domain.IdObject;
 import com.fizzbuzz.vroom.core.exception.NotFoundException;
 import com.fizzbuzz.vroom.core.util.Reflections;
 import org.slf4j.Logger;
@@ -15,7 +25,7 @@ import static com.fizzbuzz.vroom.core.persist.PersistManager.getOfyService;
 /**
  * Interface for "persist" objects that manage individual DomainObjects.
  */
-public abstract class BaseObjectPersist<DO extends DomainObject, DAO extends BaseDao<DO>> implements ObjectPersist<DO> {
+public abstract class BaseObjectPersist<DO extends IdObject, DAO extends BaseDao<DO>> implements ObjectPersist<DO> {
     private final Class<DO> mDomainClass;
     private final Class<DAO> mDaoClass;
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);

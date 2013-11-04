@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.domain;
+package com.fizzbuzz.vroom.core.biz;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,5 +14,21 @@ package com.fizzbuzz.vroom.core.domain;
  * limitations under the License.
  */
 
-public abstract class DomainObject {
+import com.fizzbuzz.vroom.core.domain.DomainObject;
+
+public interface ObjectBiz <DO extends DomainObject>{
+    public ObjectBiz get();
+
+    /**
+     * Updates a domain object's state.
+     *
+     * @param domainObject the new state for the DomainObject
+     */
+    public void update(final DO domainObject);
+
+    /**
+     * Deletes the domain object
+     */
+    public void delete();
+
 }

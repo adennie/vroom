@@ -1,8 +1,7 @@
 package com.fizzbuzz.vroom.core.persist;
 
-import com.fizzbuzz.vroom.core.domain.DomainObject;
-import com.fizzbuzz.vroom.core.domain.ParentedDomainObject;
-import com.fizzbuzz.vroom.core.util.Reflections;
+import com.fizzbuzz.vroom.core.domain.IdObject;
+import com.fizzbuzz.vroom.core.domain.ParentedIdObject;
 import com.googlecode.objectify.Key;
 
 import java.util.List;
@@ -10,8 +9,18 @@ import java.util.List;
 import static com.fizzbuzz.vroom.core.persist.PersistManager.getOfyService;
 
 
-/**
+/*
  * Copyright (c) 2013 Fizz Buzz LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
@@ -29,8 +38,8 @@ import static com.fizzbuzz.vroom.core.persist.PersistManager.getOfyService;
  * @param <CDAO> the child DAO type
  */
 public abstract class BaseParentedCollectionPersist<
-        PDO extends DomainObject,
-        CDO extends ParentedDomainObject,
+        PDO extends IdObject,
+        CDO extends ParentedIdObject,
         PDAO extends BaseDao<PDO>,
         CDAO extends ParentedDao<PDAO, PDO, CDO>>
         extends BaseCollectionPersist<CDO, CDAO> {
@@ -53,14 +62,8 @@ public abstract class BaseParentedCollectionPersist<
 
     @Override
     public List<CDO> getDomainElements() {
-        List<CDAO> daos = getOfyService().ofy().load().type(getDaoClass())
+        List<CDAO> daos = getOfyService().ofy().load().type(getElementDaoClass())
                 .filter("mParentDao", Key.create(mParentDaoClass, mParentId)).list();
         return toDomainCollection(daos);
-    }
-
-    @Override
-    CDAO createDao(CDO domainObject) {
-        // instantiate the appropriate kind of DAO, using the constructor that takes a single domain object argument
-        return Reflections.newInstance(getDaoClass(), getDomainClass(), domainObject);
     }
 }
