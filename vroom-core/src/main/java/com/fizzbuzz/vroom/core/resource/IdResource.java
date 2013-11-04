@@ -1,9 +1,23 @@
 package com.fizzbuzz.vroom.core.resource;
 
-import com.fizzbuzz.vroom.core.domain.DomainObject;
-import com.fizzbuzz.vroom.core.dto_adapter.ObjectAdapter;
-import com.fizzbuzz.vroom.core.persist.ObjectPersist;
-import com.fizzbuzz.vroom.dto.ObjectDto;
+/*
+ * Copyright (c) 2013 Fizz Buzz LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import com.fizzbuzz.vroom.core.biz.IdObjectBiz;
+import com.fizzbuzz.vroom.core.domain.IdObject;
+import com.fizzbuzz.vroom.core.dto_adapter.IdObjectAdapter;
+import com.fizzbuzz.vroom.dto.Dto;
 import org.restlet.data.Status;
 import org.restlet.resource.Delete;
 import org.restlet.resource.ResourceException;
@@ -11,19 +25,19 @@ import org.restlet.resource.ResourceException;
 /*
  * Base server resource class for objects with IDs (fetched from the URL).
  */
-public abstract class ObjectResource<
-        DTO extends ObjectDto,
-        P extends ObjectPersist<DO>,
-        DO extends DomainObject>
-        extends BaseResource<DO> {
+public abstract class IdResource<
+        DTO extends Dto,
+        B extends IdObjectBiz<DO>,
+        DO extends IdObject>
+        extends BaseResource {
     private long mId;
-    private P mPersist;
-    private ObjectAdapter<DTO, DO> mDtoAdapter;
+    private B mBiz;
+    private IdObjectAdapter<DTO, DO> mDtoAdapter;
 
     public DTO getResource() {
         DTO result = null;
         try {
-            DO domainObject = mPersist.get(mId);
+            DO domainObject = mBiz.get(mId);
             result = mDtoAdapter.toDto(domainObject);
         } catch (RuntimeException e) {
             doCatch(e);
@@ -44,7 +58,7 @@ public abstract class ObjectResource<
                         "of the resource in the request URL");
             }
 
-            mPersist.update(mDtoAdapter.toDomain(dto));
+            mBiz.update(mDtoAdapter.toDomain(dto));
         } catch (RuntimeException e) {
             doCatch(e);
         }
@@ -53,24 +67,22 @@ public abstract class ObjectResource<
     @Delete
     public void deleteResource() {
         try {
-            mPersist.delete(mId);
+            mBiz.delete(mId);
         } catch (RuntimeException e) {
             doCatch(e);
         }
     }
 
-    protected void doInit(final P persist,
-                          final String idToken,
-                          final ObjectAdapter<DTO, DO> dtoAdapter) throws ResourceException {
+    protected void doInit(final B biz,
+                          final IdObjectAdapter<DTO, DO> dtoAdapter) throws ResourceException {
 
         super.doInit();
 
         mDtoAdapter = dtoAdapter;
-        mPersist = persist;
+        mBiz = biz;
 
-        // get the object ID from the URL
-        mId = getLongTokenValue(idToken);
-
+        // get the resource ID from the URL
+        mId = dtoAdapter.getId(getRequest().getOriginalRef().toString());
     }
 
     protected long getId() {

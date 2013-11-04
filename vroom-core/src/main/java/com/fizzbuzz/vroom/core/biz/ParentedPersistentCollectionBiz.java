@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.domain;
+package com.fizzbuzz.vroom.core.biz;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,5 +14,11 @@ package com.fizzbuzz.vroom.core.domain;
  * limitations under the License.
  */
 
-public abstract class DomainObject {
+import com.fizzbuzz.vroom.core.domain.IdObject;
+import com.fizzbuzz.vroom.core.persist.CollectionPersist;
+
+public class ParentedPersistentCollectionBiz<DO extends IdObject> extends PersistentCollectionBiz<DO> {
+    public ParentedPersistentCollectionBiz(CollectionPersist<DO> persist) {
+        super(persist);
+    }
 }

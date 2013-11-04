@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.persist;
+package com.fizzbuzz.vroom.core.biz;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -15,31 +15,26 @@ package com.fizzbuzz.vroom.core.persist;
  */
 
 import com.fizzbuzz.vroom.core.domain.IdObject;
-import com.googlecode.objectify.annotation.Id;
+import com.fizzbuzz.vroom.core.persist.ObjectPersist;
 
-public abstract class BaseDao<DO extends IdObject> {
-    @Id private Long mId;
+public class PersistentObjectBiz<PO extends IdObject> implements IdObjectBiz<PO> {
+    private ObjectPersist<PO> mPersist;
 
-    // no-arg constructor used by Objectify
-    protected BaseDao() {
+    public PersistentObjectBiz(final ObjectPersist<PO> persist) {
+        mPersist = persist;
+    }
+    @Override
+    public PO get(final long id) {
+        return mPersist.get(id);
     }
 
-    protected BaseDao(final long id) {
-        mId = id;
+    @Override
+    public void update(final PO persistentObject) {
+        mPersist.update(persistentObject);
     }
 
-    /**
-     * Converts this DAO to an object of its corresponding domain object type
-     *
-     * @return
-     */
-    public abstract DO toDomainObject();
-
-    public long getId() {
-        return mId;
-    }
-
-    public void clearId() {
-        mId = null;
+    @Override
+    public void delete(final long id) {
+        mPersist.delete(id);
     }
 }

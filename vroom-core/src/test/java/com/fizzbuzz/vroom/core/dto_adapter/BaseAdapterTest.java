@@ -8,8 +8,7 @@ import org.junit.Test;
 
 public class BaseAdapterTest {
     @Test(expected = IllegalStateException.class)
-    public void testGetCanonicalUriThrowsWithTokenInUriTemplate() throws Exception {
-        new BaseAdapter("http://test.com/{token}") {
-        }.getCanonicalUri();
+    public void testGetCanonicalUriPathThrowsWithTokenInUriTemplate() throws Exception {
+        new BaseAdapter("http://test.com", "/{token}") {}.getCanonicalUriPath();
     }
 }
