@@ -15,7 +15,7 @@ package com.fizzbuzz.vroom.core.resource;
  */
 
 import com.fizzbuzz.vroom.core.domain.DomainObject;
-import com.fizzbuzz.vroom.core.dto_converter.ObjectConverter;
+import com.fizzbuzz.vroom.core.dto_converter.DomainObjectConverter;
 import com.fizzbuzz.vroom.dto.Dto;
 import org.restlet.data.MediaType;
 import org.restlet.engine.converter.ConverterHelper;
@@ -33,12 +33,12 @@ public class VroomConverterHelper<DTO extends Dto, DO extends DomainObject>
 
     private final Class<DO> mDomainObjectClass;
     private final Class<DTO> mDtoClass;
-    private final ObjectConverter<DTO, DO> mDtoConverter;
+    private final DomainObjectConverter<DTO, DO> mDtoConverter;
     private final MediaType[] mSupportedMediaTypes;
 
     public VroomConverterHelper(Class<DTO> dtoClass,
                                 Class<DO> domainObjectClass,
-                                ObjectConverter<DTO, DO> dtoConverter,
+                                DomainObjectConverter<DTO, DO> dtoConverter,
                                 MediaType... supportedMediaTypes) {
         mDomainObjectClass = domainObjectClass;
         mDtoClass = dtoClass;

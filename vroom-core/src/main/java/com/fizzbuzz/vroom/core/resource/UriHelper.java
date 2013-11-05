@@ -51,7 +51,9 @@ public class UriHelper {
         return result;
     }
 
-    protected static Map<String, Object> getUriTokenValues(final String uri, final String uriTemplate) {
+
+
+    protected static Map<String, Object> getUriTokenValues(final String uri, final String uriPathTemplate) {
         // get the path part of the URI and the path part of the URI template.  We ignore the server part
         // of the URI and the template because there are multiple valid ways to address the server and we don't want
         // those discrepancies to come into play.
@@ -59,13 +61,12 @@ public class UriHelper {
         String pathTemplate = null;
         try {
             path = new URL(uri).getPath();
-            pathTemplate = new URL(uriTemplate).getPath();
         } catch (MalformedURLException e) {
             throw new InvalidResourceUriException(uri);
         }
 
         // extract the token values from the URI using the template as a guide
-        Template template = new Template(pathTemplate);
+        Template template = new Template(uriPathTemplate);
         Map<String, Object> tokens = new HashMap<String, Object>();
         template.parse(path, tokens);
         return tokens;

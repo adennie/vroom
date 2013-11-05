@@ -25,10 +25,23 @@ import org.restlet.resource.ServerResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class BaseResource extends ServerResource {
+    private static Map<Class<? extends BaseResource>, String> mResourceClassToCanonicalUriPathTemplateMap = new HashMap<>();
+
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
+
+    public static <R extends BaseResource> void registerResource(
+            final Class<R> resourceClass, final String canonicalUriPathTemplate) {
+        mResourceClassToCanonicalUriPathTemplateMap.put(resourceClass, canonicalUriPathTemplate);
+    }
+
+    public static <R extends BaseResource> String getCanonicalUriPathTemplate(Class<R> resourceClass) {
+        return mResourceClassToCanonicalUriPathTemplateMap.get(resourceClass);
+    }
+
 
     @Options
     public void doOptions() {
@@ -102,5 +115,26 @@ public abstract class BaseResource extends ServerResource {
         Map<String, String> params = getQuery().getValuesMap();
         return params.get(paramName);
 
+    }
+
+    protected String getCanonicalUriPathTemplate() {
+        return getCanonicalUriPathTemplate(this.getClass());
+    }
+
+    // this default implementation just returns the path template.  If the template contains any tokens, the
+    // subclass should override this method and perform the token substitution.
+    protected String getCanonicalUriPath() {
+        String pathTemplate = getCanonicalUriPathTemplate();
+        if (pathTemplate.contains("{"))
+            throw new IllegalStateException("this resource's URI template contains tokens which must be substituted " +
+                    "with values.");
+        return pathTemplate;
+
+    }
+
+    // this is really just here to provide access to the doInit method from the unit test
+    @Override
+    protected void doInit() throws ResourceException {
+        super.doInit();
     }
 }

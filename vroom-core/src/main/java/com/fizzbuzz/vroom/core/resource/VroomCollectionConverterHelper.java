@@ -15,8 +15,8 @@ package com.fizzbuzz.vroom.core.resource;
  */
 
 import com.fizzbuzz.vroom.core.domain.DomainObject;
-import com.fizzbuzz.vroom.core.dto_converter.CollectionConverter;
-import com.fizzbuzz.vroom.core.dto_converter.ObjectConverter;
+import com.fizzbuzz.vroom.core.dto_converter.DomainCollectionConverter;
+import com.fizzbuzz.vroom.core.dto_converter.DomainObjectConverter;
 import com.fizzbuzz.vroom.core.util.Reflections;
 import com.fizzbuzz.vroom.dto.CollectionDto;
 import com.fizzbuzz.vroom.dto.Dto;
@@ -33,19 +33,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VroomCollectionConverterHelper<DTC extends CollectionDto<DTO>, DTO extends Dto, DO extends DomainObject,
-        EC extends ObjectConverter<DTO, DO>>
+        EC extends DomainObjectConverter<DTO, DO>>
         extends ConverterHelper {
 
     private final Class<DO> mDomainObjectClass;
     private final Class<DTC> mDtoCollectionClass;
-    private final CollectionConverter<DTC, DTO, DO> mCollectionConverter;
-    private final ObjectConverter<DTO, DO> mElementConverter;
+    private final DomainCollectionConverter<DTC, DTO, DO> mCollectionConverter;
+    private final DomainObjectConverter<DTO, DO> mElementConverter;
     private final MediaType[] mSupportedMediaTypes;
 
     public VroomCollectionConverterHelper(Class<DTC> dtoCollectionClass,
                                           Class<DO> domainObjectClass,
-                                          CollectionConverter<DTC, DTO, DO> collectionConverter,
-                                          ObjectConverter<DTO, DO> elementConverter,
+                                          DomainCollectionConverter<DTC, DTO, DO> collectionConverter,
+                                          DomainObjectConverter<DTO, DO> elementConverter,
                                           MediaType... supportedMediaTypes) {
         mDomainObjectClass = domainObjectClass;
         mDtoCollectionClass = dtoCollectionClass;
@@ -118,7 +118,7 @@ public class VroomCollectionConverterHelper<DTC extends CollectionDto<DTO>, DTO 
         // toRepresentation()
         float result = -1.0F;
 
-        if (source != null && mDomainObjectClass.isAssignableFrom(source.getClass())) {
+        if (source != null) {
             if (target == null) {
                 result = 1.0F; // no target type specified, but we match on the source, so we're probably the best match
             } else { // target type specified. Return 1.0F if we can match it.

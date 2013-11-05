@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.dto_converter;
+package com.fizzbuzz.vroom.core.resource;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,6 +14,7 @@ package com.fizzbuzz.vroom.core.dto_converter;
  * limitations under the License.
  */
 
-public interface BaseConverter {
+import com.fizzbuzz.vroom.core.domain.DomainObject;
 
+public abstract class DomainResource<DO extends DomainObject> extends BaseResource {
 }

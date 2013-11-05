@@ -17,14 +17,8 @@ package com.fizzbuzz.vroom.core.dto_converter;
 import com.fizzbuzz.vroom.core.domain.DomainObject;
 import com.fizzbuzz.vroom.dto.Dto;
 
-public abstract class ObjectConverter< DTO extends Dto, DO extends DomainObject> extends BaseConverter {
-    protected ObjectConverter(final String uriRoot, final String uriPathTemplate) {
-        super(uriRoot, uriPathTemplate);
-    }
+public interface DomainObjectConverter< DTO extends Dto, DO extends DomainObject> extends BaseConverter {
+    public DTO toDto(final DO domainObject);
+    public DO toDomain(final DTO dto);
 
-    abstract public DTO toDto(final DO domainObject);
-
-    abstract public DO toDomain(final DTO dto);
-
-    abstract public String getCanonicalUriPath(DO domainObject);
 }

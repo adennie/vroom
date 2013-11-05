@@ -1,0 +1,137 @@
+package com.fizzbuzz.vroom.core.resource;
+
+/*
+ * Copyright (c) 2013 Fizz Buzz LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import com.fizzbuzz.vroom.core.biz.IdObjectBiz;
+import com.fizzbuzz.vroom.core.domain.IdObject;
+import com.google.common.collect.ImmutableMap;
+import org.restlet.data.Status;
+import org.restlet.resource.Delete;
+import org.restlet.resource.ResourceException;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/*
+ * Base server resource class for objects with IDs (fetched from the URL).
+ */
+public abstract class IdObjectResource<
+        B extends IdObjectBiz<IO>,
+        IO extends IdObject>
+        extends DomainResource<IO> {
+
+    private static Map<Class<? extends IdObjectResource>, String> mResourceClassToIdTokenMap = new HashMap<>();
+    private long mId;
+    private B mBiz;
+
+    public static <IR extends IdObjectResource> void registerIdToken(
+            final Class<IR> idResourceClass, final String idToken) {
+        mResourceClassToIdTokenMap.put(idResourceClass, idToken);
+    }
+
+    public static <IR extends IdObjectResource> String getIdToken(Class<IR> idResourceClass) {
+        return mResourceClassToIdTokenMap.get(idResourceClass);
+    }
+
+    public static <IR extends IdObjectResource, IO extends IdObject> String getCanonicalUriPath(
+            Class<IR> idResourceClass, long id) {
+        return UriHelper.formatUriTemplate(getCanonicalUriPathTemplate(idResourceClass),
+                new ImmutableMap.Builder<String, String>()
+                        .put(getIdToken(idResourceClass), Long.toString(id))
+                        .build());
+    }
+
+    public static <IR extends IdObjectResource, IO extends IdObject> String getCanonicalUri(
+            Class<IR> idResourceClass, long id) {
+        return VroomApplication.getServerUrl() + VroomApplication.getRootUrl() + getCanonicalUriPath(idResourceClass,
+                id);
+    }
+
+    public static <IR extends IdObjectResource> long getIdFromUri(final Class<IR> idObjectClass, final String uri) {
+        String uriTemplate = getCanonicalUriPathTemplate(idObjectClass);
+        String idToken = getIdToken(idObjectClass);
+        return UriHelper.getLongTokenValue(uri, VroomApplication.getRootUrl() + uriTemplate, idToken);
+    }
+
+    public IO getResource() {
+        IO result = null;
+        try {
+            result = mBiz.get(mId);
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
+        return result;
+    }
+
+    public void putResource(final IO domainObject) {
+        try {
+            // by default, return 204, since we're not returning any representation. Subclasses that override
+            // putResource() can change the response status if needed.
+            getResponse().setStatus(Status.SUCCESS_NO_CONTENT);
+
+            // make sure the client isn't trying to PUT a resource value with an ID that doesn't match the one
+            // identified by the request URL.
+            if (domainObject.getId() != mId) {
+                throw new IllegalArgumentException("The ID of the resource in the request body does not match the ID " +
+                        "of the resource in the request URL");
+            }
+
+            mBiz.update(domainObject);
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
+    }
+
+    @Delete
+    public void deleteResource() {
+        try {
+            mBiz.delete(mId);
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
+    }
+
+    /**
+     * Returns the ID of a resource by parsing a token value from its URI
+     *
+     * @param uri a canonical URI for a resource
+     * @return the domain object's ID
+     */
+    public long getId(final String uri) {
+        // normally the "selfRef" field in the DTO must be formatted correctly, but in the special case of creating a
+        // new resource, it will be null.  In that case, we'll set the ID of the domain object to -1 temporarily.
+        return uri == null ? -1L : UriHelper.getLongTokenValue(uri, getCanonicalUriPathTemplate(), getIdToken());
+    }
+
+    protected void doInit(final B biz) throws ResourceException {
+
+        mBiz = biz;
+
+        // get the resource ID from the URL
+        mId = getLongTokenValue(getIdToken());
+    }
+
+    protected long getId() {
+        return mId;
+    }
+
+    private String getIdToken() {
+        return getIdToken(this.getClass());
+    }
+
+    public String getCanonicalUri(final IdObject idObject) {
+        return getCanonicalUri(this.getClass(), idObject.getId());
+    }
+}
