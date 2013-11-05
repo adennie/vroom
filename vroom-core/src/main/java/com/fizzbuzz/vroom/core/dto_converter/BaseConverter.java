@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.dto_adapter;
+package com.fizzbuzz.vroom.core.dto_converter;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,17 +14,6 @@ package com.fizzbuzz.vroom.core.dto_adapter;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.DomainObject;
-import com.fizzbuzz.vroom.dto.Dto;
+public interface BaseConverter {
 
-public abstract class ObjectAdapter< DTO extends Dto, DO extends DomainObject> extends BaseAdapter {
-    protected ObjectAdapter(final String uriRoot, final String uriPathTemplate) {
-        super(uriRoot, uriPathTemplate);
-    }
-
-    abstract public DTO toDto(final DO domainObject);
-
-    abstract public DO toDomain(final DTO dto);
-
-    abstract public String getCanonicalUriPath(DO domainObject);
 }

@@ -16,6 +16,8 @@ package com.fizzbuzz.vroom.core.resource;
 
 import com.fizzbuzz.vroom.core.exception.InvalidResourceUriException;
 import com.google.common.collect.ImmutableMap;
+import org.restlet.data.Status;
+import org.restlet.resource.ResourceException;
 import org.restlet.routing.Template;
 
 import java.net.MalformedURLException;
@@ -40,11 +42,18 @@ public class UriHelper {
     }
 
     public static long getLongTokenValue(final String uri, final String uriTemplate, final String token) {
-        long result = Long.parseLong((String) (getUriTokenValues(uri, uriTemplate).get(token)));
+        long result;
+        try {
+            result = Long.parseLong((String) (getUriTokenValues(uri, uriTemplate).get(token)));
+        } catch (Exception e) {
+            throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "invalid " + token + " URL component: " + uri);
+        }
         return result;
     }
 
-    protected static Map<String, Object> getUriTokenValues(final String uri, final String uriTemplate) {
+
+
+    protected static Map<String, Object> getUriTokenValues(final String uri, final String uriPathTemplate) {
         // get the path part of the URI and the path part of the URI template.  We ignore the server part
         // of the URI and the template because there are multiple valid ways to address the server and we don't want
         // those discrepancies to come into play.
@@ -52,13 +61,12 @@ public class UriHelper {
         String pathTemplate = null;
         try {
             path = new URL(uri).getPath();
-            pathTemplate = new URL(uriTemplate).getPath();
         } catch (MalformedURLException e) {
             throw new InvalidResourceUriException(uri);
         }
 
         // extract the token values from the URI using the template as a guide
-        Template template = new Template(pathTemplate);
+        Template template = new Template(uriPathTemplate);
         Map<String, Object> tokens = new HashMap<String, Object>();
         template.parse(path, tokens);
         return tokens;

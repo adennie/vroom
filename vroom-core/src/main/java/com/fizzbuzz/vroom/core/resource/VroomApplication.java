@@ -41,6 +41,12 @@ public abstract class VroomApplication
     }
 
     private static ExecutionContext mExecutionContext;
+    private static String mRootUrl;
+
+    public static String getRootUrl() {
+        return mRootUrl;
+    }
+
 
     static {
         if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production)
@@ -52,6 +58,10 @@ public abstract class VroomApplication
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
     private boolean mCorsEnabled = false;
     private List<String> mAllowedOrigins = new ArrayList<>();
+
+    public static void registerRootUrl(final String rootUrl) {
+        mRootUrl = rootUrl;
+    }
 
     public static ExecutionContext getExecutionContext() {
         return mExecutionContext;

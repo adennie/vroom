@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.dto_adapter;
+package com.fizzbuzz.vroom.core.dto_converter;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -22,29 +22,28 @@ import com.fizzbuzz.vroom.dto.Dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CollectionAdapter<
+public abstract class DomainCollectionConverter<
         DTC extends CollectionDto<DTO>,
         DTO extends Dto,
-        DO extends DomainObject> extends BaseAdapter {
+        DO extends DomainObject> implements BaseConverter {
 
-    private ObjectAdapter<DTO, DO> mElementAdapter;
+    private DomainObjectConverter<DTO, DO> mElementConverter;
     private Class<DTC> mDtcClass;
-    public CollectionAdapter(final String uriRoot, final String uriPathTemplate, final Class<DTC> dtcClass, final ObjectAdapter<DTO, DO> elementAdapter) {
-        super(uriRoot, uriPathTemplate);
-        mElementAdapter = elementAdapter;
+
+    public DomainCollectionConverter(final Class<DTC> dtcClass, final DomainObjectConverter<DTO, DO> elementConverter) {
+        mElementConverter = elementConverter;
         mDtcClass = dtcClass;
     }
 
-
-    public DTC toDto(final List<DO> domainCollection) {
+    public DTC toDto(final List<DO> domainCollection, final String collectionSelfRef) {
         // first convert the DO objects into DTO objects
         List<DTO> dtos = new ArrayList<DTO>();
-        for (DO domainObject: domainCollection) {
-            dtos.add(mElementAdapter.toDto(domainObject));
+        for (DO domainObject : domainCollection) {
+            dtos.add(mElementConverter.toDto(domainObject));
         }
 
         // now create/return the CollectionDto
-        DTC result = Reflections.newInstance(mDtcClass, String.class, List.class, getCanonicalUriPath(), dtos);
+        DTC result = Reflections.newInstance(mDtcClass, String.class, List.class, collectionSelfRef, dtos);
         return result;
     }
 }
