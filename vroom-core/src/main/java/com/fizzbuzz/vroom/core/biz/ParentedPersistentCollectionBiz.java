@@ -17,7 +17,7 @@ package com.fizzbuzz.vroom.core.biz;
 import com.fizzbuzz.vroom.core.domain.IdObject;
 import com.fizzbuzz.vroom.core.persist.CollectionPersist;
 
-public class ParentedPersistentCollectionBiz<DO extends IdObject> extends PersistentCollectionBiz<DO> {
+public abstract class ParentedPersistentCollectionBiz<DO extends IdObject> extends PersistentCollectionBiz<DO> {
     public ParentedPersistentCollectionBiz(CollectionPersist<DO> persist) {
         super(persist);
     }

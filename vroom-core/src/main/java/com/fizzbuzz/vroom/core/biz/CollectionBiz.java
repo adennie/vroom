@@ -20,8 +20,8 @@ import java.util.List;
 
 public interface CollectionBiz<DO extends DomainObject> {
     /**
-     * Returns a list of the domain objects in the collection
-     * @return the domain objects in the collection
+     * Returns the list of domain objects within a collection
+     * @return the list of domain objects
      */
     public List<DO> getElements();
 
@@ -38,8 +38,8 @@ public interface CollectionBiz<DO extends DomainObject> {
     public void deleteAll();
 
     /**
-     * Deletes a list of domain objects in the collection
-     * @param domainObjects
+     * Deletes a list of domain objects
+     * @param domainCollection
      */
-    public void delete(List<DO> domainObjects);
+    public void delete(List<DO> domainCollection);
 }
