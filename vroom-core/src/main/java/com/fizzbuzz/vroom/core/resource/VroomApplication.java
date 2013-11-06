@@ -42,11 +42,10 @@ public abstract class VroomApplication
 
     private static ExecutionContext mExecutionContext;
     private static String mRootUrl;
-
-    public static String getRootUrl() {
-        return mRootUrl;
-    }
-
+    private static String mServerUrl;
+    private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
+    private boolean mCorsEnabled = false;
+    private List<String> mAllowedOrigins = new ArrayList<>();
 
     static {
         if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production)
@@ -55,9 +54,9 @@ public abstract class VroomApplication
             mExecutionContext = ExecutionContext.DEVELOPMENT;
     }
 
-    private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
-    private boolean mCorsEnabled = false;
-    private List<String> mAllowedOrigins = new ArrayList<>();
+    public static String getRootUrl() {
+        return mRootUrl;
+    }
 
     public static void registerRootUrl(final String rootUrl) {
         mRootUrl = rootUrl;
@@ -76,8 +75,12 @@ public abstract class VroomApplication
     }
 
     public static String getServerUrl() {
-        ModulesService modulesService = ModulesServiceFactory.getModulesService();
-        return modulesService.getModuleHostname(modulesService.getCurrentModule(), modulesService.getCurrentVersion());
+        if (mServerUrl == null) {
+            ModulesService modulesService = ModulesServiceFactory.getModulesService();
+            mServerUrl = "http://" + modulesService.getModuleHostname(modulesService.getCurrentModule(),
+                    modulesService.getCurrentVersion());
+        }
+        return mServerUrl;
     }
 
     public List<String> getAllowedOrigins() {
