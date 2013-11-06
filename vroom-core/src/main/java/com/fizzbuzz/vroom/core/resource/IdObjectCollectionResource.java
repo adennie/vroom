@@ -15,13 +15,15 @@ package com.fizzbuzz.vroom.core.resource;
  */
 
 import com.fizzbuzz.vroom.core.biz.CollectionBiz;
+import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.IdObject;
 import org.restlet.resource.ResourceException;
 
 public abstract class IdObjectCollectionResource<
-        CB extends CollectionBiz<IO>,
-        IO extends IdObject>
-        extends DomainCollectionResource<CB, IO> {
+        DC extends DomainCollection<IO>,
+        IO extends IdObject,
+        CB extends CollectionBiz<IO>>
+        extends DomainCollectionResource<DC, IO, CB> {
 
     private Class<? extends IdObjectResource> mElementResourceClass;
 
@@ -30,9 +32,9 @@ public abstract class IdObjectCollectionResource<
         return IdObjectResource.getCanonicalUri(mElementResourceClass, element.getId());
     }
 
-    protected void doInit(final CB collectionBiz, Class<? extends IdObjectResource> elementResourceClass)
+    protected void doInit(final Class<DC> domainCollectionClass, final CB collectionBiz, Class<? extends IdObjectResource> elementResourceClass)
             throws ResourceException {
-        super.doInit(collectionBiz);
+        super.doInit(domainCollectionClass, collectionBiz);
         mElementResourceClass = elementResourceClass;
     }
 }
