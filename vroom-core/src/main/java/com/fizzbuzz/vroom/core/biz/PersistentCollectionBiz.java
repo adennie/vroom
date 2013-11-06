@@ -14,31 +14,32 @@ package com.fizzbuzz.vroom.core.biz;
  * limitations under the License.
  */
 
+import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.IdObject;
 import com.fizzbuzz.vroom.core.persist.CollectionPersist;
 
 import java.util.List;
 
-public class PersistentCollectionBiz<PO extends IdObject> implements CollectionBiz<PO>{
-    private CollectionPersist<PO> mPersist;
+public class PersistentCollectionBiz<IO extends IdObject> implements CollectionBiz<IO>{
+    private CollectionPersist<IO> mPersist;
 
-    public PersistentCollectionBiz(CollectionPersist<PO> persist) {
+    public PersistentCollectionBiz(CollectionPersist<IO> persist) {
         mPersist = persist;
     }
 
     @Override
-    public List<PO> getElements() {
+    public List<IO> getElements() {
         return mPersist.getDomainElements();
     }
 
-    CollectionPersist<PO> getPersist() {
+    CollectionPersist<IO> getPersist() {
         return mPersist;
     }
 
     @Override
-    public PO add(final PO domainObject) {
+    public IO add(final IO domainObject) {
         domainObject.validate();
-        return (PO)getPersist().addElement(domainObject);
+        return (IO)getPersist().addElement(domainObject);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class PersistentCollectionBiz<PO extends IdObject> implements CollectionB
     }
 
     @Override
-    public void delete(List<PO> domainObjects) {
+    public void delete(List<IO> domainObjects) {
         getPersist().delete(domainObjects);
     }
 }

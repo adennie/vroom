@@ -14,6 +14,7 @@ package com.fizzbuzz.vroom.core.resource;
  * limitations under the License.
  */
 
+import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.DomainObject;
 import com.fizzbuzz.vroom.core.dto_converter.DomainCollectionConverter;
 import com.fizzbuzz.vroom.core.dto_converter.DomainObjectConverter;
@@ -32,22 +33,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VroomCollectionConverterHelper<DTC extends CollectionDto<DTO>, DTO extends Dto, DO extends DomainObject,
-        EC extends DomainObjectConverter<DTO, DO>>
+public class VroomCollectionConverterHelper<
+        DTC extends CollectionDto<DTO>,
+        DTO extends Dto,
+        DC extends DomainCollection<DO>,
+        DO extends DomainObject>
         extends ConverterHelper {
 
-    private final Class<DO> mDomainObjectClass;
+    private final Class<DC> mDomainCollectionClass;
     private final Class<DTC> mDtoCollectionClass;
     private final DomainCollectionConverter<DTC, DTO, DO> mCollectionConverter;
     private final DomainObjectConverter<DTO, DO> mElementConverter;
     private final MediaType[] mSupportedMediaTypes;
 
     public VroomCollectionConverterHelper(Class<DTC> dtoCollectionClass,
-                                          Class<DO> domainObjectClass,
+                                          Class<DC> domainCollectionClass,
                                           DomainCollectionConverter<DTC, DTO, DO> collectionConverter,
                                           DomainObjectConverter<DTO, DO> elementConverter,
                                           MediaType... supportedMediaTypes) {
-        mDomainObjectClass = domainObjectClass;
+        mDomainCollectionClass = domainCollectionClass;
         mDtoCollectionClass = dtoCollectionClass;
         mCollectionConverter = collectionConverter;
         mElementConverter = elementConverter;
@@ -62,7 +66,7 @@ public class VroomCollectionConverterHelper<DTC extends CollectionDto<DTO>, DTO 
 
         for (MediaType mediaType : mSupportedMediaTypes) {
             if (mediaType.equals(source.getMediaType())) {
-                result = addObjectClass(result, mDomainObjectClass);
+                result = addObjectClass(result, mDomainCollectionClass);
             }
         }
 
@@ -83,8 +87,8 @@ public class VroomCollectionConverterHelper<DTC extends CollectionDto<DTO>, DTO 
         // parameter type, where the actual
         // objects passed are derived from that class.
         if (source != null &&
-                (mDomainObjectClass.isAssignableFrom(source)
-                        || source.isAssignableFrom(mDomainObjectClass))) {
+                (mDomainCollectionClass.isAssignableFrom(source)
+                        || source.isAssignableFrom(mDomainCollectionClass))) {
             for (MediaType mediaType : mSupportedMediaTypes) {
                 result = addVariant(result, new VariantInfo(mediaType));
             }
@@ -101,7 +105,7 @@ public class VroomCollectionConverterHelper<DTC extends CollectionDto<DTO>, DTO 
         // representation having the specified media type (e.g. for PUT or POST input payloads)
         float result = -1.0F;
 
-        if (mDomainObjectClass.isAssignableFrom(target) || target.isAssignableFrom(mDomainObjectClass)) {
+        if (mDomainCollectionClass.isAssignableFrom(target) || target.isAssignableFrom(mDomainCollectionClass)) {
             for (MediaType mediaType : mSupportedMediaTypes) {
                 if (mediaType.equals(source.getMediaType()))
                     result = 1.0F;
@@ -118,7 +122,7 @@ public class VroomCollectionConverterHelper<DTC extends CollectionDto<DTO>, DTO 
         // toRepresentation()
         float result = -1.0F;
 
-        if (source != null) {
+        if (source != null && mDomainCollectionClass.isAssignableFrom(source.getClass())) {
             if (target == null) {
                 result = 1.0F; // no target type specified, but we match on the source, so we're probably the best match
             } else { // target type specified. Return 1.0F if we can match it.

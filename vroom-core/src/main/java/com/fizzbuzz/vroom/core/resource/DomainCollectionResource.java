@@ -15,7 +15,9 @@ package com.fizzbuzz.vroom.core.resource;
  */
 
 import com.fizzbuzz.vroom.core.biz.CollectionBiz;
+import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.DomainObject;
+import com.fizzbuzz.vroom.core.util.Reflections;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
@@ -26,15 +28,17 @@ import org.restlet.resource.ResourceException;
 import java.util.List;
 
 public abstract class DomainCollectionResource<
-        CB extends CollectionBiz<DO>,
-        DO extends DomainObject>
+        DC extends DomainCollection<DO>,
+        DO extends DomainObject,
+        CB extends CollectionBiz<DO>>
         extends BaseResource {
+    private Class<DC> mDomainCollectionClass;
     private CB mCollectionBiz;
 
     public List<DO> getResource() {
-        List<DO> result = null;
+        DC result = Reflections.newInstance(mDomainCollectionClass);
         try {
-            result = mCollectionBiz.getElements();
+            result.addAll(mCollectionBiz.getElements());
         } catch (RuntimeException e) {
             doCatch(e);
         }
@@ -64,14 +68,16 @@ public abstract class DomainCollectionResource<
                                            final Variant target) {
         Representation result = super.toRepresentation(source, target);
         // the POST method creates a new collection element, which is returned as the response body. We should
-        // specify the Content-Location header to indicate the URI of that resource. The value of the URI was already stored into
+        // specify the Content-Location header to indicate the URI of that resource. The value of the URI was already
+        // stored into
         // the LocationRef of the response, so just grab that and reuse it.
         if (getMethod().equals(Method.POST))
             result.setLocationRef(getResponse().getLocationRef());
         return result;
     }
 
-    protected void doInit(final CB collectionBiz) throws ResourceException {
+    protected void doInit(final Class<DC> domainCollectionClass, final CB collectionBiz) throws ResourceException {
+        mDomainCollectionClass = domainCollectionClass;
         mCollectionBiz = collectionBiz;
     }
 
