@@ -15,12 +15,12 @@ package com.fizzbuzz.vroom.core.biz;
  */
 
 import com.fizzbuzz.vroom.core.domain.IdObject;
-import com.fizzbuzz.vroom.core.persist.ObjectPersist;
+import com.fizzbuzz.vroom.core.persist.Entity;
 
 public class PersistentObjectBiz<PO extends IdObject> implements IdObjectBiz<PO> {
-    private ObjectPersist<PO> mPersist;
+    private Entity<PO> mPersist;
 
-    public PersistentObjectBiz(final ObjectPersist<PO> persist) {
+    public PersistentObjectBiz(final Entity<PO> persist) {
         mPersist = persist;
     }
     @Override

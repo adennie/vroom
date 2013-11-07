@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Interface for "persist" classes that manage collections of domain objects
  */
-public interface CollectionPersist<
+public interface EntityCollection<
         DO extends IdObject> {
 
     /**

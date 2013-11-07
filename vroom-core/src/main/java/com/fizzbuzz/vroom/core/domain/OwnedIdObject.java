@@ -14,10 +14,10 @@ package com.fizzbuzz.vroom.core.domain;
  * limitations under the License.
  */
 
-public class ParentedIdObject extends IdObject {
+public class OwnedIdObject extends IdObject {
     private long mParentId;
 
-    public ParentedIdObject(final long id, final long parentId) {
+    public OwnedIdObject(final long id, final long parentId) {
         super(id);
         mParentId = parentId;
     }
