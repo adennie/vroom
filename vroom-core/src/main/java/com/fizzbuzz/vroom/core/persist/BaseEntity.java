@@ -23,14 +23,14 @@ import org.slf4j.LoggerFactory;
 import static com.fizzbuzz.vroom.core.persist.PersistManager.getOfyService;
 
 /**
- * Interface for "persist" objects that manage individual DomainObjects.
+ * Abstract base class for "entity" objects that manage individual DomainObjects.
  */
-public abstract class BaseObjectPersist<DO extends IdObject, DAO extends BaseDao<DO>> implements ObjectPersist<DO> {
+public abstract class BaseEntity<DO extends IdObject, DAO extends BaseDao<DO>> implements Entity<DO> {
     private final Class<DO> mDomainClass;
     private final Class<DAO> mDaoClass;
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
 
-    protected BaseObjectPersist(final Class<DO> domainClass, final Class<DAO> daoClass) {
+    protected BaseEntity(final Class<DO> domainClass, final Class<DAO> daoClass) {
         mDomainClass = domainClass;
         mDaoClass = daoClass;
     }

@@ -33,20 +33,20 @@ import static com.fizzbuzz.vroom.core.persist.PersistManager.getOfyService;
  * @param <OWNERDAO> the owner DAO type
  * @param <OWNEDDAO> the owned DAO type
  */
-public abstract class BaseOwnedCollectionPersist<
+public abstract class BaseOwnedEntityCollection<
         OWNERDO extends IdObject,
         OWNEDDO extends OwnedIdObject,
         OWNERDAO extends BaseDao<OWNERDO>,
         OWNEDDAO extends OwnedDao<OWNERDAO, OWNERDO, OWNEDDO>>
-        extends BaseCollectionPersist<OWNEDDO, OWNEDDAO> {
+        extends BaseEntityCollection<OWNEDDO, OWNEDDAO> {
 
     private Class<OWNERDAO> mOwnerDaoClass;
     private long mOwnerId;
 
-    protected BaseOwnedCollectionPersist(final Class<OWNERDAO> ownerDaoClass,
-                                         final long ownerId,
-                                         final Class<OWNEDDO> ownedDomainObjectClass,
-                                         final Class<OWNEDDAO> ownedDaoClass) {
+    protected BaseOwnedEntityCollection(final Class<OWNERDAO> ownerDaoClass,
+                                        final long ownerId,
+                                        final Class<OWNEDDO> ownedDomainObjectClass,
+                                        final Class<OWNEDDAO> ownedDaoClass) {
         super(ownedDomainObjectClass, ownedDaoClass);
         mOwnerDaoClass = ownerDaoClass;
         mOwnerId = ownerId;

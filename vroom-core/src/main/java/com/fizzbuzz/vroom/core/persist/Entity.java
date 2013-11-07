@@ -19,7 +19,7 @@ import com.fizzbuzz.vroom.core.domain.IdObject;
 /**
  * Interface for "persist" objects that manage individual DomainObjects.
  */
-public interface ObjectPersist<DO extends IdObject> {
+public interface Entity<DO extends IdObject> {
 
     /**
      * Returns the PersistentObject having the provided ID

@@ -14,16 +14,15 @@ package com.fizzbuzz.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.IdObject;
-import com.fizzbuzz.vroom.core.persist.CollectionPersist;
+import com.fizzbuzz.vroom.core.persist.EntityCollection;
 
 import java.util.List;
 
 public class PersistentCollectionBiz<IO extends IdObject> implements CollectionBiz<IO>{
-    private CollectionPersist<IO> mPersist;
+    private EntityCollection<IO> mPersist;
 
-    public PersistentCollectionBiz(CollectionPersist<IO> persist) {
+    public PersistentCollectionBiz(EntityCollection<IO> persist) {
         mPersist = persist;
     }
 
@@ -32,7 +31,7 @@ public class PersistentCollectionBiz<IO extends IdObject> implements CollectionB
         return mPersist.getDomainElements();
     }
 
-    CollectionPersist<IO> getPersist() {
+    EntityCollection<IO> getPersist() {
         return mPersist;
     }
 

@@ -26,16 +26,16 @@ import static com.fizzbuzz.vroom.core.persist.PersistManager.getOfyService;
 /**
  * Base class for "persist" classes that manage entity collections.
  */
-public abstract class BaseCollectionPersist<
+public abstract class BaseEntityCollection<
         DO extends IdObject,
         DAO extends BaseDao<DO>>
-        implements CollectionPersist<DO> {
+        implements EntityCollection<DO> {
 
     private final Class<DO> mDomainElementClass;
     private final Class<DAO> mElementDaoClass;
 
-    protected BaseCollectionPersist(final Class<DO> domainElementClass,
-                                    final Class<DAO> elementDaoClass) {
+    protected BaseEntityCollection(final Class<DO> domainElementClass,
+                                   final Class<DAO> elementDaoClass) {
         mDomainElementClass = domainElementClass;
         mElementDaoClass = elementDaoClass;
     }
