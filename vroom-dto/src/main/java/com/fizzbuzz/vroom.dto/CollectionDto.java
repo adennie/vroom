@@ -17,8 +17,9 @@ package com.fizzbuzz.vroom.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectionDto<DTO extends Dto> extends ArrayList<DTO> {
+public class CollectionDto<DTO extends Dto>  {
     private String selfRef;
+    private ArrayList<DTO> elements = new ArrayList<DTO>();
 
     // default constructor needed by Jackson to create objects via reflection
     public CollectionDto() {
@@ -26,7 +27,7 @@ public class CollectionDto<DTO extends Dto> extends ArrayList<DTO> {
 
     public CollectionDto(final String selfRef, final List<DTO> elements) {
         this.selfRef = selfRef;
-        addAll(elements);
+        this.elements.addAll(elements);
     }
 
     public String getSelfRef() {
@@ -34,5 +35,14 @@ public class CollectionDto<DTO extends Dto> extends ArrayList<DTO> {
     }
     public void setSelfRef(final String selfRef) {
         this.selfRef = selfRef;
+    }
+
+    public void setElements(final ArrayList<DTO> elements) {
+        this.elements.clear();
+        this.elements.addAll(elements);
+    }
+
+    public ArrayList<DTO> getElements() {
+        return elements;
     }
 }

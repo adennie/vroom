@@ -19,11 +19,8 @@ import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.IdObject;
 import org.restlet.resource.ResourceException;
 
-public abstract class IdObjectCollectionResource<
-        DC extends DomainCollection<IO>,
-        IO extends IdObject,
-        CB extends CollectionBiz<IO>>
-        extends DomainCollectionResource<DC, IO, CB> {
+public abstract class IdObjectCollectionResource<DC extends DomainCollection<IO>, IO extends IdObject>
+        extends DomainCollectionResource<DC, IO> {
 
     private Class<? extends IdObjectResource> mElementResourceClass;
 
@@ -32,7 +29,9 @@ public abstract class IdObjectCollectionResource<
         return IdObjectResource.getCanonicalUri(mElementResourceClass, element.getId());
     }
 
-    protected void doInit(final Class<DC> domainCollectionClass, final CB collectionBiz, Class<? extends IdObjectResource> elementResourceClass)
+    protected void doInit(final Class<DC> domainCollectionClass,
+                          final CollectionBiz<IO> collectionBiz,
+                          final Class<? extends IdObjectResource> elementResourceClass)
             throws ResourceException {
         super.doInit(domainCollectionClass, collectionBiz);
         mElementResourceClass = elementResourceClass;

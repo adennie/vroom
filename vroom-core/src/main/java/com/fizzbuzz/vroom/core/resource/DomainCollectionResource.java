@@ -25,18 +25,21 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Delete;
 import org.restlet.resource.ResourceException;
 
-import java.util.List;
-
 public abstract class DomainCollectionResource<
         DC extends DomainCollection<DO>,
-        DO extends DomainObject,
-        CB extends CollectionBiz<DO>>
+        DO extends DomainObject>
         extends BaseResource {
     private Class<DC> mDomainCollectionClass;
-    private CB mCollectionBiz;
+    private CollectionBiz<DO> mCollectionBiz;
 
-    public List<DO> getResource() {
-        DC result = Reflections.newInstance(mDomainCollectionClass);
+    public static <R extends DomainCollectionResource> String getCanonicalUri(
+            Class<R> collectionResourceClass) {
+        return VroomApplication.getServerUrl() + VroomApplication.getRootUrl() + getCanonicalUriPathTemplate
+                (collectionResourceClass);
+    }
+
+    public DomainCollection<DO> getResource() {
+        DomainCollection<DO> result = Reflections.newInstance(mDomainCollectionClass);
         try {
             result.addAll(mCollectionBiz.getElements());
         } catch (RuntimeException e) {
@@ -76,7 +79,8 @@ public abstract class DomainCollectionResource<
         return result;
     }
 
-    protected void doInit(final Class<DC> domainCollectionClass, final CB collectionBiz) throws ResourceException {
+    protected void doInit(final Class<DC> domainCollectionClass,
+                          final CollectionBiz<DO> collectionBiz) throws ResourceException {
         mDomainCollectionClass = domainCollectionClass;
         mCollectionBiz = collectionBiz;
     }

@@ -14,7 +14,9 @@ package com.fizzbuzz.vroom.core.dto_converter;
  * limitations under the License.
  */
 
+import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.DomainObject;
+import com.fizzbuzz.vroom.core.resource.DomainCollectionResource;
 import com.fizzbuzz.vroom.core.util.Reflections;
 import com.fizzbuzz.vroom.dto.CollectionDto;
 import com.fizzbuzz.vroom.dto.Dto;
@@ -25,26 +27,34 @@ import java.util.List;
 public abstract class DomainCollectionConverter<
         DTC extends CollectionDto<DTO>,
         DTO extends Dto,
+        DC extends DomainCollection<DO>,
         DO extends DomainObject> implements BaseConverter {
-
     private DomainObjectConverter<DTO, DO> mElementConverter;
     private Class<DTC> mDtcClass;
 
-    public DomainCollectionConverter(final Class<DTC> dtcClass, final DomainObjectConverter<DTO, DO> elementConverter) {
+    public DomainCollectionConverter(final Class<DTC> dtcClass,
+                                     final DomainObjectConverter<DTO, DO> elementConverter) {
         mElementConverter = elementConverter;
         mDtcClass = dtcClass;
     }
 
-    public DTC toDto(final List<DO> domainCollection, final String collectionSelfRef) {
+    public CollectionDto<DTO> toDto(DomainCollectionResource<DC, DO> resource, final DomainCollection<DO> domainCollection) {
         // first convert the DO objects into DTO objects
         List<DTO> dtos = new ArrayList<DTO>();
         for (DO domainObject : domainCollection) {
             dtos.add(mElementConverter.toDto(domainObject));
         }
 
+        // get the URI of the collection resource
+        String collectionSelfRef = getCanonicalUri(resource);
+
         // now create/return the CollectionDto
-        DTC result = Reflections.newInstance(mDtcClass, String.class, List.class, collectionSelfRef, dtos);
+        CollectionDto<DTO> result = Reflections.newInstance(mDtcClass, String.class, List.class, collectionSelfRef, dtos);
         return result;
+    }
+
+    protected String getCanonicalUri(DomainCollectionResource<DC, DO> resource) {
+        return DomainCollectionResource.getCanonicalUri(resource.getClass());
     }
 }
 
