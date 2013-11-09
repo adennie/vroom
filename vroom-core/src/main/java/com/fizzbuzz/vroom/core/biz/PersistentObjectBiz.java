@@ -17,20 +17,20 @@ package com.fizzbuzz.vroom.core.biz;
 import com.fizzbuzz.vroom.core.domain.IdObject;
 import com.fizzbuzz.vroom.core.persist.Entity;
 
-public class PersistentObjectBiz<PO extends IdObject> implements IdObjectBiz<PO> {
-    private Entity<PO> mPersist;
+public class PersistentObjectBiz<IO extends IdObject> implements IdObjectBiz<IO> {
+    private Entity<IO> mPersist;
 
-    public PersistentObjectBiz(final Entity<PO> persist) {
+    public PersistentObjectBiz(final Entity<IO> persist) {
         mPersist = persist;
     }
     @Override
-    public PO get(final long id) {
+    public IO get(final long id) {
         return mPersist.get(id);
     }
 
     @Override
-    public void update(final PO persistentObject) {
-        mPersist.update(persistentObject);
+    public void update(final IO idObject) {
+        mPersist.update(idObject);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.resource;
+package com.fizzbuzz.vroom.core.dto_converter;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,11 +14,6 @@ package com.fizzbuzz.vroom.core.resource;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.DomainCollection;
-import com.fizzbuzz.vroom.core.domain.DomainObject;
-import com.fizzbuzz.vroom.core.dto_converter.DomainCollectionConverter;
-import com.fizzbuzz.vroom.core.dto_converter.DomainObjectConverter;
-import com.fizzbuzz.vroom.dto.CollectionDto;
 import com.fizzbuzz.vroom.dto.Dto;
 import org.restlet.data.MediaType;
 import org.restlet.engine.converter.ConverterHelper;
@@ -29,31 +24,20 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Resource;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class VroomCollectionConverterHelper<
-        DTC extends CollectionDto<DTO>,
-        DTO extends Dto,
-        DC extends DomainCollection<DO>,
-        DO extends DomainObject>
+public abstract class ObjectConverter<DTO extends Dto, O extends Object>
         extends ConverterHelper {
 
-    private final Class<DC> mDomainCollectionClass;
-    private final Class<DTC> mDtoCollectionClass;
-    private final DomainCollectionConverter<DTC, DTO, DC, DO> mCollectionConverter;
-    private final DomainObjectConverter<DTO, DO> mElementConverter;
+    private final Class<O> mObjectClass;
+    private final Class<DTO> mDtoClass;
     private final MediaType[] mSupportedMediaTypes;
 
-    public VroomCollectionConverterHelper(Class<DTC> dtoCollectionClass,
-                                          Class<DC> domainCollectionClass,
-                                          DomainCollectionConverter<DTC, DTO, DC, DO> collectionConverter,
-                                          DomainObjectConverter<DTO, DO> elementConverter,
-                                          MediaType... supportedMediaTypes) {
-        mDomainCollectionClass = domainCollectionClass;
-        mDtoCollectionClass = dtoCollectionClass;
-        mCollectionConverter = collectionConverter;
-        mElementConverter = elementConverter;
+    public ObjectConverter(Class<DTO> dtoClass,
+                           Class<O> objectClass,
+                           MediaType... supportedMediaTypes) {
+        mObjectClass = objectClass;
+        mDtoClass = dtoClass;
         mSupportedMediaTypes = supportedMediaTypes;
     }
 
@@ -65,7 +49,7 @@ public class VroomCollectionConverterHelper<
 
         for (MediaType mediaType : mSupportedMediaTypes) {
             if (mediaType.equals(source.getMediaType())) {
-                result = addObjectClass(result, mDomainCollectionClass);
+                result = addObjectClass(result, mObjectClass);
             }
         }
 
@@ -86,8 +70,8 @@ public class VroomCollectionConverterHelper<
         // parameter type, where the actual
         // objects passed are derived from that class.
         if (source != null &&
-                (mDomainCollectionClass.isAssignableFrom(source)
-                        || source.isAssignableFrom(mDomainCollectionClass))) {
+                (mObjectClass.isAssignableFrom(source)
+                        || source.isAssignableFrom(mObjectClass))) {
             for (MediaType mediaType : mSupportedMediaTypes) {
                 result = addVariant(result, new VariantInfo(mediaType));
             }
@@ -104,7 +88,7 @@ public class VroomCollectionConverterHelper<
         // representation having the specified media type (e.g. for PUT or POST input payloads)
         float result = -1.0F;
 
-        if (mDomainCollectionClass.isAssignableFrom(target) || target.isAssignableFrom(mDomainCollectionClass)) {
+        if (mObjectClass.isAssignableFrom(target) || target.isAssignableFrom(mObjectClass)) {
             for (MediaType mediaType : mSupportedMediaTypes) {
                 if (mediaType.equals(source.getMediaType()))
                     result = 1.0F;
@@ -121,7 +105,7 @@ public class VroomCollectionConverterHelper<
         // toRepresentation()
         float result = -1.0F;
 
-        if (source != null && mDomainCollectionClass.isAssignableFrom(source.getClass())) {
+        if (source != null && mObjectClass.isAssignableFrom(source.getClass())) {
             if (target == null) {
                 result = 1.0F; // no target type specified, but we match on the source, so we're probably the best match
             } else { // target type specified. Return 1.0F if we can match it.
@@ -137,23 +121,18 @@ public class VroomCollectionConverterHelper<
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T toObject(final Representation source,
-                          final Class<T> target,
-                          final Resource resource) throws IOException {
-        List<DO> result = new ArrayList<DO>();
+    public <DO> DO toObject(final Representation source,
+                            final Class<DO> target,
+                            final Resource resource) throws IOException {
+        DO result = null;
 
-        // Convert from JSON to DTC
-        JacksonRepresentation<?> jacksonSource =
-                new JacksonRepresentation<DTC>(source, mDtoCollectionClass);
-        CollectionDto<DTO> dtc = (CollectionDto<DTO>) jacksonSource.getObject();
+        // Convert from JSON to DTO
+        JacksonRepresentation<?> jacksonSource = new JacksonRepresentation<DTO>(source, mDtoClass);
+        DTO dto = (DTO) jacksonSource.getObject();
 
-        // convert from DTC to List<DO>
-        for (DTO dto : dtc.getElements()) {
-            DO domainObject = mElementConverter.toDomain(dto);
-            result.add(domainObject);
-        }
-
-        return (T) result;
+        // convert from DTO to DO
+        result = (DO) toObject(dto);
+        return result;
     }
 
     @Override
@@ -161,12 +140,16 @@ public class VroomCollectionConverterHelper<
                                            final Variant target,
                                            final Resource resource) throws IOException {
 
-        CollectionDto<DTO> dtc = mCollectionConverter.toDto((DomainCollectionResource<DC, DO>) resource,
-                (DomainCollection<DO>) source);
+        DTO dto = toDto((O) source);
 
-        // create a JacksonRepresentation for the DTC
-        JacksonRepresentation<?> jacksonRep = new JacksonRepresentation<CollectionDto<DTO>>(target.getMediaType(), dtc);
+        // create a JacksonRepresentation
+        JacksonRepresentation<?> jacksonRep = new JacksonRepresentation<DTO>(target.getMediaType(),
+                (DTO) dto);
 
         return jacksonRep;
     }
+
+
+    protected abstract DTO toDto(final O domainObject);
+    protected abstract O toObject(final DTO dto);
 }

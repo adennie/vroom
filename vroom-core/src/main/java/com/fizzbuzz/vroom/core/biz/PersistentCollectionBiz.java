@@ -36,9 +36,9 @@ public class PersistentCollectionBiz<IO extends IdObject> implements CollectionB
     }
 
     @Override
-    public IO add(final IO domainObject) {
-        domainObject.validate();
-        return (IO)getPersist().addElement(domainObject);
+    public IO add(final IO idObject) {
+        idObject.validate();
+        return (IO)getPersist().addElement(idObject);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class PersistentCollectionBiz<IO extends IdObject> implements CollectionB
     }
 
     @Override
-    public void delete(List<IO> domainObjects) {
-        getPersist().delete(domainObjects);
+    public void delete(List<IO> idObjects) {
+        getPersist().delete(idObjects);
     }
 }
