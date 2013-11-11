@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.persist;
+package com.fizzbuzz.vroom.core.persist.datastore;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,10 +14,10 @@ package com.fizzbuzz.vroom.core.persist;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IdObject;
+import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.googlecode.objectify.annotation.Id;
 
-public abstract class BaseDao<DO extends IdObject> {
+public abstract class BaseDao<DO extends KeyedObject> {
     @Id private Long mId;
 
     // no-arg constructor used by Objectify

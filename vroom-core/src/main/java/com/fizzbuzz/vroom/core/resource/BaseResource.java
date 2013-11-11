@@ -90,11 +90,7 @@ public abstract class BaseResource extends ServerResource {
 
     protected long getLongTokenValue(final String token) {
 
-        String s = (String) getRequestAttributes().get(token);
-
-        if (s == null) {
-            throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "missing " + token + " URL component: " + s);
-        }
+        String s = getTokenValue(token);
 
         try {
             return Long.parseLong(s);
@@ -102,6 +98,17 @@ public abstract class BaseResource extends ServerResource {
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "invalid " + token + " URL component: " + s);
         }
     }
+
+    protected String getTokenValue(final String token) {
+        String result = (String) getRequestAttributes().get(token);
+
+        if (result == null) {
+            throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "missing " + token + " URL component: " + result);
+        }
+
+        return result;
+    }
+
 
     protected long getLongParamValue(final String paramName) {
         String paramAsString = null;

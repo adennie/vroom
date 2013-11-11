@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.persist;
+package com.fizzbuzz.vroom.core.persist.datastore;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,10 +14,11 @@ package com.fizzbuzz.vroom.core.persist;
  * limitations under the License.
  */
 
-class PackageLogger {
-    // This class exists just to define a static string for use by other classes in this package. Make the constructor
-    // private to prevent instantiation.
-    private PackageLogger() {
-    }
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
 
-    public static final String TAG = "com.fizzbuzz.vroom.core.persist";}
+public abstract class OfyService {
+    public Objectify ofy() {
+        return ObjectifyService.ofy();
+    }
+}

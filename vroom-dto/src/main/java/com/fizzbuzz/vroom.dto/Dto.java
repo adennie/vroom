@@ -18,8 +18,14 @@ package com.fizzbuzz.vroom.dto;
  * A base class for DTOs.
  */
 public class Dto {
+    public enum HttpMethod {
+        GET,
+        PUT,
+        POST
+    }
 
     private String selfRef;
+    ;
 
     // default constructor needed by Jackson to create objects via reflection
     public Dto() {
@@ -39,39 +45,24 @@ public class Dto {
 
     /**
      * Validates the state of the DTO.  This method is intended for use in performing first-pass validation on DTOs
-     * received from a client.  Examples include:
+     * created by a client, and can be invoked client-side or server-side.  Examples include:
      * - verifying that values representing enumerations are one of the allowed values
      * - verifying that strings which must conform to a regular expression do so
      * - verifying that numbers are in a permitted range
      * - verifying that collections which must be non-empty are non-empty
+     * - verifying that read-only fields which are assigned server-side at creation time are non-null for a PUT
+     * request, but null for a POST request.
      */
-    public void validate() {
-    }
-
-    /**
-     * Validates the state of the DTO as it relates to its required state when supplied in a PUT request.  Examples
-     * include:
-     * - verifying that fields which are assigned server-side at creation time are non-null
-     */
-    public void validatePost() {
-        validate();
-
-        if (selfRef != null) {
+    public void validate(HttpMethod method) {
+        // selfRef must be null for a POST request
+        if (method == HttpMethod.POST && selfRef != null) {
             throw new IllegalArgumentException("selfRef field must be null in a POST request.  The value will be " +
                     "assigned server-side at creation time.");
         }
-    }
 
-    /**
-     * Validates the state of the DTO as it relates to its required state when supplied in a POST request.  Examples
-     * include:
-     * - verifying that fields which are assigned server-side at creation time are null
-     */
-    public void validatePut() {
-        validate();
-
-        if (selfRef == null) {
-            throw new IllegalArgumentException("selfRef field must be non-null in a POST request.  The value should " +
+        // selfRef must be non-null for a PUT request
+        if (method == HttpMethod.PUT && selfRef == null){
+            throw new IllegalArgumentException("selfRef field must be non-null in a PUT request.  The value should " +
                     "be the one assigned server-side at creation time.");
         }
     }

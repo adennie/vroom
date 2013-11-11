@@ -14,28 +14,31 @@ package com.fizzbuzz.vroom.core.dto_converter;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IdObject;
-import com.fizzbuzz.vroom.core.resource.IdObjectResource;
+import com.fizzbuzz.vroom.core.domain.KeyedObject;
+import com.fizzbuzz.vroom.core.resource.KeyedObjectResource;
 import com.fizzbuzz.vroom.dto.Dto;
 import org.restlet.data.MediaType;
 
-public abstract class IdObjectConverter<DTO extends Dto, IO extends IdObject> extends ObjectConverter<DTO, IO> {
+public abstract class KeyedObjectConverter<DTO extends Dto, KO extends KeyedObject> extends ObjectConverter<DTO, KO> {
 
-    final Class<? extends IdObjectResource> mResourceClass;
+    final Class<? extends KeyedObjectResource> mResourceClass;
 
-    public IdObjectConverter(final Class<? extends IdObjectResource> resourceClass, final Class<DTO> dtoClass, final Class<IO> idObjectClass, MediaType... supportedMediaTypes) {
+    public KeyedObjectConverter(final Class<? extends KeyedObjectResource> resourceClass,
+                                final Class<DTO> dtoClass,
+                                final Class<KO> idObjectClass,
+                                MediaType... supportedMediaTypes) {
         super(dtoClass, idObjectClass, supportedMediaTypes);
         mResourceClass = resourceClass;
     }
 
-    protected String getCanonicalUri(IO idObject) {
-        return IdObjectResource.getCanonicalUri(mResourceClass, idObject.getId());
+    protected String getCanonicalUri(KO keyedObject) {
+        return KeyedObjectResource.getCanonicalUri(mResourceClass, keyedObject.getKeyAsString());
     }
 
     protected long getIdFromDto(DTO dto) {
         if (dto.getSelfRef() == null)
             return -1;
         else
-            return IdObjectResource.getIdFromUri(mResourceClass, dto.getSelfRef());
+            return KeyedObjectResource.getIdFromUri(mResourceClass, dto.getSelfRef());
     }
 }

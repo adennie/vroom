@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.biz;
+package com.fizzbuzz.vroom.core.domain;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,27 +14,25 @@ package com.fizzbuzz.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IdObject;
-import com.fizzbuzz.vroom.core.persist.Entity;
+public abstract class KeyedObject<K extends KeyType> extends DomainObject {
+    private K mKey;
 
-public class PersistentObjectBiz<IO extends IdObject> implements IdObjectBiz<IO> {
-    private Entity<IO> mPersist;
-
-    public PersistentObjectBiz(final Entity<IO> persist) {
-        mPersist = persist;
-    }
-    @Override
-    public IO get(final long id) {
-        return mPersist.get(id);
+    public KeyedObject(final K key) {
+        mKey = key;
     }
 
-    @Override
-    public void update(final IO idObject) {
-        mPersist.update(idObject);
+    public K getKey() {
+        return mKey;
     }
 
-    @Override
-    public void delete(final long id) {
-        mPersist.delete(id);
+    public String getKeyAsString() {
+        return mKey.toString();
+    }
+
+    public void setKey(final K key) {
+        mKey = key;
+    }
+
+    public void validate() {
     }
 }

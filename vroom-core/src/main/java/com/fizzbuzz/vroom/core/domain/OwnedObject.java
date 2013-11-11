@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.biz;
+package com.fizzbuzz.vroom.core.domain;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,11 +14,14 @@ package com.fizzbuzz.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IdObject;
-import com.fizzbuzz.vroom.core.persist.EntityCollection;
+public class OwnedObject<KT extends KeyType> extends DomainObject {
+    private KT mParentKey;
 
-public abstract class ParentedPersistentCollectionBiz<DO extends IdObject> extends PersistentCollectionBiz<DO> {
-    public ParentedPersistentCollectionBiz(EntityCollection<DO> persist) {
-        super(persist);
+    public OwnedObject(final KT parentKey) {
+        mParentKey = parentKey;
+    }
+
+    public KT getParentKey() {
+        return mParentKey;
     }
 }

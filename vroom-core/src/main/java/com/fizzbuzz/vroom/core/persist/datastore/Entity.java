@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.persist;
+package com.fizzbuzz.vroom.core.persist.datastore;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,34 +14,34 @@ package com.fizzbuzz.vroom.core.persist;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IdObject;
+import com.fizzbuzz.vroom.core.domain.KeyedObject;
 
 /**
  * Interface for "persist" objects that manage individual DomainObjects.
  */
-public interface Entity<DO extends IdObject> {
+public interface Entity<KO extends KeyedObject> {
 
     /**
-     * Returns the PersistentObject having the provided ID
+     * Returns the KeyedObject having the provided key
      *
-     * @param id the PersistentObject's ID
-     * @return the PersistentObject corresponding to the provided ID
+     * @param key the KeyedObject's key
+     * @return the KeyedObject corresponding to the provided key
      */
-    public DO get(final long id);
+    public KO get(final Long key);
 
     /**
-     * Updates a PersistentObject's state.  Often this will require merging the state of the provided PersistentObject with the
-     * existing persisted state of that object and then persisting that new, merged state.
+     * Updates an entity's state.  Often this will require merging the state of the provided KeyedObject with the
+     * existing persisted state of that object and then saving that new, merged state.
      *
-     * @param modelObject the new state for the PersistentObject
+     * @param keyedObject the new state for the KeyedObject
      */
-    public void update(final DO modelObject);
+    public void update(final KO keyedObject);
 
     /**
      * Deletes the PersistentObject having the provided ID
      *
      * @param id the PersistentObject's ID
      */
-    public void delete(final long id);
+    public void delete(final Long id);
 
 }

@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.persist;
+package com.fizzbuzz.vroom.core.persist.datastore;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,7 +14,7 @@ package com.fizzbuzz.vroom.core.persist;
  * limitations under the License.
  */
 
-public abstract class PersistManager {
+public abstract class OfyManager {
     private static OfyService mOfyService;
 
     public static void registerOfyService(final OfyService ofyService) {

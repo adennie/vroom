@@ -14,8 +14,8 @@ package com.fizzbuzz.vroom.core.resource;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.persist.OfyService;
-import com.fizzbuzz.vroom.core.persist.PersistManager;
+import com.fizzbuzz.vroom.core.persist.datastore.OfyManager;
+import com.fizzbuzz.vroom.core.persist.datastore.OfyService;
 import com.google.appengine.api.labs.modules.ModulesService;
 import com.google.appengine.api.labs.modules.ModulesServiceFactory;
 import com.google.appengine.api.utils.SystemProperty;
@@ -122,7 +122,7 @@ public abstract class VroomApplication
     public synchronized void start() throws Exception {
         super.start();
 
-        PersistManager.registerOfyService(getOfyService());
+        OfyManager.registerOfyService(getOfyService());
     }
 
     protected void attach(Router router, String pathTemplate, java.lang.Class<? extends org.restlet.resource

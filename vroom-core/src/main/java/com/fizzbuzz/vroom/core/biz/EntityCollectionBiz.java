@@ -14,40 +14,40 @@ package com.fizzbuzz.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IdObject;
-import com.fizzbuzz.vroom.core.persist.EntityCollection;
+import com.fizzbuzz.vroom.core.domain.KeyedObject;
+import com.fizzbuzz.vroom.core.persist.datastore.EntityCollection;
 
 import java.util.List;
 
-public class PersistentCollectionBiz<IO extends IdObject> implements CollectionBiz<IO>{
-    private EntityCollection<IO> mPersist;
+public class EntityCollectionBiz<KO extends KeyedObject> implements CollectionBiz<KO>{
+    private EntityCollection<KO> mEntityCollection;
 
-    public PersistentCollectionBiz(EntityCollection<IO> persist) {
-        mPersist = persist;
+    public EntityCollectionBiz(EntityCollection<KO> entityCollection) {
+        mEntityCollection = entityCollection;
     }
 
     @Override
-    public List<IO> getElements() {
-        return mPersist.getDomainElements();
+    public List<KO> getElements() {
+        return mEntityCollection.getElements();
     }
 
-    EntityCollection<IO> getPersist() {
-        return mPersist;
+    EntityCollection<KO> getEntityCollection() {
+        return mEntityCollection;
     }
 
     @Override
-    public IO add(final IO idObject) {
+    public KO add(final KO idObject) {
         idObject.validate();
-        return (IO)getPersist().addElement(idObject);
+        return (KO) getEntityCollection().addElement(idObject);
     }
 
     @Override
     public void deleteAll() {
-        getPersist().deleteAll();
+        getEntityCollection().deleteAll();
     }
 
     @Override
-    public void delete(List<IO> idObjects) {
-        getPersist().delete(idObjects);
+    public void delete(List<KO> idObjects) {
+        getEntityCollection().delete(idObjects);
     }
 }

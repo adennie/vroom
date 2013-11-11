@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.persist;
+package com.fizzbuzz.vroom.core.biz;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,9 +14,11 @@ package com.fizzbuzz.vroom.core.persist;
  * limitations under the License.
  */
 
-public class OfyLoadGroups {
-    // used with @Load to control whether entity load operations are shallow (don't load referenced entities) or deep
-    // (load all referenced entities, recursively)
-    public static class Deep {
+import com.fizzbuzz.vroom.core.domain.KeyedObject;
+import com.fizzbuzz.vroom.core.persist.datastore.EntityCollection;
+
+public abstract class ParentedEntityCollectionBiz<KO extends KeyedObject> extends EntityCollectionBiz<KO> {
+    public ParentedEntityCollectionBiz(EntityCollection<KO> entityCollection) {
+        super(entityCollection);
     }
 }

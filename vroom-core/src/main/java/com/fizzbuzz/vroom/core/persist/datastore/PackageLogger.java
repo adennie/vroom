@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.domain;
+package com.fizzbuzz.vroom.core.persist.datastore;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,21 +14,10 @@ package com.fizzbuzz.vroom.core.domain;
  * limitations under the License.
  */
 
-public class IdObject extends DomainObject {
-    private long mId;
-
-    public IdObject(final long id) {
-        mId = id;
+class PackageLogger {
+    // This class exists just to define a static string for use by other classes in this package. Make the constructor
+    // private to prevent instantiation.
+    private PackageLogger() {
     }
 
-    public long getId() {
-        return mId;
-    }
-
-    public void setId(final long id) {
-        mId = id;
-    }
-
-    public void validate() {
-    }
-}
+    public static final String TAG = "com.fizzbuzz.vroom.core.persist";}

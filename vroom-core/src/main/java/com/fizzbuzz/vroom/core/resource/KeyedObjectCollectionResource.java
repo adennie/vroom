@@ -16,22 +16,22 @@ package com.fizzbuzz.vroom.core.resource;
 
 import com.fizzbuzz.vroom.core.biz.CollectionBiz;
 import com.fizzbuzz.vroom.core.domain.DomainCollection;
-import com.fizzbuzz.vroom.core.domain.IdObject;
+import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import org.restlet.resource.ResourceException;
 
-public abstract class IdObjectCollectionResource<DC extends DomainCollection<IO>, IO extends IdObject>
-        extends DomainCollectionResource<DC, IO> {
+public abstract class KeyedObjectCollectionResource<DC extends DomainCollection<KO>, KO extends KeyedObject>
+        extends DomainCollectionResource<DC, KO> {
 
-    private Class<? extends IdObjectResource> mElementResourceClass;
+    private Class<? extends KeyedObjectResource> mElementResourceClass;
 
     @Override
-    protected String getElementCanonicalUri(final IO element) {
-        return IdObjectResource.getCanonicalUri(mElementResourceClass, element.getId());
+    protected String getElementCanonicalUri(final KO element) {
+        return KeyedObjectResource.getCanonicalUri(mElementResourceClass, element.getKeyAsString());
     }
 
     protected void doInit(final Class<DC> domainCollectionClass,
-                          final CollectionBiz<IO> collectionBiz,
-                          final Class<? extends IdObjectResource> elementResourceClass)
+                          final CollectionBiz<KO> collectionBiz,
+                          final Class<? extends KeyedObjectResource> elementResourceClass)
             throws ResourceException {
         super.doInit(domainCollectionClass, collectionBiz);
         mElementResourceClass = elementResourceClass;

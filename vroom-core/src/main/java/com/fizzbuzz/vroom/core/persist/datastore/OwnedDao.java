@@ -1,6 +1,7 @@
-package com.fizzbuzz.vroom.core.persist;
+package com.fizzbuzz.vroom.core.persist.datastore;
 
-import com.fizzbuzz.vroom.core.domain.IdObject;
+import com.fizzbuzz.vroom.core.domain.KeyedObject;
+import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Load;
@@ -24,13 +25,13 @@ import com.googlecode.objectify.annotation.Load;
  * owner DAO.
  *
  * @param <OWNERDAO> the owner DAO type
- * @param <OWNERDO>  the owner domain object type
- * @param <OWNEDDO>  the owned domain object type
+ * @param <OWNERKO>  the owner domain object type
+ * @param <OWNEDKO>  the owned domain object type
  */
-public abstract class OwnedDao<OWNERDAO extends BaseDao<OWNERDO>,
-        OWNERDO extends IdObject,
-        OWNEDDO extends IdObject>
-        extends BaseDao<OWNEDDO> {
+public abstract class OwnedDao<OWNERDAO extends BaseDao<OWNERKO>,
+        OWNERKO extends KeyedObject<LongKey>,
+        OWNEDKO extends KeyedObject<LongKey>>
+        extends BaseDao<OWNEDKO> {
     @Load(OfyLoadGroups.Deep.class)
     Ref<OWNERDAO> mOwnerRef; // reference to the owner entity
 

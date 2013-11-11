@@ -1,12 +1,10 @@
-package com.fizzbuzz.vroom.core.persist;
+package com.fizzbuzz.vroom.core.persist.datastore;
 
-import com.fizzbuzz.vroom.core.domain.IdObject;
-import com.fizzbuzz.vroom.core.domain.OwnedIdObject;
+import com.fizzbuzz.vroom.core.domain.KeyedObject;
+import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.googlecode.objectify.Key;
 
 import java.util.List;
-
-import static com.fizzbuzz.vroom.core.persist.PersistManager.getOfyService;
 
 
 /*
@@ -25,27 +23,27 @@ import static com.fizzbuzz.vroom.core.persist.PersistManager.getOfyService;
 
 /**
  * A base persist class for managing collections of entities which are logically "owned" by another entity.
- * The owned entity stores a reference to the key of its owner, allowing the {@link #getDomainElements()} method to
+ * The owned entity stores a reference to the key of its owner, allowing the {@link #getElements()} method to
  * constrain the results to those belonging to that particular owner.
  *
- * @param <OWNERDO>  the owner domain object type
- * @param <OWNEDDO>  the owned domain object type
+ * @param <OWNERKO>  the owner domain object type (a KeyedObject<Long>)
+ * @param <OWNEDKO>  the owned domain object type (a KeyedObject<Long>)
  * @param <OWNERDAO> the owner DAO type
  * @param <OWNEDDAO> the owned DAO type
  */
 public abstract class BaseOwnedEntityCollection<
-        OWNERDO extends IdObject,
-        OWNEDDO extends OwnedIdObject,
-        OWNERDAO extends BaseDao<OWNERDO>,
-        OWNEDDAO extends OwnedDao<OWNERDAO, OWNERDO, OWNEDDO>>
-        extends BaseEntityCollection<OWNEDDO, OWNEDDAO> {
+        OWNERKO extends KeyedObject<LongKey>,
+        OWNEDKO extends KeyedObject<LongKey>,
+        OWNERDAO extends BaseDao<OWNERKO>,
+        OWNEDDAO extends OwnedDao<OWNERDAO, OWNERKO, OWNEDKO>>
+        extends BaseEntityCollection<OWNEDKO, OWNEDDAO> {
 
     private Class<OWNERDAO> mOwnerDaoClass;
     private long mOwnerId;
 
     protected BaseOwnedEntityCollection(final Class<OWNERDAO> ownerDaoClass,
                                         final long ownerId,
-                                        final Class<OWNEDDO> ownedDomainObjectClass,
+                                        final Class<OWNEDKO> ownedDomainObjectClass,
                                         final Class<OWNEDDAO> ownedDaoClass) {
         super(ownedDomainObjectClass, ownedDaoClass);
         mOwnerDaoClass = ownerDaoClass;
@@ -53,8 +51,8 @@ public abstract class BaseOwnedEntityCollection<
     }
 
     @Override
-    public List<OWNEDDO> getDomainElements() {
-        List<OWNEDDAO> daos = getOfyService().ofy().load().type(getElementDaoClass())
+    public List<OWNEDKO> getElements() {
+        List<OWNEDDAO> daos = OfyManager.getOfyService().ofy().load().type(getElementDaoClass())
                 .filter("mOwnerDao", Key.create(mOwnerDaoClass, mOwnerId)).list();
         return toDomainCollection(daos);
     }
