@@ -32,6 +32,10 @@ public abstract class DomainCollectionResource<
     private Class<DC> mDomainCollectionClass;
     private CollectionBiz<DO> mCollectionBiz;
 
+    public CollectionBiz<DO> getCollectionBiz() {
+        return mCollectionBiz;
+    }
+
     public static <R extends DomainCollectionResource> String getCanonicalUri(
             Class<R> collectionResourceClass) {
         return VroomApplication.getServerUrl() + VroomApplication.getRootUrl() + getCanonicalUriPathTemplate
