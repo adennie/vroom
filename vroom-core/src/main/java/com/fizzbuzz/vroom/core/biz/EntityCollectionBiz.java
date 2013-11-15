@@ -31,7 +31,7 @@ public class EntityCollectionBiz<KO extends KeyedObject> implements CollectionBi
         return mEntityCollection.getElements();
     }
 
-    EntityCollection<KO> getEntityCollection() {
+    protected EntityCollection<KO> getEntityCollection() {
         return mEntityCollection;
     }
 

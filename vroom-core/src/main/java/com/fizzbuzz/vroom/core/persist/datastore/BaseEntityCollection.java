@@ -110,7 +110,7 @@ public abstract class BaseEntityCollection<
         OfyManager.getOfyService().ofy().save().entity(dao).now();
     }
 
-    List<KO> toDomainCollection(List<DAO> daoCollection) {
+    protected List<KO> toDomainCollection(List<DAO> daoCollection) {
         List<KO> domainCollection = new ArrayList<KO>();
         for (DAO dao : daoCollection) {
             domainCollection.add(dao.toDomainObject());
@@ -118,7 +118,7 @@ public abstract class BaseEntityCollection<
         return domainCollection;
     }
 
-    Class<DAO> getElementDaoClass() {
+    protected Class<DAO> getElementDaoClass() {
         return mElementDaoClass;
     }
 
