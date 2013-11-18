@@ -18,14 +18,14 @@ import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.googlecode.objectify.annotation.Id;
 
 public abstract class BaseDao<DO extends KeyedObject> {
-    @Id private Long mId;
+    @Id private Long id;
 
     // no-arg constructor used by Objectify
     protected BaseDao() {
     }
 
     protected BaseDao(final long id) {
-        mId = id;
+        this.id = id;
     }
 
     /**
@@ -36,10 +36,10 @@ public abstract class BaseDao<DO extends KeyedObject> {
     public abstract DO toDomainObject();
 
     public long getId() {
-        return mId;
+        return id;
     }
 
     public void clearId() {
-        mId = null;
+        id = null;
     }
 }
