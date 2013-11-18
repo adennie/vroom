@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.persist.datastore;
+package com.fizzbuzz.vroom.core.persist.datastore.entity;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -16,7 +16,8 @@ package com.fizzbuzz.vroom.core.persist.datastore;
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
-import com.fizzbuzz.vroom.core.util.Reflections;
+import com.fizzbuzz.vroom.core.persist.datastore.OfyManager;
+import com.fizzbuzz.vroom.core.persist.datastore.dao.BaseDao;
 import com.googlecode.objectify.Key;
 
 import java.util.ArrayList;
@@ -32,11 +33,14 @@ public abstract class BaseEntityCollection<
 
     private final Class<KO> mDomainElementClass;
     private final Class<DAO> mElementDaoClass;
+    private final BaseEntity<KO, DAO> mElementEntity;
 
     protected BaseEntityCollection(final Class<KO> domainElementClass,
-                                   final Class<DAO> elementDaoClass) {
+                                   final Class<DAO> elementDaoClass,
+                                   final BaseEntity<KO, DAO> elementEntity) {
         mDomainElementClass = domainElementClass;
         mElementDaoClass = elementDaoClass;
+        mElementEntity = elementEntity;
     }
 
     @Override
@@ -50,15 +54,7 @@ public abstract class BaseEntityCollection<
 
         //TODO: addElement() - seriously consider making this method return void.
 
-        // construct an appropriate DAO from the domain object, but clear the ID since we're going to be saving a new
-        // entity and we want an auto-generated ID assigned.
-        DAO dao = createElementDao(keyedObject);
-
-        createElementEntity(dao);
-
-        // saving the DAO assigned it an ID as a side-effect; copy that to the domain object
-        keyedObject.setKey(new LongKey(dao.getId()));
-
+        mElementEntity.create(keyedObject);
         return keyedObject;
     }
 
@@ -74,7 +70,7 @@ public abstract class BaseEntityCollection<
 
     @Override
     public void delete(List<KO> keyedObjectCollection) {
-        List<Key<DAO>> keys = new ArrayList<Key<DAO>>();
+        List<Key<DAO>> keys = new ArrayList<>();
         for (KO keyedObject : keyedObjectCollection) {
             keys.add(Key.create(getElementDaoClass(), keyedObject.getKey().toString()));
         }
@@ -88,30 +84,28 @@ public abstract class BaseEntityCollection<
      * @return the DAO
      */
     protected DAO createElementDao(KO keyedObject) {
-        if (keyedObject.getKey().get() != -1)
-            throw new IllegalArgumentException("Cannot create a domain object with an existing ID; the ID will be " +
-                    "assigned by the persistence layer on the initial save operation.");
+        if (keyedObject.getKey().get() != null)
+            throw new IllegalArgumentException("Cannot create an entity for a domain object with an existing ID; the " +
+                    "ID will be assigned by the persistence layer on the initial save operation.");
 
         // instantiate the appropriate kind of DAO, using the constructor that takes a single domain object argument
-        DAO result = Reflections.newInstance(getElementDaoClass(), mDomainElementClass, keyedObject);
+        DAO result = mElementEntity.createDao(keyedObject);
 
-        // the DAO should have a null ID prior to saving it, so that the datastore will auto-assign one
-        result.clearId();
 
         return result;
     }
 
     /**
-     * Creates a new Entity in the datastore
+     * Saves a new Entity in the datastore
      *
      * @param dao
      */
-    protected void createElementEntity(DAO dao) {
-        OfyManager.getOfyService().ofy().save().entity(dao).now();
+    protected void saveElementEntity(DAO dao) {
+
     }
 
     protected List<KO> toDomainCollection(List<DAO> daoCollection) {
-        List<KO> domainCollection = new ArrayList<KO>();
+        List<KO> domainCollection = new ArrayList<>();
         for (DAO dao : daoCollection) {
             domainCollection.add(dao.toDomainObject());
         }

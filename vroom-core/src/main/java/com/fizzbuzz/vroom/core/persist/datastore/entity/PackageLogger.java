@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.persist.datastore;
+package com.fizzbuzz.vroom.core.persist.datastore.entity;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -20,4 +20,4 @@ class PackageLogger {
     private PackageLogger() {
     }
 
-    public static final String TAG = "com.fizzbuzz.vroom.core.persist.datastore";}
+    public static final String TAG = "com.fizzbuzz.vroom.core.persist.datastore.entity";}

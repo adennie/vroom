@@ -16,7 +16,7 @@ package com.fizzbuzz.vroom.core.biz;
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
-import com.fizzbuzz.vroom.core.persist.datastore.Entity;
+import com.fizzbuzz.vroom.core.persist.datastore.entity.Entity;
 
 public class EntityBiz<KO extends KeyedObject<LongKey>> implements KeyedObjectBiz<KO, LongKey> {
     private Entity<KO> mEntity;

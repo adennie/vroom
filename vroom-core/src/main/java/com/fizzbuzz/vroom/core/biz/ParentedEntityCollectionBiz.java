@@ -15,7 +15,7 @@ package com.fizzbuzz.vroom.core.biz;
  */
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
-import com.fizzbuzz.vroom.core.persist.datastore.EntityCollection;
+import com.fizzbuzz.vroom.core.persist.datastore.entity.EntityCollection;
 
 public abstract class ParentedEntityCollectionBiz<KO extends KeyedObject> extends EntityCollectionBiz<KO> {
     public ParentedEntityCollectionBiz(EntityCollection<KO> entityCollection) {

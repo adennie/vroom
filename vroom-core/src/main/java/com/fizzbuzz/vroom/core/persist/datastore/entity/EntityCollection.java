@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.persist.datastore;
+package com.fizzbuzz.vroom.core.persist.datastore.entity;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC

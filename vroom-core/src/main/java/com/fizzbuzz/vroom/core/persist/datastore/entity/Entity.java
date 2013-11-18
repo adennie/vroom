@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.persist.datastore;
+package com.fizzbuzz.vroom.core.persist.datastore.entity;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -20,6 +20,13 @@ import com.fizzbuzz.vroom.core.domain.KeyedObject;
  * Interface for "persist" objects that manage individual DomainObjects.
  */
 public interface Entity<KO extends KeyedObject> {
+
+    /**
+     * Creates a new entity corresponding to a keyed domain object
+     *
+     * @param keyedObject the domain object
+     */
+    public void create(KO keyedObject);
 
     /**
      * Returns the KeyedObject having the provided key

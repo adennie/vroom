@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.persist.datastore;
+package com.fizzbuzz.vroom.core.persist.datastore.dao;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -17,25 +17,25 @@ package com.fizzbuzz.vroom.core.persist.datastore;
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.googlecode.objectify.annotation.Id;
 
-public abstract class BaseDao<DO extends KeyedObject> {
+public abstract class BaseDao<KO extends KeyedObject> {
     @Id private Long id;
 
     // no-arg constructor used by Objectify
     protected BaseDao() {
     }
 
-    protected BaseDao(final long id) {
+    protected BaseDao(final Long id) {
         this.id = id;
     }
 
     /**
      * Converts this DAO to an object of its corresponding domain object type
      *
-     * @return
+     * @return the corresponding domain object
      */
-    public abstract DO toDomainObject();
+    public abstract KO toDomainObject();
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
