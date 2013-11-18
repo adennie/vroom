@@ -33,17 +33,17 @@ public abstract class OwnedDao<OWNERDAO extends BaseDao<OWNERKO>,
         OWNEDKO extends KeyedObject<LongKey>>
         extends BaseDao<OWNEDKO> {
     @Load(OfyLoadGroups.Deep.class)
-    Ref<OWNERDAO> mOwnerRef; // reference to the owner entity
+    Ref<OWNERDAO> ownerRef; // reference to the owner entity
 
     // no-arg constructor used by Objectify
     public OwnedDao() {
     }
 
     public OwnedDao(final Class<OWNERDAO> ownerDaoClass, final long ownerId) {
-        mOwnerRef = Ref.create(Key.create(ownerDaoClass, ownerId));
+        ownerRef = Ref.create(Key.create(ownerDaoClass, ownerId));
     }
 
     protected long getOwnerId() {
-        return mOwnerRef.getKey().getId();
+        return ownerRef.getKey().getId();
     }
 }
