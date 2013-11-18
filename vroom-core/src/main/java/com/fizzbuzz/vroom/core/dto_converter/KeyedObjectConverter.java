@@ -35,9 +35,9 @@ public abstract class KeyedObjectConverter<DTO extends Dto, KO extends KeyedObje
         return KeyedObjectResource.getCanonicalUri(mResourceClass, keyedObject.getKeyAsString());
     }
 
-    protected long getIdFromDto(DTO dto) {
+    protected Long getIdFromDto(DTO dto) {
         if (dto.getSelfRef() == null)
-            return -1;
+            return null;
         else
             return KeyedObjectResource.getIdFromUri(mResourceClass, dto.getSelfRef());
     }

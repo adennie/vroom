@@ -14,6 +14,7 @@ package com.fizzbuzz.vroom.core.persist.datastore;
  * limitations under the License.
  */
 
+import com.fizzbuzz.vroom.core.persist.datastore.dao.BaseDao;
 import com.googlecode.objectify.Ref;
 
 import java.util.ArrayList;

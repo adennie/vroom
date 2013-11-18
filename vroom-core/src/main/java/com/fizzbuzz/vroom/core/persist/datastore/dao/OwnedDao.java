@@ -1,7 +1,8 @@
-package com.fizzbuzz.vroom.core.persist.datastore;
+package com.fizzbuzz.vroom.core.persist.datastore.dao;
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
+import com.fizzbuzz.vroom.core.persist.datastore.OfyLoadGroups;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Load;

@@ -1,7 +1,10 @@
-package com.fizzbuzz.vroom.core.persist.datastore;
+package com.fizzbuzz.vroom.core.persist.datastore.entity;
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
+import com.fizzbuzz.vroom.core.persist.datastore.OfyManager;
+import com.fizzbuzz.vroom.core.persist.datastore.dao.BaseDao;
+import com.fizzbuzz.vroom.core.persist.datastore.dao.OwnedDao;
 import com.googlecode.objectify.Key;
 
 import java.util.List;
@@ -44,8 +47,9 @@ public abstract class BaseOwnedEntityCollection<
     protected BaseOwnedEntityCollection(final Class<OWNERDAO> ownerDaoClass,
                                         final long ownerId,
                                         final Class<OWNEDKO> ownedDomainObjectClass,
-                                        final Class<OWNEDDAO> ownedDaoClass) {
-        super(ownedDomainObjectClass, ownedDaoClass);
+                                        final Class<OWNEDDAO> ownedDaoClass,
+                                        final BaseEntity<OWNEDKO, OWNEDDAO> elementEntity) {
+        super(ownedDomainObjectClass, ownedDaoClass, elementEntity);
         mOwnerDaoClass = ownerDaoClass;
         mOwnerId = ownerId;
     }
