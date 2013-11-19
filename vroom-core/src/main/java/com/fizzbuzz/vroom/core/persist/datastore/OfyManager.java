@@ -14,6 +14,8 @@ package com.fizzbuzz.vroom.core.persist.datastore;
  * limitations under the License.
  */
 
+import com.googlecode.objectify.Objectify;
+
 public abstract class OfyManager {
     private static OfyService mOfyService;
 
@@ -26,6 +28,10 @@ public abstract class OfyManager {
             throw new IllegalStateException("no OfyService assigned");
         }
         return mOfyService;
+    }
+
+    public static Objectify ofy() {
+        return getOfyService().ofy();
     }
 
 }

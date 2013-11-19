@@ -2,12 +2,13 @@ package com.fizzbuzz.vroom.core.persist.datastore.entity;
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
-import com.fizzbuzz.vroom.core.persist.datastore.OfyManager;
 import com.fizzbuzz.vroom.core.persist.datastore.dao.BaseDao;
 import com.fizzbuzz.vroom.core.persist.datastore.dao.OwnedDao;
 import com.googlecode.objectify.Key;
 
 import java.util.List;
+
+import static com.fizzbuzz.vroom.core.persist.datastore.OfyManager.ofy;
 
 
 /*
@@ -56,7 +57,7 @@ public abstract class BaseOwnedEntityCollection<
 
     @Override
     public List<OWNEDKO> getElements() {
-        List<OWNEDDAO> daos = OfyManager.getOfyService().ofy().load().type(getElementDaoClass())
+        List<OWNEDDAO> daos = ofy().load().type(getElementDaoClass())
                 .filter("mOwnerDao", Key.create(mOwnerDaoClass, mOwnerId)).list();
         return toDomainCollection(daos);
     }

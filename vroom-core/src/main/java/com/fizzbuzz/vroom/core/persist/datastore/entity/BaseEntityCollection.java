@@ -16,12 +16,13 @@ package com.fizzbuzz.vroom.core.persist.datastore.entity;
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
-import com.fizzbuzz.vroom.core.persist.datastore.OfyManager;
 import com.fizzbuzz.vroom.core.persist.datastore.dao.BaseDao;
 import com.googlecode.objectify.Key;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.fizzbuzz.vroom.core.persist.datastore.OfyManager.ofy;
 
 /**
  * Base class for entity collections.
@@ -45,7 +46,7 @@ public abstract class BaseEntityCollection<
 
     @Override
     public List<KO> getElements() {
-        List<DAO> daos = OfyManager.getOfyService().ofy().load().type(mElementDaoClass).list();
+        List<DAO> daos = ofy().load().type(mElementDaoClass).list();
         return toDomainCollection(daos);
     }
 
@@ -64,7 +65,7 @@ public abstract class BaseEntityCollection<
 
     @Override
     public void deleteAll() {
-        Iterable<Key<DAO>> keys = OfyManager.getOfyService().ofy().load().type(getElementDaoClass()).keys();
+        Iterable<Key<DAO>> keys = ofy().load().type(getElementDaoClass()).keys();
         deleteEntitiesByKey(keys);
     }
 
@@ -117,6 +118,6 @@ public abstract class BaseEntityCollection<
     }
 
     private void deleteEntitiesByKey(Iterable<Key<DAO>> keys) {
-        OfyManager.getOfyService().ofy().delete().keys(keys);
+        ofy().delete().keys(keys);
     }
 }
