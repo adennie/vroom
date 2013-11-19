@@ -15,10 +15,7 @@ package com.fizzbuzz.vroom.core.persist.datastore;
  */
 
 import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyService;
 
 public abstract class OfyService {
-    public Objectify ofy() {
-        return ObjectifyService.ofy();
-    }
+    public abstract Objectify ofy();
 }

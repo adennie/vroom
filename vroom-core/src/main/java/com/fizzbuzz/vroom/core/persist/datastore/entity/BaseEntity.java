@@ -17,11 +17,12 @@ package com.fizzbuzz.vroom.core.persist.datastore.entity;
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.fizzbuzz.vroom.core.exception.NotFoundException;
-import com.fizzbuzz.vroom.core.persist.datastore.OfyManager;
 import com.fizzbuzz.vroom.core.persist.datastore.dao.BaseDao;
 import com.fizzbuzz.vroom.core.util.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.fizzbuzz.vroom.core.persist.datastore.OfyManager.ofy;
 
 /**
  * Abstract base class for "entity" objects that correspond to keyed domain objects
@@ -71,11 +72,11 @@ public abstract class BaseEntity<KO extends KeyedObject<LongKey>, DAO extends Ba
 
     @Override
     public void delete(final Long key) {
-        OfyManager.getOfyService().ofy().delete().type(mDaoClass).id(key).now();
+        ofy().delete().type(mDaoClass).id(key).now();
     }
 
     protected DAO getDao(final Long key) {
-        DAO result = OfyManager.getOfyService().ofy().load().type(mDaoClass).id(key).now();
+        DAO result = ofy().load().type(mDaoClass).id(key).now();
         if (result == null) {
             throw new NotFoundException("No " + mDomainClass.getSimpleName() + " found with ID " +
                     Long.toString(key));
@@ -84,7 +85,7 @@ public abstract class BaseEntity<KO extends KeyedObject<LongKey>, DAO extends Ba
     }
 
     protected void saveDao(final DAO dao) {
-        OfyManager.getOfyService().ofy().save().entity(dao).now();
+        ofy().save().entity(dao).now();
     }
 
     /**
