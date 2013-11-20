@@ -14,16 +14,50 @@
     <packaging>jar</packaging>
 
     <properties>
+        <!-- dependency versions -->
+        <appengine.target.version>1.8.7</appengine.target.version>
+        <guava.version>15.0</guava.version>
+        <!-- note: keep jackson version in sync with restlet version-->
+        <jackson-version>1.9.8</jackson-version>
         <objectify.version>4.0rc1</objectify.version>
+        <restlet.version>2.1.4</restlet.version>
+        <slf4j.version>1.7.5</slf4j.version>
     </properties>
+
 
     <dependencies>
         <!-- test dependencies -->
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-stubs</artifactId>
+            <version>${appengine.target.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-testing</artifactId>
+            <version>${appengine.target.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.catch-exception</groupId>
+            <artifactId>catch-exception</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.easytesting</groupId>
+            <artifactId>fest-assert-core</artifactId>
+            <version>2.0M10</version>
         </dependency>
 
         <!-- Compile/runtime dependencies -->
@@ -94,13 +128,39 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <!-- configuration & version inherited from parent POM -->
+                <!-- version inherited from parent POM -->
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>${basedir}/src/main/webapp/WEB-INF</directory>
+                            <filtering>true</filtering>
+                            <targetPath>WEB-INF</targetPath>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.appengine</groupId>
+                <artifactId>appengine-maven-plugin</artifactId>
+                <version>${appengine.target.version}</version>
+            </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>maven-restlet</id>
+            <url>http://maven.restlet.org</url>
+        </repository>
+    </repositories>
 
 </project>
