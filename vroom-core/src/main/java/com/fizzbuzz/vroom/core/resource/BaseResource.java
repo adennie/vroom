@@ -130,7 +130,7 @@ public abstract class BaseResource extends ServerResource {
 
     // this default implementation just returns the path template.  If the template contains any tokens, the
     // subclass should override this method and perform the token substitution.
-    protected String getCanonicalUriPath() {
+    public String getCanonicalUriPath() {
         String pathTemplate = getCanonicalUriPathTemplate();
         if (pathTemplate.contains("{"))
             throw new IllegalStateException("this resource's URI template contains tokens which must be substituted " +
