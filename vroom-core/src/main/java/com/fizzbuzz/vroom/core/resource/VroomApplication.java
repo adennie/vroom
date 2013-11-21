@@ -101,7 +101,8 @@ public abstract class VroomApplication
 
     @Override
     public void handle(final Request request, final Response response) {
-        mLogger.info("VroomApplication.handle: request received - {}", request);
+        mLogger.info("VroomApplication.handle: request received: {}", request);
+        mLogger.debug("VroomApplication.handle: request headers: {}", request.getAttributes());
         super.handle(request, response);
 
         if (mCorsEnabled) {
@@ -127,7 +128,7 @@ public abstract class VroomApplication
 
     protected void attach(Router router, String pathTemplate, java.lang.Class<? extends org.restlet.resource
             .ServerResource> target) {
-        mLogger.debug("attaching path template {} to {}", pathTemplate, target);
+        mLogger.trace("attaching path template {} to {}", pathTemplate, target);
         router.attach(pathTemplate, target);
     }
 
