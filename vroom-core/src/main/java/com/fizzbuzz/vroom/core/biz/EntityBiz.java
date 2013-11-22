@@ -25,6 +25,10 @@ public class EntityBiz<KO extends KeyedObject<LongKey>> implements KeyedObjectBi
         mEntity = entity;
     }
 
+    public Entity<KO> getEntity() {
+        return mEntity;
+    }
+
     @Override
     public KO get(final LongKey key) {
         return mEntity.get(key.get());

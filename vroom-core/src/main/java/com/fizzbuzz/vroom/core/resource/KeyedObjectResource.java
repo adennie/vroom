@@ -65,6 +65,10 @@ public abstract class KeyedObjectResource<
         return UriHelper.getLongTokenValue(uri, VroomApplication.getRootUrl() + uriTemplate, idToken);
     }
 
+    public B getBiz() {
+        return mBiz;
+    }
+
     public KO getResource() {
         KO result = null;
         try {
