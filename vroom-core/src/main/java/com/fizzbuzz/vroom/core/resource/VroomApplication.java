@@ -101,8 +101,8 @@ public abstract class VroomApplication
 
     @Override
     public void handle(final Request request, final Response response) {
-        mLogger.info("VroomApplication.handle: request received: {}", request);
-        mLogger.debug("VroomApplication.handle: request headers: {}", request.getAttributes());
+        mLogger.info("request received: {}", request);
+        mLogger.debug("request headers: {}", request.getAttributes());
         super.handle(request, response);
 
         if (mCorsEnabled) {

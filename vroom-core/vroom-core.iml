@@ -23,8 +23,8 @@
     <orderEntry type="module" module-name="vroom-dto" />
     <orderEntry type="library" name="Maven: com.google.appengine:appengine-api-1.0-sdk:1.8.7" level="project" />
     <orderEntry type="library" name="Maven: com.google.appengine:appengine-api-labs:1.8.7" level="project" />
-    <orderEntry type="library" name="Maven: com.google.guava:guava:15.0" level="project" />
-    <orderEntry type="library" name="Maven: com.googlecode.objectify:objectify:4.0rc1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:14.0.1" level="project" />
+    <orderEntry type="library" name="Maven: com.googlecode.objectify:objectify:4.0rc2" level="project" />
     <orderEntry type="library" name="Maven: org.restlet.gae:org.restlet:2.1.4" level="project" />
     <orderEntry type="library" name="Maven: org.restlet.gae:org.restlet.ext.jackson:2.1.4" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.8" level="project" />
