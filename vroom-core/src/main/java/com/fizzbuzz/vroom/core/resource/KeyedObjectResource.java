@@ -107,18 +107,6 @@ public abstract class KeyedObjectResource<
         }
     }
 
-    /**
-     * Returns the ID of a resource by parsing a token value from its URI
-     *
-     * @param uri a canonical URI for a resource
-     * @return the domain object's ID
-     */
-    public long getId(final String uri) {
-        // normally the "selfRef" field in the DTO must be formatted correctly, but in the special case of creating a
-        // new resource, it will be null.  In that case, we'll set the ID of the domain object to -1 temporarily.
-        return uri == null ? -1L : UriHelper.getLongTokenValue(uri, getCanonicalUriPathTemplate(), getIdToken());
-    }
-
     public String getCanonicalUri(final KeyedObject keyedObject) {
         return getCanonicalUri(this.getClass(), keyedObject.getKeyAsString());
     }
