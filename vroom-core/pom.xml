@@ -15,7 +15,7 @@
 
     <properties>
         <!-- dependency versions -->
-        <appengine.target.version>1.8.7</appengine.target.version>
+        <appengine.target.version>1.8.8</appengine.target.version>
         <guava.version>14.0.1</guava.version>
         <!-- note: keep jackson version in sync with restlet version-->
         <jackson-version>1.9.8</jackson-version>
@@ -126,14 +126,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
             <version>${slf4j.version}</version>
-        </dependency>
-
-        <!-- provided dependencies -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>

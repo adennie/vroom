@@ -29,7 +29,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class BaseResource extends ServerResource {
-    private static Map<Class<? extends BaseResource>, String> mResourceClassToCanonicalUriPathTemplateMap = new HashMap<>();
+    private static Map<Class<? extends BaseResource>, String> mResourceClassToCanonicalUriPathTemplateMap = new
+            HashMap<>();
 
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
 
@@ -103,18 +104,21 @@ public abstract class BaseResource extends ServerResource {
         String result = (String) getRequestAttributes().get(token);
 
         if (result == null) {
-            throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "missing " + token + " URL component: " + result);
+            throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "missing " + token + " URL component: " +
+                    result);
         }
 
         return result;
     }
 
 
-    protected long getLongParamValue(final String paramName) {
+    protected Long getLongParamValue(final String paramName) {
         String paramAsString = null;
-
         Map<String, String> params = getQuery().getValuesMap();
         paramAsString = params.get(paramName);
+
+        if (paramAsString == null)
+            return null;
         return Long.parseLong(paramAsString);
     }
 
