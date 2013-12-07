@@ -19,6 +19,11 @@ import com.fizzbuzz.vroom.core.persist.datastore.entity.EntityCollection;
 
 import java.util.List;
 
+/**
+ * A business logic class for collections of persistent entities.  The associated persistence class is wired to an
+ * object of this class via its constructor.
+ * @param <KO> a KeyedObject subtype
+ */
 public class EntityCollectionBiz<KO extends KeyedObject> implements CollectionBiz<KO>{
     private EntityCollection<KO> mEntityCollection;
 
