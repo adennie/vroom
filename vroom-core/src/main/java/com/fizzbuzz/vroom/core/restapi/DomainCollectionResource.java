@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.resource;
+package com.fizzbuzz.vroom.core.restapi;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -17,6 +17,7 @@ package com.fizzbuzz.vroom.core.resource;
 import com.fizzbuzz.vroom.core.biz.CollectionBiz;
 import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.DomainObject;
+import com.fizzbuzz.vroom.core.restapi.application.BaseApplication;
 import com.fizzbuzz.vroom.core.util.Reflections;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
@@ -38,7 +39,7 @@ public abstract class DomainCollectionResource<
 
     public static <R extends DomainCollectionResource> String getCanonicalUri(
             Class<R> collectionResourceClass) {
-        return VroomApplication.getServerUrl() + VroomApplication.getRootUrl() + getCanonicalUriPathTemplate
+        return BaseApplication.getServerUrl() + BaseApplication.getRootUrl() + getCanonicalUriPathTemplate
                 (collectionResourceClass);
     }
 

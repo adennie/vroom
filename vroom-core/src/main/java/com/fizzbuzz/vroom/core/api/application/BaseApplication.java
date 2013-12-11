@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.resource;
+package com.fizzbuzz.vroom.core.api.application;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -22,17 +22,11 @@ import com.google.appengine.api.utils.SystemProperty;
 import org.restlet.Application;
 import org.restlet.Request;
 import org.restlet.Response;
-import org.restlet.engine.header.Header;
-import org.restlet.engine.header.HeaderConstants;
 import org.restlet.routing.Router;
-import org.restlet.util.Series;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public abstract class VroomApplication
+public abstract class BaseApplication
         extends Application {
 
     public enum ExecutionContext {
@@ -44,8 +38,6 @@ public abstract class VroomApplication
     private static String mRootUrl;
     private static String mServerUrl;
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
-    private boolean mCorsEnabled = false;
-    private List<String> mAllowedOrigins = new ArrayList<>();
 
     static {
         if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production)
@@ -83,21 +75,6 @@ public abstract class VroomApplication
         return mServerUrl;
     }
 
-    public List<String> getAllowedOrigins() {
-        return mAllowedOrigins;
-    }
-
-    public void setAllowedOrigins(final List<String> allowedOrigins) {
-        mAllowedOrigins = allowedOrigins;
-    }
-
-    public boolean isCorsEnabled() {
-        return mCorsEnabled;
-    }
-
-    public void setCorsEnabled(final boolean corsEnabled) {
-        mCorsEnabled = corsEnabled;
-    }
 
     @Override
     public void handle(final Request request, final Response response) {
@@ -105,17 +82,6 @@ public abstract class VroomApplication
         mLogger.debug("request headers: {}", request.getAttributes());
         super.handle(request, response);
 
-        if (mCorsEnabled) {
-            Series<Header> requestHeaders = (Series<Header>)
-                    request.getAttributes().get(HeaderConstants.ATTRIBUTE_HEADERS);
-            String origin = requestHeaders.getFirstValue("Origin", true);
-            if (getAllowedOrigins().contains(origin)) {
-                addCustomResponseHeader(response, "Access-Control-Allow-Origin", origin);
-            }
-            addCustomResponseHeader(response, "Access-Control-Allow-Headers", "Content-Type");
-            addCustomResponseHeader(response, "Access-Control-Allow-Headers", "authCode");
-            addCustomResponseHeader(response, "Access-Control-Allow-Headers", "origin, x-requested-with, content-type");
-        }
 
     }
 
@@ -132,19 +98,10 @@ public abstract class VroomApplication
         router.attach(pathTemplate, target);
     }
 
-    protected void addCustomResponseHeader(final Response response, final String header, final String value) {
-        Series<Header> responseHeaders = (Series<Header>)
-                response.getAttributes().get(HeaderConstants.ATTRIBUTE_HEADERS);
-        if (responseHeaders == null) {
-            responseHeaders = new Series(Header.class);
-            response.getAttributes().put(HeaderConstants.ATTRIBUTE_HEADERS,
-                    responseHeaders);
-        }
-        responseHeaders.add(new Header(header, value));
-    }
+
 
     /**
-     * Returns the application's OfyService object.  Subclasses of VroomApplication must implement this method.
+     * Returns the application's OfyService object.  Subclasses of BaseApplication must implement this method.
      *
      * @return the OfyService object
      */

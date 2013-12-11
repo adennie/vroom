@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.resource;
+package com.fizzbuzz.vroom.core.api.application;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -20,4 +20,4 @@ class PackageLogger {
     private PackageLogger() {
     }
 
-    public static final String TAG = "com.fizzbuzz.vroom.core.resource";}
+    public static final String TAG = "com.fizzbuzz.vroom.core.api.application";}
