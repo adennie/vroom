@@ -9,7 +9,7 @@ vroom makes it easier to build real-world web services on GAE by
 2. providing base classes for common use cases such as CRUD operations and collections with filtering support
 3. simplifies implementation of a RESTful web API
  - supports content negotiation
- - helper classes simplify conversion between JSON representations and domain objects
+ - helper classes automated conversion between JSON representations and domain objects
 
 vroom leverages several best-of-breed open source libraries, including:
  - Restlet (a RESTful API framework)
