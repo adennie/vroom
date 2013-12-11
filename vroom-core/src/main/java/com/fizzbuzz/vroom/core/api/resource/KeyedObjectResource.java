@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.resource;
+package com.fizzbuzz.vroom.core.api.resource;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -16,6 +16,8 @@ package com.fizzbuzz.vroom.core.resource;
 
 import com.fizzbuzz.vroom.core.biz.KeyedObjectBiz;
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
+import com.fizzbuzz.vroom.core.api.UriHelper;
+import com.fizzbuzz.vroom.core.api.application.BaseApplication;
 import com.google.common.collect.ImmutableMap;
 import org.restlet.data.Status;
 import org.restlet.resource.Delete;
@@ -55,14 +57,14 @@ public abstract class KeyedObjectResource<
 
     public static <IR extends KeyedObjectResource, IO extends KeyedObject>
     String getCanonicalUri(Class<IR> idResourceClass, String id) {
-        return VroomApplication.getServerUrl() + VroomApplication.getRootUrl() + getCanonicalUriPath(idResourceClass,
+        return BaseApplication.getServerUrl() + BaseApplication.getRootUrl() + getCanonicalUriPath(idResourceClass,
                 id);
     }
 
     public static <IR extends KeyedObjectResource> long getIdFromUri(final Class<IR> idObjectClass, final String uri) {
         String uriTemplate = getCanonicalUriPathTemplate(idObjectClass);
         String idToken = getIdToken(idObjectClass);
-        return UriHelper.getLongTokenValue(uri, VroomApplication.getRootUrl() + uriTemplate, idToken);
+        return UriHelper.getLongTokenValue(uri, BaseApplication.getRootUrl() + uriTemplate, idToken);
     }
 
     public B getBiz() {

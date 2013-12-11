@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.resource;
+package com.fizzbuzz.vroom.core.api.resource;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,11 +14,11 @@ package com.fizzbuzz.vroom.core.resource;
  * limitations under the License.
  */
 
+import com.fizzbuzz.vroom.core.api.application.BaseApplication;
 import com.fizzbuzz.vroom.core.exception.ConflictException;
 import com.fizzbuzz.vroom.core.exception.InvalidResourceUriException;
 import com.fizzbuzz.vroom.core.exception.NotFoundException;
 import org.restlet.data.Status;
-import org.restlet.engine.header.MethodWriter;
 import org.restlet.resource.Options;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
@@ -48,16 +48,10 @@ public abstract class BaseResource extends ServerResource {
     public void doOptions() {
         // setting the Allow response header is done automatically by restlet as long as this @Options-annotated
         // method exists
-
-        // if CORS is enabled at the application level, include an Access-Control-Allow-Methods response header.
-        if (getApplication().isCorsEnabled()) {
-            getApplication().addCustomResponseHeader(getResponse(), "Access-Control-Allow-Methods",
-                    MethodWriter.write(getResponse().getAllowedMethods()));
-        }
     }
 
-    public VroomApplication getApplication() {
-        return (VroomApplication) super.getApplication();
+    public BaseApplication getApplication() {
+        return (BaseApplication) super.getApplication();
     }
 
     protected void doCatch(final RuntimeException e) {

@@ -16,7 +16,7 @@ package com.fizzbuzz.vroom.core.dto_converter;
 
 import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.DomainObject;
-import com.fizzbuzz.vroom.core.resource.DomainCollectionResource;
+import com.fizzbuzz.vroom.core.api.resource.DomainCollectionResource;
 import com.fizzbuzz.vroom.core.util.Reflections;
 import com.fizzbuzz.vroom.dto.CollectionDto;
 import com.fizzbuzz.vroom.dto.Dto;

@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.resource;
+package com.fizzbuzz.vroom.core.api;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC

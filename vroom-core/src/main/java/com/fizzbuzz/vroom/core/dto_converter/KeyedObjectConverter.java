@@ -15,7 +15,7 @@ package com.fizzbuzz.vroom.core.dto_converter;
  */
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
-import com.fizzbuzz.vroom.core.resource.KeyedObjectResource;
+import com.fizzbuzz.vroom.core.api.resource.KeyedObjectResource;
 import com.fizzbuzz.vroom.dto.Dto;
 import org.restlet.data.MediaType;
 
