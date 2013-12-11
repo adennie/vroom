@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.restapi;
+package com.fizzbuzz.vroom.core.persist.datastore.entity;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,7 +14,12 @@ package com.fizzbuzz.vroom.core.restapi;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.DomainObject;
+import com.fizzbuzz.vroom.core.domain.KeyedObject;
 
-public abstract class DomainResource<DO extends DomainObject> extends BaseResource {
+import java.util.List;
+import java.util.Map;
+
+public interface FilterableEntityCollection <KO extends KeyedObject,
+        FC> extends EntityCollection<KO> {
+    public List<KO> getFilteredElements(final Map<FC, Object> constraints);
 }

@@ -50,6 +50,5 @@ public interface EntityCollection<
      *
      * @param keyedObjects the domain objects to delete
      */
-    public void delete(List<KO> keyedObjects);
-
+    public void delete(final List<KO> keyedObjects);
 }
