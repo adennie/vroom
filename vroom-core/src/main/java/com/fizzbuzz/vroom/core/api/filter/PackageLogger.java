@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.api;
+package com.fizzbuzz.vroom.core.api.filter;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,13 +14,10 @@ package com.fizzbuzz.vroom.core.api;
  * limitations under the License.
  */
 
-import org.junit.Test;
-import org.restlet.Request;
-
-public class CorsApplicationTest {
-    @Test
-    public void testPreflightResponseListsAllowedMethods() {
-        Request request = new Request();
+class PackageLogger {
+    // This class exists just to define a static string for use by other classes in this package. Make the constructor
+    // private to prevent instantiation.
+    private PackageLogger() {
     }
 
-}
+    public static final String TAG = "com.fizzbuzz.vroom.core.api.filter";}
