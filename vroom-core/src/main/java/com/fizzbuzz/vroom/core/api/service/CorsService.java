@@ -24,9 +24,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CorsService extends Service {
     private final List<String> allowedHeaders;
-    private final List<String> allowedOrigins;
+    private final List<String> allowedOrigins; // may be "*"
     private final List<String> exposedHeaders;
     private volatile boolean allowCredentials = false;
+    private volatile long maxAge = 0;
 
     public CorsService() {
         this.allowedHeaders = new CopyOnWriteArrayList<>();
@@ -40,6 +41,15 @@ public class CorsService extends Service {
 
     public void setAllowCredentials(final boolean allowCredentials) {
         this.allowCredentials = allowCredentials;
+    }
+
+    public long getMaxAge() {
+        return maxAge;
+    }
+
+    public void setMaxAge(final long maxAge) {
+        this.maxAge = maxAge;
+
     }
 
     public List<String> getAllowedOrigins() {

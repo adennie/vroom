@@ -81,6 +81,7 @@ public abstract class BaseApplication
         mLogger.info("request received: {}", request);
         mLogger.debug("request headers: {}", request.getAttributes());
         super.handle(request, response);
+        mLogger.debug("response headers: {}", response.getAttributes());
 
 
     }
