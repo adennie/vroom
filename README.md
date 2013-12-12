@@ -5,16 +5,16 @@ A Java framework for building RESTful web services on Google App Engine
 
 vroom makes it easier to build real-world web services on GAE by 
 
-1. establishing a 3-tier framework into which you can insert your code - an API tier, a business logic tier, and a persistence tier.  This keeps the code in each tier simpler and more focused, reduces coupling, and increases testability
-2. providing base classes for common use cases such as CRUD operations and collections with filtering support
-3. simplifies implementation of a RESTful web API
- - supports content negotiation
- - helper classes automated conversion between JSON representations and domain objects
+1. establishing a 3-tier framework into which you can insert your code - an API tier, a business logic tier, and a service  tier.  This keeps the code in each tier simpler and more focused, reduces coupling, and increases testability
+2. providing base classes in each tier to simplify the implementation of common use cases such as CRUD operations and collections with filtering
+3. simplifies implementation of a RESTful web API by providing helper classes to quickly and easily implement content negotiation and conversion between JSON representations and domain objects
 
 vroom leverages several best-of-breed open source libraries, including:
  - Restlet (a RESTful API framework)
  - Jackson (for JSON<->POJO serialization/deserialization)
  - Objectify (for interacting with App Engine datastore)
+
+Note: vroom is currently in a pre-1.0 stage, and changing rapidly.  Breaking changes are likely.  You've been warned.
 
 To install:
 
