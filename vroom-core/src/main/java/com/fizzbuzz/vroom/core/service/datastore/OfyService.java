@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.biz;
+package com.fizzbuzz.vroom.core.service.datastore;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,11 +14,10 @@ package com.fizzbuzz.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.KeyedObject;
-import com.fizzbuzz.vroom.core.service.datastore.entity.EntityCollection;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyFactory;
 
-public abstract class ParentedEntityCollectionBiz<KO extends KeyedObject> extends EntityCollectionBiz<KO> {
-    public ParentedEntityCollectionBiz(EntityCollection<KO> entityCollection) {
-        super(entityCollection);
-    }
+public abstract class OfyService {
+    public abstract Objectify ofy();
+    public abstract ObjectifyFactory factory();
 }

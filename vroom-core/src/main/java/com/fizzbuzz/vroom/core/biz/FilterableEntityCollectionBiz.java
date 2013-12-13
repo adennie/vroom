@@ -15,7 +15,7 @@ package com.fizzbuzz.vroom.core.biz;
  */
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
-import com.fizzbuzz.vroom.core.persist.datastore.entity.FilterableEntityCollection;
+import com.fizzbuzz.vroom.core.service.datastore.entity.FilterableEntityCollection;
 
 import java.util.List;
 import java.util.Map;
