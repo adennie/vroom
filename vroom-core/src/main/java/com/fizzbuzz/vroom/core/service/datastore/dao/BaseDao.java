@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.biz;
+package com.fizzbuzz.vroom.core.service.datastore.dao;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -15,10 +15,31 @@ package com.fizzbuzz.vroom.core.biz;
  */
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
-import com.fizzbuzz.vroom.core.service.datastore.entity.EntityCollection;
+import com.googlecode.objectify.annotation.Id;
 
-public abstract class ParentedEntityCollectionBiz<KO extends KeyedObject> extends EntityCollectionBiz<KO> {
-    public ParentedEntityCollectionBiz(EntityCollection<KO> entityCollection) {
-        super(entityCollection);
+public abstract class BaseDao<KO extends KeyedObject> {
+    @Id private Long id;
+
+    // no-arg constructor used by Objectify
+    protected BaseDao() {
+    }
+
+    protected BaseDao(final Long id) {
+        this.id = id;
+    }
+
+    /**
+     * Converts this DAO to an object of its corresponding domain object type
+     *
+     * @return the corresponding domain object
+     */
+    public abstract KO toDomainObject();
+
+    public Long getId() {
+        return id;
+    }
+
+    public void clearId() {
+        id = null;
     }
 }

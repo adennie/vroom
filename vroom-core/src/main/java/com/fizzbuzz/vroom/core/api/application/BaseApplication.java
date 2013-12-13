@@ -14,8 +14,8 @@ package com.fizzbuzz.vroom.core.api.application;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.persist.datastore.OfyManager;
-import com.fizzbuzz.vroom.core.persist.datastore.OfyService;
+import com.fizzbuzz.vroom.core.service.datastore.OfyManager;
+import com.fizzbuzz.vroom.core.service.datastore.OfyService;
 import com.google.appengine.api.labs.modules.ModulesService;
 import com.google.appengine.api.labs.modules.ModulesServiceFactory;
 import com.google.appengine.api.utils.SystemProperty;

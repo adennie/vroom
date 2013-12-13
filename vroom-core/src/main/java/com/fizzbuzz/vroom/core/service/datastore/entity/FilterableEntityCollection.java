@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.biz;
+package com.fizzbuzz.vroom.core.service.datastore.entity;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -15,10 +15,11 @@ package com.fizzbuzz.vroom.core.biz;
  */
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
-import com.fizzbuzz.vroom.core.service.datastore.entity.EntityCollection;
 
-public abstract class ParentedEntityCollectionBiz<KO extends KeyedObject> extends EntityCollectionBiz<KO> {
-    public ParentedEntityCollectionBiz(EntityCollection<KO> entityCollection) {
-        super(entityCollection);
-    }
+import java.util.List;
+import java.util.Map;
+
+public interface FilterableEntityCollection <KO extends KeyedObject,
+        FC> extends EntityCollection<KO> {
+    public List<KO> getFilteredElements(final Map<FC, Object> constraints);
 }

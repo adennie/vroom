@@ -14,10 +14,11 @@ package com.fizzbuzz.vroom.core.api.resource;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.biz.KeyedObjectBiz;
-import com.fizzbuzz.vroom.core.domain.KeyedObject;
-import com.fizzbuzz.vroom.core.api.UriHelper;
+import com.fizzbuzz.vroom.core.api.util.UriHelper;
 import com.fizzbuzz.vroom.core.api.application.BaseApplication;
+import com.fizzbuzz.vroom.core.biz.KeyedObjectBiz;
+import com.fizzbuzz.vroom.core.domain.KeyType;
+import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.google.common.collect.ImmutableMap;
 import org.restlet.data.Status;
 import org.restlet.resource.Delete;
@@ -38,30 +39,36 @@ public abstract class KeyedObjectResource<
     private String mKeyString;
     private B mBiz;
 
-    public static <IR extends KeyedObjectResource> void registerIdToken(
-            final Class<IR> idResourceClass, final String idToken) {
+    public static <KR extends KeyedObjectResource> void registerIdToken(
+            final Class<KR> idResourceClass, final String idToken) {
         mResourceClassToIdTokenMap.put(idResourceClass, idToken);
     }
 
-    public static <IR extends KeyedObjectResource> String getIdToken(Class<IR> idResourceClass) {
+    public static <KR extends KeyedObjectResource> String getIdToken(Class<KR> idResourceClass) {
         return mResourceClassToIdTokenMap.get(idResourceClass);
     }
 
-    public static <IR extends KeyedObjectResource, IO extends KeyedObject> String getCanonicalUriPath(
-            Class<IR> idResourceClass, String id) {
+    public static <KR extends KeyedObjectResource> String getCanonicalUriPath(
+            Class<KR> idResourceClass, String id) {
         return UriHelper.formatUriTemplate(getCanonicalUriPathTemplate(idResourceClass),
                 new ImmutableMap.Builder<String, String>()
                         .put(getIdToken(idResourceClass), id)
                         .build());
     }
 
-    public static <IR extends KeyedObjectResource, IO extends KeyedObject>
-    String getCanonicalUri(Class<IR> idResourceClass, String id) {
+    public static <KR extends KeyedObjectResource>
+    String getCanonicalUri(Class<KR> idResourceClass, String id) {
         return BaseApplication.getServerUrl() + BaseApplication.getRootUrl() + getCanonicalUriPath(idResourceClass,
                 id);
     }
 
-    public static <IR extends KeyedObjectResource> long getIdFromUri(final Class<IR> idObjectClass, final String uri) {
+    public static <KR extends KeyedObjectResource> String getCanonicalUri(Class<KR> idResourceClass, KeyType<?> key) {
+        return BaseApplication.getServerUrl() + BaseApplication.getRootUrl() + getCanonicalUriPath(idResourceClass,
+                key.toString());
+    }
+
+
+    public static <KR extends KeyedObjectResource> long getIdFromUri(final Class<KR> idObjectClass, final String uri) {
         String uriTemplate = getCanonicalUriPathTemplate(idObjectClass);
         String idToken = getIdToken(idObjectClass);
         return UriHelper.getLongTokenValue(uri, BaseApplication.getRootUrl() + uriTemplate, idToken);

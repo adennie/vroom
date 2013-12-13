@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.biz;
+package com.fizzbuzz.vroom.core.service.datastore;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
@@ -14,11 +14,10 @@ package com.fizzbuzz.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.KeyedObject;
-import com.fizzbuzz.vroom.core.service.datastore.entity.EntityCollection;
-
-public abstract class ParentedEntityCollectionBiz<KO extends KeyedObject> extends EntityCollectionBiz<KO> {
-    public ParentedEntityCollectionBiz(EntityCollection<KO> entityCollection) {
-        super(entityCollection);
+class PackageLogger {
+    // This class exists just to define a static string for use by other classes in this package. Make the constructor
+    // private to prevent instantiation.
+    private PackageLogger() {
     }
-}
+
+    public static final String TAG = "com.fizzbuzz.vroom.core.service.datastore";}
