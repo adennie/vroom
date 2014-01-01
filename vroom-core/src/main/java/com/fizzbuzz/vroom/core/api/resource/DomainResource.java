@@ -16,5 +16,5 @@ package com.fizzbuzz.vroom.core.api.resource;
 
 import com.fizzbuzz.vroom.core.domain.DomainObject;
 
-public abstract class DomainResource<DO extends DomainObject> extends BaseResource {
+public abstract class DomainResource<DO extends DomainObject> extends VroomResource {
 }

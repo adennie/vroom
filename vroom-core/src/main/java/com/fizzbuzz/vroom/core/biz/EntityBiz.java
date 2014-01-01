@@ -16,16 +16,16 @@ package com.fizzbuzz.vroom.core.biz;
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
-import com.fizzbuzz.vroom.core.service.datastore.entity.Entity;
+import com.fizzbuzz.vroom.core.service.datastore.IEntity;
 
-public class EntityBiz<KO extends KeyedObject<LongKey>> implements KeyedObjectBiz<KO, LongKey> {
-    private Entity<KO> mEntity;
+public class EntityBiz<KO extends KeyedObject<LongKey>> implements IKeyedObjectBiz<KO, LongKey> {
+    private IEntity<KO> mEntity;
 
-    public EntityBiz(final Entity<KO> entity) {
+    public EntityBiz(final IEntity<KO> entity) {
         mEntity = entity;
     }
 
-    public Entity<KO> getEntity() {
+    public IEntity<KO> getEntity() {
         return mEntity;
     }
 

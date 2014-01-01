@@ -14,14 +14,13 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.service.datastore.dao.BaseDao;
 import com.googlecode.objectify.Ref;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OfyUtils {
-    public static <DAO extends BaseDao> List<Long> getIdsFromRefs(List<Ref<DAO>> refs) {
+    public static <DAO extends Dao> List<Long> getIdsFromRefs(List<Ref<DAO>> refs) {
         List<Long> ids = new ArrayList<>();
         for (Ref<DAO> ref : refs) {
             ids.add(ref.getKey().getId());

@@ -14,9 +14,9 @@ package com.fizzbuzz.vroom.core.api.resource;
  * limitations under the License.
  */
 
+import com.fizzbuzz.vroom.core.api.application.VroomApplication;
 import com.fizzbuzz.vroom.core.api.util.UriHelper;
-import com.fizzbuzz.vroom.core.api.application.BaseApplication;
-import com.fizzbuzz.vroom.core.biz.KeyedObjectBiz;
+import com.fizzbuzz.vroom.core.biz.IKeyedObjectBiz;
 import com.fizzbuzz.vroom.core.domain.KeyType;
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.google.common.collect.ImmutableMap;
@@ -31,7 +31,7 @@ import java.util.Map;
  * Base server resource class for objects with IDs (fetched from the URL).
  */
 public abstract class KeyedObjectResource<
-        B extends KeyedObjectBiz<KO, ?>,
+        B extends IKeyedObjectBiz<KO, ?>,
         KO extends KeyedObject<?>>
         extends DomainResource<KO> {
 
@@ -58,12 +58,12 @@ public abstract class KeyedObjectResource<
 
     public static <KR extends KeyedObjectResource>
     String getCanonicalUri(Class<KR> idResourceClass, String id) {
-        return BaseApplication.getServerUrl() + BaseApplication.getRootUrl() + getCanonicalUriPath(idResourceClass,
+        return VroomApplication.getServerUrl() + VroomApplication.getRootUrl() + getCanonicalUriPath(idResourceClass,
                 id);
     }
 
     public static <KR extends KeyedObjectResource> String getCanonicalUri(Class<KR> idResourceClass, KeyType<?> key) {
-        return BaseApplication.getServerUrl() + BaseApplication.getRootUrl() + getCanonicalUriPath(idResourceClass,
+        return VroomApplication.getServerUrl() + VroomApplication.getRootUrl() + getCanonicalUriPath(idResourceClass,
                 key.toString());
     }
 
@@ -71,7 +71,7 @@ public abstract class KeyedObjectResource<
     public static <KR extends KeyedObjectResource> long getIdFromUri(final Class<KR> idObjectClass, final String uri) {
         String uriTemplate = getCanonicalUriPathTemplate(idObjectClass);
         String idToken = getIdToken(idObjectClass);
-        return UriHelper.getLongTokenValue(uri, BaseApplication.getRootUrl() + uriTemplate, idToken);
+        return UriHelper.getLongTokenValue(uri, VroomApplication.getRootUrl() + uriTemplate, idToken);
     }
 
     public B getBiz() {

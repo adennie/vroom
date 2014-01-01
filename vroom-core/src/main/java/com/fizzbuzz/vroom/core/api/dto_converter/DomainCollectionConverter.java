@@ -19,7 +19,7 @@ import com.fizzbuzz.vroom.core.domain.DomainObject;
 import com.fizzbuzz.vroom.core.api.resource.DomainCollectionResource;
 import com.fizzbuzz.vroom.core.util.Reflections;
 import com.fizzbuzz.vroom.dto.CollectionDto;
-import com.fizzbuzz.vroom.dto.Dto;
+import com.fizzbuzz.vroom.dto.VroomDto;
 import org.restlet.data.MediaType;
 import org.restlet.engine.converter.ConverterHelper;
 import org.restlet.engine.resource.VariantInfo;
@@ -34,19 +34,19 @@ import java.util.List;
 
 public abstract class DomainCollectionConverter<
         DTC extends CollectionDto<DTO>,
-        DTO extends Dto,
+        DTO extends VroomDto,
         DC extends DomainCollection<DO>,
         DO extends DomainObject>
         extends ConverterHelper {
 
     private final Class<DC> mDomainCollectionClass;
     private final Class<DTC> mDtoCollectionClass;
-    private final ObjectConverter<DTO, DO> mElementConverter;
+    private final VroomConverter<DTO, DO> mElementConverter;
     private final MediaType[] mSupportedMediaTypes;
 
     public DomainCollectionConverter(Class<DTC> dtoCollectionClass,
                                      Class<DC> domainCollectionClass,
-                                     ObjectConverter<DTO, DO> elementConverter,
+                                     VroomConverter<DTO, DO> elementConverter,
                                      MediaType... supportedMediaTypes) {
         mDomainCollectionClass = domainCollectionClass;
         mDtoCollectionClass = dtoCollectionClass;

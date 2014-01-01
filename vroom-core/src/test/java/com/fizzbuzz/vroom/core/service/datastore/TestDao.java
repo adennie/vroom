@@ -1,6 +1,5 @@
 package com.fizzbuzz.vroom.core.service.datastore;
 
-import com.fizzbuzz.vroom.core.service.datastore.dao.BaseDao;
 import com.googlecode.objectify.annotation.Entity;
 
 /**
@@ -8,7 +7,7 @@ import com.googlecode.objectify.annotation.Entity;
  */
 
 @Entity
-public class TestDao extends BaseDao<TestKeyedObject> {
+public class TestDao extends Dao<TestKeyedObject> {
     @Override
     public TestKeyedObject toDomainObject() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.

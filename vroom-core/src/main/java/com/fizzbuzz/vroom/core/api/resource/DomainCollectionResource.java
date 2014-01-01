@@ -14,10 +14,10 @@ package com.fizzbuzz.vroom.core.api.resource;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.biz.CollectionBiz;
+import com.fizzbuzz.vroom.core.api.application.VroomApplication;
+import com.fizzbuzz.vroom.core.biz.ICollectionBiz;
 import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.DomainObject;
-import com.fizzbuzz.vroom.core.api.application.BaseApplication;
 import com.fizzbuzz.vroom.core.util.Reflections;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
@@ -29,17 +29,17 @@ import org.restlet.resource.ResourceException;
 public abstract class DomainCollectionResource<
         DC extends DomainCollection<DO>,
         DO extends DomainObject>
-        extends BaseResource {
+        extends VroomResource {
     private Class<DC> mDomainCollectionClass;
-    private CollectionBiz<DO> mCollectionBiz;
+    private ICollectionBiz<DO> mCollectionBiz;
 
-    public CollectionBiz<DO> getCollectionBiz() {
+    public ICollectionBiz<DO> getCollectionBiz() {
         return mCollectionBiz;
     }
 
     public static <R extends DomainCollectionResource> String getCanonicalUri(
             Class<R> collectionResourceClass) {
-        return BaseApplication.getServerUrl() + BaseApplication.getRootUrl() + getCanonicalUriPathTemplate
+        return VroomApplication.getServerUrl() + VroomApplication.getRootUrl() + getCanonicalUriPathTemplate
                 (collectionResourceClass);
     }
 
@@ -85,7 +85,7 @@ public abstract class DomainCollectionResource<
     }
 
     protected void doInit(final Class<DC> domainCollectionClass,
-                          final CollectionBiz<DO> collectionBiz) throws ResourceException {
+                          final ICollectionBiz<DO> collectionBiz) throws ResourceException {
         mDomainCollectionClass = domainCollectionClass;
         mCollectionBiz = collectionBiz;
     }

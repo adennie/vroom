@@ -15,10 +15,10 @@ package com.fizzbuzz.vroom.core.biz;
  */
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
-import com.fizzbuzz.vroom.core.service.datastore.entity.EntityCollection;
+import com.fizzbuzz.vroom.core.service.datastore.IEntityCollection;
 
 public abstract class ParentedEntityCollectionBiz<KO extends KeyedObject> extends EntityCollectionBiz<KO> {
-    public ParentedEntityCollectionBiz(EntityCollection<KO> entityCollection) {
+    public ParentedEntityCollectionBiz(IEntityCollection<KO> entityCollection) {
         super(entityCollection);
     }
 }

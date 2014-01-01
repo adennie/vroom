@@ -14,7 +14,7 @@ package com.fizzbuzz.vroom.core.api.resource;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.biz.CollectionBiz;
+import com.fizzbuzz.vroom.core.biz.ICollectionBiz;
 import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import org.restlet.resource.ResourceException;
@@ -30,7 +30,7 @@ public abstract class KeyedObjectCollectionResource<DC extends DomainCollection<
     }
 
     protected void doInit(final Class<DC> domainCollectionClass,
-                          final CollectionBiz<KO> collectionBiz,
+                          final ICollectionBiz<KO> collectionBiz,
                           final Class<? extends KeyedObjectResource> elementResourceClass)
             throws ResourceException {
         super.doInit(domainCollectionClass, collectionBiz);

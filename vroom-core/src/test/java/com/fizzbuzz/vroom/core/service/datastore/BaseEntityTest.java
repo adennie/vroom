@@ -16,7 +16,6 @@ package com.fizzbuzz.vroom.core.service.datastore;
  */
 
 import com.fizzbuzz.vroom.core.domain.LongKey;
-import com.fizzbuzz.vroom.core.service.datastore.entity.BaseEntity;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,7 +27,7 @@ import static com.googlecode.catchexception.apis.CatchExceptionBdd.when;
 public class BaseEntityTest {
     TestKeyedObject mKeyedObject;
     TestDao mTestDao;
-    BaseEntity<TestKeyedObject, TestDao> mTestEntity;
+    Entity<TestKeyedObject, TestDao> mTestEntity;
 
     @Rule
     public DataStoreRule dsRule = new DataStoreRule();
@@ -41,7 +40,7 @@ public class BaseEntityTest {
         mKeyedObject = new TestKeyedObject();
         mTestDao = new TestDao();
         OfyManager.getOfyService().factory().register(TestDao.class);
-        mTestEntity = new BaseEntity<TestKeyedObject, TestDao>(TestKeyedObject.class, TestDao.class) {};
+        mTestEntity = new Entity<TestKeyedObject, TestDao>(TestKeyedObject.class, TestDao.class) {};
 
     }
 

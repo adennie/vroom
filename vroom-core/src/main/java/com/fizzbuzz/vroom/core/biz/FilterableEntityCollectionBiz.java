@@ -15,7 +15,7 @@ package com.fizzbuzz.vroom.core.biz;
  */
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
-import com.fizzbuzz.vroom.core.service.datastore.entity.FilterableEntityCollection;
+import com.fizzbuzz.vroom.core.service.datastore.IFilterableEntityCollection;
 
 import java.util.List;
 import java.util.Map;
@@ -37,12 +37,12 @@ import java.util.Map;
 public class FilterableEntityCollectionBiz<KO extends KeyedObject, FC extends Object> extends
         EntityCollectionBiz<KO> {
 
-    public FilterableEntityCollectionBiz(final FilterableEntityCollection<KO, FC> entityCollection) {
+    public FilterableEntityCollectionBiz(final IFilterableEntityCollection<KO, FC> entityCollection) {
         super(entityCollection);
     }
 
     public List<KO> getFilteredElements(final Map<FC, Object> constraints) {
-        return ((FilterableEntityCollection)getEntityCollection()).getFilteredElements(constraints);
+        return ((IFilterableEntityCollection)getEntityCollection()).getFilteredElements(constraints);
     }
 
 }

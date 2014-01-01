@@ -15,7 +15,7 @@ package com.fizzbuzz.vroom.core.biz;
  */
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
-import com.fizzbuzz.vroom.core.service.datastore.entity.EntityCollection;
+import com.fizzbuzz.vroom.core.service.datastore.IEntityCollection;
 
 import java.util.List;
 
@@ -24,10 +24,10 @@ import java.util.List;
  * object of this class via its constructor.
  * @param <KO> a KeyedObject subtype
  */
-public class EntityCollectionBiz<KO extends KeyedObject> implements CollectionBiz<KO>{
-    private EntityCollection<KO> mEntityCollection;
+public class EntityCollectionBiz<KO extends KeyedObject> implements ICollectionBiz<KO> {
+    private IEntityCollection<KO> mEntityCollection;
 
-    public EntityCollectionBiz(EntityCollection<KO> entityCollection) {
+    public EntityCollectionBiz(IEntityCollection<KO> entityCollection) {
         mEntityCollection = entityCollection;
     }
 
@@ -36,7 +36,7 @@ public class EntityCollectionBiz<KO extends KeyedObject> implements CollectionBi
         return mEntityCollection.getElements();
     }
 
-    protected EntityCollection<KO> getEntityCollection() {
+    protected IEntityCollection<KO> getEntityCollection() {
         return mEntityCollection;
     }
 
