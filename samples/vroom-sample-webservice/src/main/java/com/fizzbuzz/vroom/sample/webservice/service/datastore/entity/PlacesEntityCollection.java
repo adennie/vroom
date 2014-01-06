@@ -14,6 +14,7 @@ package com.fizzbuzz.vroom.sample.webservice.service.datastore.entity;
  * limitations under the License.
  */
 
+import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.service.datastore.FilterableEntityCollection;
 import com.fizzbuzz.vroom.sample.webservice.biz.PlacesBiz;
 import com.fizzbuzz.vroom.sample.webservice.domain.Place;
@@ -30,7 +31,7 @@ public class PlacesEntityCollection extends FilterableEntityCollection<Place, Pl
     }
 
     @Override
-    public List<Place> getFilteredElements(final Map<PlacesBiz.PlaceConstraint, Object> constraints) {
+    public DomainCollection<Place> getFilteredElements(final Map<PlacesBiz.PlaceConstraint, Object> constraints) {
 
         if (constraints.isEmpty())
             return getElements();

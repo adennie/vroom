@@ -17,10 +17,19 @@ package com.fizzbuzz.vroom.sample.webservice.api.application;
 import com.fizzbuzz.vroom.core.api.util.UriHelper;
 
 public class Uris {
-    public static final String V1_ROOT = "/v1";
+    /* Many APIs define their URL space using a base URL component such as "/api" or "/v1", or something similar.
+       This is optional in Vroom but it is supported via VroomApplication.setUrlRoot.
+       Note: this root must also be specified in app.yaml for the "restlet-servlet" and "objectify-filter"
+       handlers.
+      */
+    public static final String API_ROOT = "/api";
+
+    /* the rest of these strings are URL paths that appear after the URL root */
     public static final String IMAGES = "/images/";
     public static final String IMAGE_TEMPLATE = IMAGES + UriHelper.tokenize(UriTokens.IMAGE_ID);
     public static final String IMAGE_UPLOADER = "/image_uploader";
     public static final String PLACES = "/places/";
     public static final String PLACE_TEMPLATE = PLACES + UriHelper.tokenize(UriTokens.PLACE_ID);
+    public static final String USERS = "/users/";
+    public static final String USER_TEMPLATE = USERS + UriHelper.tokenize(UriTokens.USER_ID);
 }

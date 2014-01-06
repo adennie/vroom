@@ -15,10 +15,11 @@ package com.fizzbuzz.vroom.core.service.datastore;
  */
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
+import com.fizzbuzz.vroom.core.domain.LongKey;
 
 import java.util.Date;
 
-public abstract class TimeStampedDao<KO extends KeyedObject> extends Dao<KO> {
+public abstract class TimeStampedDao<KO extends KeyedObject<LongKey>> extends Dao<KO> {
     private Date createdDate;
     private Date modifiedDate;
 
@@ -26,8 +27,8 @@ public abstract class TimeStampedDao<KO extends KeyedObject> extends Dao<KO> {
     protected TimeStampedDao() {
     }
 
-    protected TimeStampedDao(final Long id) {
-        super(id);
+    protected TimeStampedDao(final KO keyedObject) {
+        super(keyedObject);
     }
 
     protected Date getCreatedDate() {

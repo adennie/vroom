@@ -7,25 +7,25 @@
         <artifactId>vroom-maven-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-	
+
     <artifactId>vroom-sample-webservice</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <properties>
-		<!-- dependency versions -->
+        <!-- dependency versions -->
         <appengine.target.version>1.8.8</appengine.target.version>
         <guava.version>14.0.1</guava.version>
         <jackson-version>1.9.8</jackson-version>
         <joda-time.version>2.3</joda-time.version>
         <junit.version>4.11</junit.version>
-		<objectify.version>4.0rc2</objectify.version>
+        <objectify.version>4.0rc2</objectify.version>
         <restlet.version>2.1.4</restlet.version>
         <vroom-sample-dto.version>1.0-SNAPSHOT</vroom-sample-dto.version>
         <slf4j.version>1.7.5</slf4j.version>
-		<vroom.version>1.0-SNAPSHOT</vroom.version>
-		
-		<!-- this value is interpolated into app.yaml and becomes the version of the deployed app engine module.  It
+        <vroom.version>1.0-SNAPSHOT</vroom.version>
+
+        <!-- this value is interpolated into app.yaml and becomes the version of the deployed app engine module.  It
              should not be strictly numeric, hence the "v" prefix. -->
         <appengine.module.version>v1</appengine.module.version>
     </properties>
@@ -51,7 +51,7 @@
             <version>${vroom.version}</version>
         </dependency>
 
-		<dependency>
+        <dependency>
             <groupId>com.fizz-buzz.vroom</groupId>
             <artifactId>vroom-sample-dto</artifactId>
             <version>${vroom-sample-dto.version}</version>
@@ -126,8 +126,8 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-	
-	<build>
+
+    <build>
         <!-- perform resource filtering on src/main/filtered-java and write filtered sources into target directory -->
         <resources>
             <resource>
@@ -137,7 +137,7 @@
             </resource>
         </resources>
 
-	    <plugins>
+        <plugins>
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
@@ -169,7 +169,24 @@
                     </execution>
                 </executions>
             </plugin>
-		</plugins>
-	</build>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>vroom-sample-webservice-local-dev</id>
+            <properties>
+                <!-- this value is interpolated into app.yaml -->
+                <appengine.app.name>vroom-sample-webservice-local-dev</appengine.app.name>
+
+                <!-- allowed origins for CORS requests.  Caution: you probably only want to use "*" in a local dev env!!! -->
+                <env.cors.allowed-origins>*</env.cors.allowed-origins>
+
+                <env.gcs.bucket.images>vroom-sample-webservice-images</env.gcs.bucket.images>
+
+            </properties>
+
+        </profile>
+    </profiles>
 
 </project>

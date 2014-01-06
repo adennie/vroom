@@ -33,7 +33,7 @@ public class PlaceDao extends TimeStampedDao<Place> {
      * @param place a Place domain object
      */
     public PlaceDao(final Place place) {
-        super(place.getKey().get());
+        super(place);
         name = place.getName();
         location = new EmbeddedLocationDao(place.getLocation());
     }

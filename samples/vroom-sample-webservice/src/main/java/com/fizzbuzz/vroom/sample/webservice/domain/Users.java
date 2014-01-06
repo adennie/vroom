@@ -1,7 +1,7 @@
-package com.fizzbuzz.vroom.core.domain;
+package com.fizzbuzz.vroom.sample.webservice.domain;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Fizz Buzz LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,7 @@ package com.fizzbuzz.vroom.core.domain;
  * limitations under the License.
  */
 
-public class OwnedObject<KT extends KeyType> extends KeyedObject<KT> {
-    private KT mParentKey;
+import com.fizzbuzz.vroom.core.domain.DomainCollection;
 
-    public OwnedObject(final KT key, final KT parentKey) {
-        super(key);
-        mParentKey = parentKey;
-    }
-
-    public KT getParentKey() {
-        return mParentKey;
-    }
+public class Users extends DomainCollection<User> {
 }

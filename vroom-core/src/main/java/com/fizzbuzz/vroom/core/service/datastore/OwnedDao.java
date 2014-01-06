@@ -2,6 +2,7 @@ package com.fizzbuzz.vroom.core.service.datastore;
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
+import com.fizzbuzz.vroom.core.domain.OwnedObject;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Load;
@@ -30,20 +31,21 @@ import com.googlecode.objectify.annotation.Load;
  */
 public abstract class OwnedDao<OWNERDAO extends Dao<OWNERKO>,
         OWNERKO extends KeyedObject<LongKey>,
-        OWNEDKO extends KeyedObject<LongKey>>
+        OWNEDKO extends OwnedObject<LongKey>>
         extends Dao<OWNEDKO> {
     @Load(OfyLoadGroups.Deep.class)
-    Ref<OWNERDAO> ownerRef; // reference to the owner entity
+    Ref<OWNERDAO> owner; // reference to the owner entity
 
     // no-arg constructor used by Objectify
     protected OwnedDao() {
     }
 
-    protected OwnedDao(final Class<OWNERDAO> ownerDaoClass, final long ownerId) {
-        ownerRef = Ref.create(Key.create(ownerDaoClass, ownerId));
+    protected OwnedDao(final OWNEDKO owned, final Class<OWNERDAO> ownerDaoClass) {
+        super(owned);
+        owner = Ref.create(Key.create(ownerDaoClass, owned.getParentKey().get()));
     }
 
     protected long getOwnerId() {
-        return ownerRef.getKey().getId();
+        return owner.getKey().getId();
     }
 }

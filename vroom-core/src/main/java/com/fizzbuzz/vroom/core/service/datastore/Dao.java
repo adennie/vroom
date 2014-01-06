@@ -15,17 +15,18 @@ package com.fizzbuzz.vroom.core.service.datastore;
  */
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
+import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.googlecode.objectify.annotation.Id;
 
-public abstract class Dao<KO extends KeyedObject> {
+public abstract class Dao<KO extends KeyedObject<LongKey>> {
     @Id private Long id;
 
     // no-arg constructor used by Objectify
     protected Dao() {
     }
 
-    protected Dao(final Long id) {
-        this.id = id;
+    protected Dao(final KO keyedObject) {
+        this.id = keyedObject.getKey().get();
     }
 
     /**

@@ -22,6 +22,8 @@ public class MediaTypes {
     public static void register(final MetadataService metadataService) {
         PlaceMediaTypes.register(metadataService);
         PlacesMediaTypes.register(metadataService);
+        UserMediaTypes.register(metadataService);
+        UsersMediaTypes.register(metadataService);
     }
 
     public static class PlaceMediaTypes {
@@ -29,7 +31,7 @@ public class MediaTypes {
         public static final String JSON_V1_0 = "place-1.0-json";
         public static final MediaType JSON_V1_0_MEDIATYPE =
                 MediaType.register("application/vnd.fizzbuzz.place-v1+json; level=0",
-                        "Fitivity Place JSON version 1.0");
+                        "Vroom Place JSON version 1.0");
 
         public static void register(final MetadataService metadataService) {
             metadataService.addExtension(JSON_V1_0, JSON_V1_0_MEDIATYPE);
@@ -41,7 +43,30 @@ public class MediaTypes {
         public static final String JSON_V1_0 = "places-1.0-json";
         public static final MediaType JSON_V1_0_MEDIATYPE =
                 MediaType.register("application/vnd.fizzbuzz.places-v1+json; level=0",
-                        "Fitivity PlacesBiz JSON version 1.0");
+                        "Vroom Places JSON version 1.0");
+
+        public static void register(final MetadataService metadataService) {
+            metadataService.addExtension(JSON_V1_0, JSON_V1_0_MEDIATYPE);
+        }
+    }
+    public static class UserMediaTypes {
+        // v1.0
+        public static final String JSON_V1_0 = "user-1.0-json";
+        public static final MediaType JSON_V1_0_MEDIATYPE =
+                MediaType.register("application/vnd.fizzbuzz.user-v1+json; level=0",
+                        "Vroom User JSON version 1.0");
+
+        public static void register(final MetadataService metadataService) {
+            metadataService.addExtension(JSON_V1_0, JSON_V1_0_MEDIATYPE);
+        }
+    }
+
+    public static class UsersMediaTypes {
+        // v1.0
+        public static final String JSON_V1_0 = "users-1.0-json";
+        public static final MediaType JSON_V1_0_MEDIATYPE =
+                MediaType.register("application/vnd.fizzbuzz.users-v1+json; level=0",
+                        "Vroom Users JSON version 1.0");
 
         public static void register(final MetadataService metadataService) {
             metadataService.addExtension(JSON_V1_0, JSON_V1_0_MEDIATYPE);

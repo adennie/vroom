@@ -22,6 +22,8 @@ import com.fizzbuzz.vroom.sample.webservice.api.resource.ImageUploaderResource;
 import com.fizzbuzz.vroom.sample.webservice.api.resource.ImagesResource;
 import com.fizzbuzz.vroom.sample.webservice.api.resource.PlaceResource;
 import com.fizzbuzz.vroom.sample.webservice.api.resource.PlacesResource;
+import com.fizzbuzz.vroom.sample.webservice.api.resource.UserResource;
+import com.fizzbuzz.vroom.sample.webservice.api.resource.UsersResource;
 import com.fizzbuzz.vroom.sample.webservice.service.datastore.SampleOfyService;
 import com.fizzbuzz.vroom.sample.webservice.util.Environment;
 import org.restlet.Restlet;
@@ -72,6 +74,8 @@ public class SampleApplication
             attach(router, Uris.IMAGE_UPLOADER, ImageUploaderResource.class);
             attach(router, Uris.PLACES, PlacesResource.class);
             attach(router, Uris.PLACE_TEMPLATE, PlaceResource.class);
+            attach(router, Uris.USERS, UsersResource.class);
+            attach(router, Uris.USER_TEMPLATE, UserResource.class);
 
 
             result = router;
@@ -88,7 +92,7 @@ public class SampleApplication
         super.start();
 
         // register the URL root
-        registerRootUrl(Uris.V1_ROOT);
+        registerRootUrl(Uris.API_ROOT);
 
         // register the custom media types
         MetadataService metadataService = getMetadataService();
@@ -101,6 +105,8 @@ public class SampleApplication
         ImageUploaderResource.register(converterHelpers);
         PlaceResource.register(converterHelpers);
         PlacesResource.register(converterHelpers);
+        UserResource.register(converterHelpers);
+        UsersResource.register(converterHelpers);
 
         // request "strict" content negotiation from Restlet
         getConnegService().setStrict(true);

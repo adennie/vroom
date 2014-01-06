@@ -31,7 +31,7 @@ public class ImageDao extends TimeStampedDao<Image> {
      * @param image an Image domain object
      */
     public ImageDao(final Image image, String fileName) {
-        super(image.getKey().get());
+        super(image);
         this.fileName = fileName;
     }
 

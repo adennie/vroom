@@ -14,12 +14,12 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
+import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 
-import java.util.List;
 import java.util.Map;
 
 public interface IFilterableEntityCollection<KO extends KeyedObject,
         FC> extends IEntityCollection<KO> {
-    public List<KO> getFilteredElements(final Map<FC, Object> constraints);
+    public DomainCollection<KO> getFilteredElements(final Map<FC, Object> constraints);
 }

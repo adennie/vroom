@@ -40,7 +40,7 @@ import java.util.Map;
 
 public class ImagesResource extends KeyedObjectCollectionResource<Images, Image> {
 
-    final static String IMAGE_BUCKET = "fitivity-images";
+    final static String IMAGE_BUCKET = "vroom-sample-webservice-images";
     static final String UPLOADED_BLOBINFO_ATTR =
             "com.google.appengine.api.blobstore.upload.blobinfos";
     private final org.slf4j.Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);

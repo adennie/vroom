@@ -15,6 +15,7 @@ package com.fizzbuzz.vroom.sample.webservice.api.application;
  */
 
 public class UriTokens {
-    public static final String PLACE_ID = "place_id";
     public static final String IMAGE_ID = "image_id";
+    public static final String PLACE_ID = "place_id";
+    public static final String USER_ID = "user_id";
 }

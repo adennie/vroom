@@ -1,7 +1,9 @@
 package com.fizzbuzz.vroom.core.service.datastore;
 
+import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
+import com.fizzbuzz.vroom.core.domain.OwnedObject;
 import com.googlecode.objectify.Key;
 
 import java.util.List;
@@ -35,28 +37,28 @@ import static com.fizzbuzz.vroom.core.service.datastore.OfyManager.ofy;
  */
 public abstract class OwnedEntityCollection<
         OWNERKO extends KeyedObject<LongKey>,
-        OWNEDKO extends KeyedObject<LongKey>,
+        OWNEDKO extends OwnedObject<LongKey>,
         OWNERDAO extends Dao<OWNERKO>,
         OWNEDDAO extends OwnedDao<OWNERDAO, OWNERKO, OWNEDKO>>
         extends EntityCollection<OWNEDKO, OWNEDDAO> {
 
     private Class<OWNERDAO> mOwnerDaoClass;
-    private long mOwnerId;
+    private LongKey mOwnerKey;
 
     protected OwnedEntityCollection(final Class<OWNERDAO> ownerDaoClass,
-                                    final long ownerId,
+                                    final LongKey ownerKey,
                                     final Class<OWNEDKO> ownedDomainObjectClass,
                                     final Class<OWNEDDAO> ownedDaoClass,
                                     final Entity<OWNEDKO, OWNEDDAO> elementEntity) {
         super(ownedDomainObjectClass, ownedDaoClass, elementEntity);
         mOwnerDaoClass = ownerDaoClass;
-        mOwnerId = ownerId;
+        mOwnerKey = ownerKey;
     }
 
     @Override
-    public List<OWNEDKO> getElements() {
+    public DomainCollection<OWNEDKO> getElements() {
         List<OWNEDDAO> daos = ofy().load().type(getElementDaoClass())
-                .filter("mOwnerDao", Key.create(mOwnerDaoClass, mOwnerId)).list();
+                .filter("owner", Key.create(mOwnerDaoClass, mOwnerKey.get())).list();
         return toDomainCollection(daos);
     }
 }

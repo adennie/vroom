@@ -21,13 +21,55 @@ public class User extends KeyedObject<LongKey> {
     private String mFirstName;
     private String mLastName;
     private String mEmail;
-    private LongKey mImageKey;
+    private LongKey mProfileImageKey;
+    private LongKey mHomeKey;
 
-    public User(final Long key, final String firstName, final String lastName, final String email, final LongKey imageKey) {
-        super(new LongKey(key));
+    public User(final LongKey key, final String firstName, final String lastName, final String email, final LongKey profileImageKey, final LongKey homeKey) {
+        super(key);
         mFirstName = firstName;
         mLastName = lastName;
         mEmail = email;
-        mImageKey = imageKey;
+        mProfileImageKey = profileImageKey;
+        mHomeKey = homeKey;
+    }
+
+    public String getFirstName() {
+        return mFirstName;
+    }
+
+    public void setFirstName(final String firstName) {
+        mFirstName = firstName;
+    }
+
+    public String getLastName() {
+        return mLastName;
+    }
+
+    public void setLastName(final String lastName) {
+        mLastName = lastName;
+    }
+
+    public String getEmail() {
+        return mEmail;
+    }
+
+    public void setEmail(final String email) {
+        mEmail = email;
+    }
+
+    public LongKey getProfileImageKey() {
+        return mProfileImageKey;
+    }
+
+    public void setProfileImageKey(final LongKey profileImageKey) {
+        mProfileImageKey = profileImageKey;
+    }
+
+    public LongKey getHomeKey() {
+        return mHomeKey;
+    }
+
+    public void setHomeKey(final LongKey homeKey) {
+        mHomeKey = homeKey;
     }
 }

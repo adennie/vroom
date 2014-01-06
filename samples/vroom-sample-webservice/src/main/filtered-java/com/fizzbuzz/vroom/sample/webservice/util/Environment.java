@@ -16,11 +16,17 @@ package com.fizzbuzz.vroom.sample.webservice.util;
 
 /**
  * A helper class containing environment-specific fields and methods.  This class is filtered by
- * maven-resources-plugin, which replaces references to maven variables with their values (typically
- * defined within maven profiles).
+ * maven-resources-plugin (see pom.xml), which replaces references to maven properties with their values.  These
+ * maven properties are defined within maven profiles in pom.xml, with different values for different profiles, each
+ * corresponding to an execution environment (a local development environment, a test environment, and a
+ * production environment).
  */
 public class Environment {
-    // a semicolon-delimited list of allowed origins for Cross-Origin Resource Sharing
-    public static final String CORS_ALLOWED_ORIGINS = "${vroom.sample.webservice.env.cors.allowed-origins}";
-    public static final String GCS_BUCKET_IMAGES = "${vroom.sample.webservice.env.gcs.bucket.images}";
+    // a semicolon-delimited list of allowed origins for Cross-Origin Resource Sharing.  In a local development
+    // environment, something like "*" is probably fine, but in a test or production environment you may want to
+    // restrict this to specific origins.
+    public static final String CORS_ALLOWED_ORIGINS = "${env.cors.allowed-origins}";
+    // the name of the GCS bucket for storing images.  These exist in a global namespace,
+    // so you want to use different bucket names for test and production.
+    public static final String GCS_BUCKET_IMAGES = "${env.gcs.bucket.images}";
 }

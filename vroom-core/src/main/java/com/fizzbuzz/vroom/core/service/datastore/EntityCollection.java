@@ -14,6 +14,7 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
+import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.googlecode.objectify.Key;
@@ -44,7 +45,7 @@ public abstract class EntityCollection<
     }
 
     @Override
-    public List<KO> getElements() {
+    public DomainCollection<KO> getElements() {
         List<DAO> daos = ofy().load().type(mElementDaoClass).list();
         return toDomainCollection(daos);
     }
@@ -104,8 +105,8 @@ public abstract class EntityCollection<
 
     }
 
-    protected List<KO> toDomainCollection(List<DAO> daoCollection) {
-        List<KO> domainCollection = new ArrayList<>();
+    protected DomainCollection<KO> toDomainCollection(List<DAO> daoCollection) {
+        DomainCollection<KO> domainCollection = new DomainCollection<>();
         for (DAO dao : daoCollection) {
             domainCollection.add(dao.toDomainObject());
         }

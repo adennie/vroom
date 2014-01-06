@@ -95,7 +95,7 @@ public abstract class VroomApplication
 
     protected void attach(Router router, String pathTemplate, java.lang.Class<? extends org.restlet.resource
             .ServerResource> target) {
-        mLogger.trace("attaching path template {} to {}", pathTemplate, target);
+        mLogger.info("attaching path template {} to {}", pathTemplate, target);
         router.attach(pathTemplate, target);
     }
 
