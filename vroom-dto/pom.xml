@@ -19,7 +19,7 @@
     <parent>
         <groupId>com.andydennie.vroom</groupId>
         <artifactId>vroom-maven-parent</artifactId>
-        <version>0.9.1-SNAPSHOT</version>
+        <version>0.9.1</version>
     </parent>
 
     <artifactId>vroom-dto</artifactId>
@@ -29,7 +29,7 @@
         <url>https://github.com/adennie/vroom/</url>
         <connection>scm:git:git://github.com/adennie/vroom.git</connection>
         <developerConnection>scm:git:git://github.com/adennie/vroom.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>vroom-maven-parent-0.9.1</tag>
     </scm>
 
     <issueManagement>
