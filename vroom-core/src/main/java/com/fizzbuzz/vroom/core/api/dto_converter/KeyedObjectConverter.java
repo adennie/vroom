@@ -1,7 +1,7 @@
 package com.fizzbuzz.vroom.core.api.dto_converter;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@ package com.fizzbuzz.vroom.core.api.dto_converter;
 
 import com.fizzbuzz.vroom.core.domain.KeyedObject;
 import com.fizzbuzz.vroom.core.api.resource.KeyedObjectResource;
-import com.fizzbuzz.vroom.dto.Dto;
+import com.fizzbuzz.vroom.dto.VroomDto;
 import org.restlet.data.MediaType;
 
-public abstract class KeyedObjectConverter<DTO extends Dto, KO extends KeyedObject> extends ObjectConverter<DTO, KO> {
+public abstract class KeyedObjectConverter<DTO extends VroomDto, KO extends KeyedObject> extends ObjectConverter<DTO, KO> {
 
     final Class<? extends KeyedObjectResource> mResourceClass;
 

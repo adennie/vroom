@@ -1,7 +1,7 @@
 package com.fizzbuzz.vroom.dto;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,46 +14,30 @@ package com.fizzbuzz.vroom.dto;
  * limitations under the License.
  */
 
-/**
- * A base class for DTOs.
- */
-public class Dto {
-    public enum HttpMethod {
-        GET,
-        PUT,
-        POST
-    }
-
+public class SimpleDto implements VroomDto {
     private String selfRef;
-    ;
 
     // default constructor needed by Jackson to create objects via reflection
-    public Dto() {
+    public SimpleDto() {
     }
 
-    protected Dto(final String selfRef) {
+    protected SimpleDto(final String selfRef) {
         this.selfRef = selfRef;
     }
 
+    @Override
     public String getSelfRef() {
         return selfRef;
     }
 
+    @Override
     public void setSelfRef(final String selfRef) {
         this.selfRef = selfRef;
     }
 
-    /**
-     * Validates the state of the DTO.  This method is intended for use in performing first-pass validation on DTOs
-     * created by a client, and can be invoked client-side or server-side.  Examples include:
-     * - verifying that values representing enumerations are one of the allowed values
-     * - verifying that strings which must conform to a regular expression do so
-     * - verifying that numbers are in a permitted range
-     * - verifying that collections which must be non-empty are non-empty
-     * - verifying that read-only fields which are assigned server-side at creation time are non-null for a PUT
-     * request, but null for a POST request.
-     */
-    public void validate(HttpMethod method) {
+
+    @Override
+    public void validate(final HttpMethod method) {
         // selfRef must be null for a POST request
         if (method == HttpMethod.POST && selfRef != null) {
             throw new IllegalArgumentException("selfRef field must be null in a POST request.  The value will be " +
@@ -61,7 +45,7 @@ public class Dto {
         }
 
         // selfRef must be non-null for a PUT request
-        if (method == HttpMethod.PUT && selfRef == null){
+        if (method == HttpMethod.PUT && selfRef == null) {
             throw new IllegalArgumentException("selfRef field must be non-null in a PUT request.  The value should " +
                     "be the one assigned server-side at creation time.");
         }

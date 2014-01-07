@@ -1,7 +1,7 @@
 package com.fizzbuzz.vroom.dto;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,32 +17,34 @@ package com.fizzbuzz.vroom.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectionDto<DTO extends Dto>  {
+public class SimpleCollectionDto<DTO extends VroomDto> implements VroomCollectionDto<DTO> {
     private String selfRef;
-    private ArrayList<DTO> elements = new ArrayList<DTO>();
+    private List<DTO> elements = new ArrayList<DTO>();
 
     // default constructor needed by Jackson to create objects via reflection
-    public CollectionDto() {
+    public SimpleCollectionDto() {
     }
 
-    public CollectionDto(final String selfRef, final List<DTO> elements) {
+    public SimpleCollectionDto(final String selfRef, final List<DTO> elements) {
         this.selfRef = selfRef;
         this.elements.addAll(elements);
     }
 
+    @Override
     public String getSelfRef() {
         return selfRef;
     }
+
+    @Override
     public void setSelfRef(final String selfRef) {
         this.selfRef = selfRef;
     }
 
-    public void setElements(final ArrayList<DTO> elements) {
-        this.elements.clear();
-        this.elements.addAll(elements);
+    public List<DTO> getElements() {
+        return elements;
     }
 
-    public ArrayList<DTO> getElements() {
-        return elements;
+    public void setElements(final List<DTO> elements) {
+        this.elements = elements;
     }
 }

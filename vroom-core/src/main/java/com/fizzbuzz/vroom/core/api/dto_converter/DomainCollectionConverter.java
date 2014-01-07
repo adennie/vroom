@@ -1,7 +1,7 @@
 package com.fizzbuzz.vroom.core.api.dto_converter;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.DomainObject;
 import com.fizzbuzz.vroom.core.api.resource.DomainCollectionResource;
 import com.fizzbuzz.vroom.core.util.Reflections;
-import com.fizzbuzz.vroom.dto.CollectionDto;
-import com.fizzbuzz.vroom.dto.Dto;
+import com.fizzbuzz.vroom.dto.SimpleCollectionDto;
+import com.fizzbuzz.vroom.dto.VroomDto;
 import org.restlet.data.MediaType;
 import org.restlet.engine.converter.ConverterHelper;
 import org.restlet.engine.resource.VariantInfo;
@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class DomainCollectionConverter<
-        DTC extends CollectionDto<DTO>,
-        DTO extends Dto,
+        DTC extends SimpleCollectionDto<DTO>,
+        DTO extends VroomDto,
         DC extends DomainCollection<DO>,
         DO extends DomainObject>
         extends ConverterHelper {
@@ -142,7 +142,7 @@ public abstract class DomainCollectionConverter<
         // Convert from JSON to DTC
         JacksonRepresentation<?> jacksonSource =
                 new JacksonRepresentation<DTC>(source, mDtoCollectionClass);
-        CollectionDto<DTO> dtc = (CollectionDto<DTO>) jacksonSource.getObject();
+        SimpleCollectionDto<DTO> dtc = (SimpleCollectionDto<DTO>) jacksonSource.getObject();
 
         // convert from DTC to List<DO>
         for (DTO dto : dtc.getElements()) {
@@ -158,15 +158,15 @@ public abstract class DomainCollectionConverter<
                                            final Variant target,
                                            final Resource resource) throws IOException {
 
-        CollectionDto<DTO> dtc = toDto((DomainCollectionResource<DC, DO>) resource, (DomainCollection<DO>) source);
+        SimpleCollectionDto<DTO> dtc = toDto((DomainCollectionResource<DC, DO>) resource, (DomainCollection<DO>) source);
 
         // create a JacksonRepresentation for the DTC
-        JacksonRepresentation<?> jacksonRep = new JacksonRepresentation<CollectionDto<DTO>>(target.getMediaType(), dtc);
+        JacksonRepresentation<?> jacksonRep = new JacksonRepresentation<SimpleCollectionDto<DTO>>(target.getMediaType(), dtc);
 
         return jacksonRep;
     }
 
-    protected CollectionDto<DTO> toDto(DomainCollectionResource<DC, DO> resource,
+    protected SimpleCollectionDto<DTO> toDto(DomainCollectionResource<DC, DO> resource,
                                        final DomainCollection<DO> domainCollection) {
         // first convert the DO objects into DTO objects
         List<DTO> dtos = new ArrayList<DTO>();
@@ -177,8 +177,8 @@ public abstract class DomainCollectionConverter<
         // get the URI of the collection resource
         String collectionSelfRef = DomainCollectionResource.getCanonicalUri(resource.getClass());
 
-        // now create/return the CollectionDto
-        CollectionDto<DTO> result = Reflections.newInstance(mDtoCollectionClass, String.class, List.class,
+        // now create/return the SimpleCollectionDto
+        SimpleCollectionDto<DTO> result = Reflections.newInstance(mDtoCollectionClass, String.class, List.class,
                 collectionSelfRef, dtos);
         return result;
     }

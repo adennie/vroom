@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.service.datastore;
+package com.fizzbuzz.vroom.dto;
 
 /*
  * Copyright (c) 2014 Andy Dennie
@@ -14,13 +14,10 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.service.datastore.dao.BaseDao;
-import com.googlecode.objectify.annotation.Entity;
-
-@Entity
-public class TestDao extends BaseDao<TestKeyedObject> {
-    @Override
-    public TestKeyedObject toDomainObject() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+public enum HttpMethod {
+    GET,
+    PUT,
+    POST,
+    DELETE,
+    OPTIONS
 }
