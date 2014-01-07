@@ -19,7 +19,7 @@
     <parent>
         <groupId>com.andydennie.vroom</groupId>
         <artifactId>vroom-maven-parent</artifactId>
-        <version>0.9.1</version>
+        <version>0.9.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>vroom-core</artifactId>
@@ -35,25 +35,6 @@
         <restlet.version>2.1.4</restlet.version>
         <slf4j.version>1.7.5</slf4j.version>
     </properties>
-
-    <scm>
-        <url>http://github.com/adennie/vroom/</url>
-        <connection>scm:git:git://github.com/adennie/vroom.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/adennie/vroom.git</developerConnection>
-        <tag>vroom-maven-parent-0.9.1</tag>
-    </scm>
-
-    <issueManagement>
-        <system>GitHub Issues</system>
-        <url>http://github.com/adennie/vroom/issues</url>
-    </issueManagement>
-
-    <licenses>
-        <license>
-            <name>Apache 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
 
     <dependencies>
         <!-- test dependencies -->

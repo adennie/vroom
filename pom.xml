@@ -19,7 +19,7 @@ limitations under the License.
 
     <groupId>com.andydennie.vroom</groupId>
     <artifactId>vroom-maven-parent</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 	<name>Vroom (parent)</name>
 	<description>A Java framework for building RESTtful web services on Google App Engine</description>
@@ -38,7 +38,7 @@ limitations under the License.
         <url>http://github.com/adennie/vroom/</url>
         <connection>scm:git:git://github.com/adennie/vroom.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/adennie/vroom.git</developerConnection>
-        <tag>vroom-maven-parent-0.9.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
