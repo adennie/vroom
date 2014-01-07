@@ -27,7 +27,7 @@ limitations under the License.
     </properties>
 
     <scm>
-        <url>http://github.com/adennie/vroom/</url>
+        <url>https://github.com/adennie/vroom/</url>
         <connection>scm:git:https://github.com/adennie/vroom.git</connection>
         <developerConnection>scm:git:https://github.com/adennie/vroom.git</developerConnection>
         <tag>vroom-maven-parent-0.9.1</tag>
