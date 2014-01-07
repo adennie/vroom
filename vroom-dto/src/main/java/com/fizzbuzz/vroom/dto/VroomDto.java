@@ -1,7 +1,7 @@
 package com.fizzbuzz.vroom.dto;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,33 +15,13 @@ package com.fizzbuzz.vroom.dto;
  */
 
 /**
- * A base class for Vroom DTOs.
+ * The standard interface for Vroom DTOs.
  */
-public class VroomDto {
-    public enum HttpMethod {
-        GET,
-        PUT,
-        POST
-    }
+public interface VroomDto {
 
-    private String selfRef;
-    ;
+    public String getSelfRef();
 
-    // default constructor needed by Jackson to create objects via reflection
-    public VroomDto() {
-    }
-
-    protected VroomDto(final String selfRef) {
-        this.selfRef = selfRef;
-    }
-
-    public String getSelfRef() {
-        return selfRef;
-    }
-
-    public void setSelfRef(final String selfRef) {
-        this.selfRef = selfRef;
-    }
+    public void setSelfRef(final String selfRef);
 
     /**
      * Validates the state of the DTO.  This method is intended for use in performing first-pass validation on DTOs
@@ -53,17 +33,5 @@ public class VroomDto {
      * - verifying that read-only fields which are assigned server-side at creation time are non-null for a PUT
      * request, but null for a POST request.
      */
-    public void validate(HttpMethod method) {
-        // selfRef must be null for a POST request
-        if (method == HttpMethod.POST && selfRef != null) {
-            throw new IllegalArgumentException("selfRef field must be null in a POST request.  The value will be " +
-                    "assigned server-side at creation time.");
-        }
-
-        // selfRef must be non-null for a PUT request
-        if (method == HttpMethod.PUT && selfRef == null){
-            throw new IllegalArgumentException("selfRef field must be non-null in a PUT request.  The value should " +
-                    "be the one assigned server-side at creation time.");
-        }
-    }
+    public void validate(final HttpMethod method);
 }

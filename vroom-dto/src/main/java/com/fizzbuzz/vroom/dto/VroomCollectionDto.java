@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.api.resource;
+package com.fizzbuzz.vroom.dto;
 
 /*
  * Copyright (c) 2014 Andy Dennie
@@ -14,7 +14,13 @@ package com.fizzbuzz.vroom.core.api.resource;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.DomainObject;
+import java.util.List;
 
-public abstract class DomainResource<DO extends DomainObject> extends VroomResource {
+public interface VroomCollectionDto<DTO extends VroomDto>  {
+
+    public String getSelfRef();
+    public void setSelfRef(final String selfRef);
+
+    public void setElements(final List<DTO> elements);
+    public List<DTO> getElements();
 }

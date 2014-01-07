@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.api.resource;
+package com.fizzbuzz.vroom.dto;
 
 /*
  * Copyright (c) 2014 Andy Dennie
@@ -14,7 +14,10 @@ package com.fizzbuzz.vroom.core.api.resource;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.DomainObject;
-
-public abstract class DomainResource<DO extends DomainObject> extends VroomResource {
+public enum HttpMethod {
+    GET,
+    PUT,
+    POST,
+    DELETE,
+    OPTIONS
 }

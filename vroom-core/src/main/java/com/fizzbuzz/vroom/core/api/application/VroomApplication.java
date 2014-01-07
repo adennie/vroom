@@ -1,7 +1,7 @@
 package com.fizzbuzz.vroom.core.api.application;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import org.restlet.Response;
 import org.restlet.routing.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 public abstract class VroomApplication
         extends Application {
@@ -75,7 +76,6 @@ public abstract class VroomApplication
         return mServerUrl;
     }
 
-
     @Override
     public void handle(final Request request, final Response response) {
         mLogger.info("request received: {}", request);
@@ -98,8 +98,6 @@ public abstract class VroomApplication
         mLogger.info("attaching path template {} to {}", pathTemplate, target);
         router.attach(pathTemplate, target);
     }
-
-
 
     /**
      * Returns the application's OfyService object.  Subclasses of VroomApplication must implement this method.

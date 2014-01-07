@@ -15,7 +15,10 @@ package com.fizzbuzz.vroom.core.api.dto_converter;
  */
 
 import com.fizzbuzz.vroom.dto.VroomDto;
+import com.fizzbuzz.vroom.dto.HttpMethod;
+import com.fizzbuzz.vroom.dto.VroomDto;
 import org.restlet.data.MediaType;
+import org.restlet.data.Method;
 import org.restlet.engine.converter.ConverterHelper;
 import org.restlet.engine.resource.VariantInfo;
 import org.restlet.ext.jackson.JacksonRepresentation;
@@ -130,6 +133,9 @@ public abstract class VroomConverter<DTO extends VroomDto, O extends Object>
         JacksonRepresentation<?> jacksonSource = new JacksonRepresentation<DTO>(source, mDtoClass);
         DTO dto = (DTO) jacksonSource.getObject();
 
+        // validate DTO
+        validateDto(dto, resource.getMethod());
+
         // convert from DTO to DO
         result = (DO) toObject(dto);
         return result;
@@ -149,6 +155,22 @@ public abstract class VroomConverter<DTO extends VroomDto, O extends Object>
         return jacksonRep;
     }
 
+    protected void validateDto(final DTO dto, final Method method) {
+        HttpMethod httpMethod = null;
+        // translate from Restlet Method datatype to Vroom method enum
+        if (method.equals(Method.GET))
+            httpMethod = HttpMethod.GET;
+        else if (method.equals(Method.PUT))
+            httpMethod = HttpMethod.PUT;
+        else if (method.equals(Method.POST))
+            httpMethod = HttpMethod.POST;
+        else if (method.equals(Method.DELETE))
+            httpMethod = HttpMethod.DELETE;
+        else if (method.equals(Method.OPTIONS))
+            httpMethod = HttpMethod.OPTIONS;
+
+        dto.validate(httpMethod);
+    }
 
     protected abstract DTO toDto(final O domainObject);
     protected abstract O toObject(final DTO dto);
