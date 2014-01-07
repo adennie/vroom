@@ -26,9 +26,9 @@
     <packaging>jar</packaging>
 
     <scm>
-        <url>http://github.com/adennie/vroom/</url>
+        <url>https://github.com/adennie/vroom/</url>
         <connection>scm:git:git://github.com/adennie/vroom.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/adennie/vroom.git</developerConnection>
+        <developerConnection>scm:git:git://github.com/adennie/vroom.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
