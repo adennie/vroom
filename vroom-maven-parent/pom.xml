@@ -19,7 +19,7 @@ limitations under the License.
 
     <groupId>com.fizz-buzz.vroom</groupId>
     <artifactId>vroom-maven-parent</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -28,8 +28,8 @@ limitations under the License.
 
     <scm>
         <url>http://github.com/adennie/vroom/</url>
-        <connection>scm:git:git://github.com/adennie/vroom.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/adennie/vroom.git</developerConnection>
+        <connection>scm:git:https://github.com/adennie/vroom.git</connection>
+        <developerConnection>scm:git:https://github.com/adennie/vroom.git</developerConnection>
         <tag>vroom-maven-parent-0.9.1</tag>
     </scm>
 
