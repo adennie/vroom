@@ -1,7 +1,7 @@
 package com.fizzbuzz.vroom.dto;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Fizz Buzz LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,35 +14,40 @@ package com.fizzbuzz.vroom.dto;
  * limitations under the License.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class CollectionDto<DTO extends Dto>  {
+public class SimpleDto implements VroomDto {
     private String selfRef;
-    private ArrayList<DTO> elements = new ArrayList<DTO>();
 
     // default constructor needed by Jackson to create objects via reflection
-    public CollectionDto() {
+    public SimpleDto() {
     }
 
-    public CollectionDto(final String selfRef, final List<DTO> elements) {
+    protected SimpleDto(final String selfRef) {
         this.selfRef = selfRef;
-        this.elements.addAll(elements);
     }
 
+    @Override
     public String getSelfRef() {
         return selfRef;
     }
+
+    @Override
     public void setSelfRef(final String selfRef) {
         this.selfRef = selfRef;
     }
 
-    public void setElements(final ArrayList<DTO> elements) {
-        this.elements.clear();
-        this.elements.addAll(elements);
-    }
 
-    public ArrayList<DTO> getElements() {
-        return elements;
+    @Override
+    public void validate(final HttpMethod method) {
+        // selfRef must be null for a POST request
+        if (method == HttpMethod.POST && selfRef != null) {
+            throw new IllegalArgumentException("selfRef field must be null in a POST request.  The value will be " +
+                    "assigned server-side at creation time.");
+        }
+
+        // selfRef must be non-null for a PUT request
+        if (method == HttpMethod.PUT && selfRef == null) {
+            throw new IllegalArgumentException("selfRef field must be non-null in a PUT request.  The value should " +
+                    "be the one assigned server-side at creation time.");
+        }
     }
 }
