@@ -1,0 +1,142 @@
+package com.andydennie.vroom.sample.webservice.api.application;
+
+/*
+ * Copyright (c) 2013 Fizz Buzz LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import com.andydennie.vroom.sample.webservice.api.resource.ImageResource;
+import com.andydennie.vroom.sample.webservice.api.resource.ImageUploaderResource;
+import com.andydennie.vroom.sample.webservice.api.resource.ImagesResource;
+import com.andydennie.vroom.sample.webservice.api.resource.PlacesResource;
+import com.andydennie.vroom.sample.webservice.api.resource.UserResource;
+import com.andydennie.vroom.sample.webservice.api.resource.UsersResource;
+import com.andydennie.vroom.sample.webservice.service.datastore.SampleOfyService;
+import com.andydennie.vroom.core.api.application.VroomApplication;
+import com.andydennie.vroom.core.api.service.CorsService;
+import com.andydennie.vroom.core.service.datastore.OfyService;
+import com.andydennie.vroom.sample.webservice.api.resource.ImageResource;
+import com.andydennie.vroom.sample.webservice.api.resource.ImageUploaderResource;
+import com.andydennie.vroom.sample.webservice.api.resource.ImagesResource;
+import com.andydennie.vroom.sample.webservice.api.resource.PlaceResource;
+import com.andydennie.vroom.sample.webservice.api.resource.PlacesResource;
+import com.andydennie.vroom.sample.webservice.api.resource.UserResource;
+import com.andydennie.vroom.sample.webservice.api.resource.UsersResource;
+import com.andydennie.vroom.sample.webservice.service.datastore.SampleOfyService;
+import com.andydennie.vroom.sample.webservice.util.Environment;
+import org.restlet.Restlet;
+import org.restlet.data.MediaType;
+import org.restlet.engine.Engine;
+import org.restlet.engine.converter.ConverterHelper;
+import org.restlet.routing.Router;
+import org.restlet.service.MetadataService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class SampleApplication
+        extends VroomApplication {
+
+    private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
+
+
+    public SampleApplication() {
+        try {
+            mLogger.info("SampleApplication: starting up application: {}", this);
+            setName("Vroom sample API");
+            setDescription("A sample REST API built with Vroom");
+            setOwner("Fizz Buzz LLC");
+            // Establish configuration for handling CORS requests.
+            configureCors();
+
+            // "multipart/form-data" is not one of the media types that are built-in by default in Restlet, so
+            // register it, so we can use it for file uploads
+            getMetadataService().addExtension(MediaType.MULTIPART_FORM_DATA.getDescription(),
+                    MediaType.MULTIPART_FORM_DATA, true);
+        } catch (RuntimeException e) {
+            mLogger.warn("SampleApplication.ctor: exception caught:", e);
+            throw e;
+        }
+    }
+
+    @Override
+    public Restlet createInboundRoot() {
+        Restlet result = null;
+        try {
+            Router router = new Router(getContext());
+
+            attach(router, Uris.IMAGES, ImagesResource.class);
+            attach(router, Uris.IMAGE_TEMPLATE, ImageResource.class);
+            attach(router, Uris.IMAGE_UPLOADER, ImageUploaderResource.class);
+            attach(router, Uris.PLACES, PlacesResource.class);
+            attach(router, Uris.PLACE_TEMPLATE, PlaceResource.class);
+            attach(router, Uris.USERS, UsersResource.class);
+            attach(router, Uris.USER_TEMPLATE, UserResource.class);
+
+
+            result = router;
+        } catch (RuntimeException e) {
+            mLogger.warn("SampleApplication.createInboundRoot: exception caught:", e);
+            throw e;
+        }
+
+        return result;
+    }
+
+    @Override
+    public synchronized void start() throws Exception {
+        super.start();
+
+        // register the URL root
+        registerRootUrl(Uris.API_ROOT);
+
+        // register the custom media types
+        MetadataService metadataService = getMetadataService();
+        MediaTypes.register(metadataService);
+
+        // register resource classes
+        List<ConverterHelper> converterHelpers = Engine.getInstance().getRegisteredConverters();
+        ImageResource.register();
+        ImagesResource.register(converterHelpers);
+        ImageUploaderResource.register(converterHelpers);
+        PlaceResource.register(converterHelpers);
+        PlacesResource.register(converterHelpers);
+        UserResource.register(converterHelpers);
+        UsersResource.register(converterHelpers);
+
+        // request "strict" content negotiation from Restlet
+        getConnegService().setStrict(true);
+    }
+
+    private void configureCors() {
+
+        CorsService corsService = new CorsService();
+
+        // Set allowed origins based on execution environment. Note: Environment.java is a resource-filtered
+        // source file containing values defined at build time via maven properties.
+        corsService.getAllowedOrigins().addAll(Arrays.asList(Environment.CORS_ALLOWED_ORIGINS.split(";")));
+
+        corsService.getAllowedHeaders().add("Accept");
+        corsService.getAllowedHeaders().add("Content-type");
+
+        // expose Location header in responses to CORS requests
+        corsService.getExposedHeaders().add("Location");
+
+        getServices().add(corsService);
+    }
+    @Override
+    protected OfyService getOfyService() {
+        return new SampleOfyService();
+    }
+}

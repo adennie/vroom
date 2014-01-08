@@ -21,7 +21,7 @@ handlers:
     name: restlet-servlet
     servlet: org.restlet.ext.servlet.ServerServlet
     init_params:
-      org.restlet.application: com.fizzbuzz.vroom.sample.webservice.api.application.SampleApplication
+      org.restlet.application: com.andydennie.vroom.sample.webservice.api.application.SampleApplication
       # uncomment to enable outbound requests...
       # org.restlet.clients: HTTP HTTPS
 

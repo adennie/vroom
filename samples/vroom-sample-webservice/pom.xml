@@ -3,13 +3,12 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.fizz-buzz.vroom</groupId>
+        <groupId>com.andydennie.vroom</groupId>
         <artifactId>vroom-maven-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.9.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>vroom-sample-webservice</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <properties>
@@ -21,9 +20,7 @@
         <junit.version>4.11</junit.version>
         <objectify.version>4.0rc2</objectify.version>
         <restlet.version>2.1.4</restlet.version>
-        <vroom-sample-dto.version>1.0-SNAPSHOT</vroom-sample-dto.version>
         <slf4j.version>1.7.5</slf4j.version>
-        <vroom.version>1.0-SNAPSHOT</vroom.version>
 
         <!-- this value is interpolated into app.yaml and becomes the version of the deployed app engine module.  It
              should not be strictly numeric, hence the "v" prefix. -->
@@ -41,20 +38,20 @@
 
         <!-- Compile/runtime dependencies -->
         <dependency>
-            <groupId>com.fizz-buzz.vroom</groupId>
+            <groupId>com.andydennie.vroom</groupId>
             <artifactId>vroom-core</artifactId>
-            <version>${vroom.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.fizz-buzz.vroom</groupId>
+            <groupId>com.andydennie.vroom</groupId>
             <artifactId>vroom-google-maps-extension</artifactId>
-            <version>${vroom.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.fizz-buzz.vroom</groupId>
+            <groupId>com.andydennie.vroom</groupId>
             <artifactId>vroom-sample-dto</artifactId>
-            <version>${vroom-sample-dto.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -138,6 +135,16 @@
         </resources>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <!-- version inherited from parent POM -->
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
