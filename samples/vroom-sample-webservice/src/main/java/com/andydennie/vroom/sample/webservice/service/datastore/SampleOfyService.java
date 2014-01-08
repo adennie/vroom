@@ -14,20 +14,18 @@ package com.andydennie.vroom.sample.webservice.service.datastore;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.sample.webservice.service.datastore.dao.ImageDao;
 import com.andydennie.vroom.core.service.datastore.OfyService;
-import com.andydennie.vroom.sample.webservice.service.datastore.dao.ImageDao;
-import com.andydennie.vroom.sample.webservice.service.datastore.dao.PlaceDao;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 
 public class SampleOfyService extends OfyService {
     static {
-            ObjectifyFactory factory = ObjectifyService.factory();
+        ObjectifyFactory factory = ObjectifyService.factory();
 
-            factory.register(ImageDao.class);
-            factory.register(PlaceDao.class);
+        factory.register(ImageDao.class);
+        factory.register(PlaceDao.class);
+        factory.register(UserDao.class);
     }
 
     @Override

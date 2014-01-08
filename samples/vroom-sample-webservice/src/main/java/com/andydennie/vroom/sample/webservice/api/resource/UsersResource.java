@@ -14,36 +14,25 @@ package com.andydennie.vroom.sample.webservice.api.resource;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.api.resource.KeyedObjectCollectionResource;
-import com.andydennie.vroom.core.api.resource.VroomResource;
+import com.andydennie.vroom.core.api.resource.KeyedCollectionResource;
 import com.andydennie.vroom.core.domain.DomainCollection;
 import com.andydennie.vroom.sample.webservice.api.application.MediaTypes;
-import com.andydennie.vroom.sample.webservice.api.application.Uris;
-import com.andydennie.vroom.sample.webservice.api.dto_converter.UsersConverter;
 import com.andydennie.vroom.sample.webservice.biz.UsersBiz;
 import com.andydennie.vroom.sample.webservice.domain.User;
 import com.andydennie.vroom.sample.webservice.domain.Users;
-import org.restlet.engine.converter.ConverterHelper;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class UsersResource
-        extends KeyedObjectCollectionResource<Users, User> {
+        extends KeyedCollectionResource<Users, User> {
 
     static final String PARAM_EMAIL = "email";
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
-
-    static public void register(List<ConverterHelper> converterHelpers) {
-        VroomResource.registerResource(UsersResource.class, Uris.USERS);
-
-        converterHelpers.add(new UsersConverter());
-    }
 
     @Override
     @Get(MediaTypes.UsersMediaTypes.JSON_V1_0 + "|json")

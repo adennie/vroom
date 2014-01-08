@@ -14,16 +14,17 @@ package com.andydennie.vroom.core.api.dto_converter;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.api.resource.KeyedObjectResource;
+import com.andydennie.vroom.core.api.resource.KeyedResource;
+import com.andydennie.vroom.core.api.resource.ResourceRegistry;
 import com.andydennie.vroom.core.domain.KeyedObject;
 import com.andydennie.vroom.dto.VroomDto;
 import org.restlet.data.MediaType;
 
 public abstract class KeyedObjectConverter<DTO extends VroomDto, KO extends KeyedObject> extends VroomConverter<DTO, KO> {
 
-    final Class<? extends KeyedObjectResource> mResourceClass;
+    final Class<? extends KeyedResource> mResourceClass;
 
-    public KeyedObjectConverter(final Class<? extends KeyedObjectResource> resourceClass,
+    public KeyedObjectConverter(final Class<? extends KeyedResource> resourceClass,
                                 final Class<DTO> dtoClass,
                                 final Class<KO> idObjectClass,
                                 MediaType... supportedMediaTypes) {
@@ -32,13 +33,13 @@ public abstract class KeyedObjectConverter<DTO extends VroomDto, KO extends Keye
     }
 
     protected String getCanonicalUri(KO keyedObject) {
-        return KeyedObjectResource.getCanonicalUri(mResourceClass, keyedObject.getKeyAsString());
+        return ResourceRegistry.getCanonicalUri(mResourceClass, keyedObject.getKeyAsString());
     }
 
     protected Long getIdFromDto(DTO dto) {
         if (dto.getSelfRef() == null)
             return null;
         else
-            return KeyedObjectResource.getIdFromUri(mResourceClass, dto.getSelfRef());
+            return ResourceRegistry.getIdFromUri(mResourceClass, dto.getSelfRef());
     }
 }

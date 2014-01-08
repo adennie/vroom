@@ -29,16 +29,16 @@ import static com.andydennie.vroom.core.service.datastore.OfyManager.ofy;
  */
 public abstract class EntityCollection<
         KO extends KeyedObject<LongKey>,
-        DAO extends Dao<KO>>
+        DAO extends VroomDao<KO>>
         implements IEntityCollection<KO> {
 
     private final Class<KO> mDomainElementClass;
     private final Class<DAO> mElementDaoClass;
-    private final Entity<KO, DAO> mElementEntity;
+    private final VroomEntity<KO, DAO> mElementEntity;
 
     protected EntityCollection(final Class<KO> domainElementClass,
                                final Class<DAO> elementDaoClass,
-                               final Entity<KO, DAO> elementEntity) {
+                               final VroomEntity<KO, DAO> elementEntity) {
         mDomainElementClass = domainElementClass;
         mElementDaoClass = elementDaoClass;
         mElementEntity = elementEntity;
@@ -97,7 +97,7 @@ public abstract class EntityCollection<
     }
 
     /**
-     * Saves a new Entity in the datastore
+     * Saves a new VroomEntity in the datastore
      *
      * @param dao
      */

@@ -15,15 +15,6 @@ package com.andydennie.vroom.sample.webservice.api.resource;
  */
 
 import com.andydennie.vroom.sample.webservice.resource.ImageCommonResource;
-import com.andydennie.vroom.core.api.resource.KeyedObjectResource;
-import com.andydennie.vroom.sample.webservice.api.application.UriTokens;
-import com.andydennie.vroom.sample.webservice.api.application.Uris;
-import com.andydennie.vroom.sample.webservice.resource.ImageCommonResource;
 
 public class ImageResource extends ImageCommonResource {
-
-    static public void register() {
-        KeyedObjectResource.registerResource(ImageResource.class, Uris.IMAGE_TEMPLATE);
-        KeyedObjectResource.registerIdToken(ImageResource.class, UriTokens.IMAGE_ID);
-    }
 }

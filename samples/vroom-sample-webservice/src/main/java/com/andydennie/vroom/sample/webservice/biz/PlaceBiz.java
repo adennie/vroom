@@ -13,10 +13,9 @@ package com.andydennie.vroom.sample.webservice.biz;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.sample.webservice.service.datastore.entity.PlaceEntity;
+import com.andydennie.vroom.sample.webservice.service.datastore.PlaceEntity;
 import com.andydennie.vroom.core.biz.EntityBiz;
 import com.andydennie.vroom.sample.webservice.domain.Place;
-import com.andydennie.vroom.sample.webservice.service.datastore.entity.PlaceEntity;
 
 public class PlaceBiz
         extends EntityBiz<Place> {

@@ -1,8 +1,7 @@
 package com.andydennie.vroom.core.api;
 
 import com.andydennie.vroom.core.api.application.VroomApplication;
-import com.andydennie.vroom.core.api.resource.VroomResource;
-import com.andydennie.vroom.core.api.application.VroomApplication;
+import com.andydennie.vroom.core.api.resource.ResourceRegistry;
 import com.andydennie.vroom.core.api.resource.VroomResource;
 import org.junit.Test;
 
@@ -30,10 +29,10 @@ public class VroomResourceTest {
         // given a registered resource with a token element in its template URI
         VroomResource vroomResource = new VroomResource(){};
         VroomApplication.registerRootUrl("http://test.com");
-        VroomResource.registerResource(vroomResource.getClass(), "/{token}");
+        ResourceRegistry.registerResource(vroomResource.getClass(), "/{token}");
 
         // when attempting to get its canonical URI path without providing a token value
-        when(vroomResource).getCanonicalUriPath();
+        when(vroomResource).getPath();
 
         // then an IllegalStateException should be thrown
         then(caughtException())

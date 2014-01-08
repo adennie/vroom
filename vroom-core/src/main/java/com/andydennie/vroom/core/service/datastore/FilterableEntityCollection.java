@@ -23,14 +23,14 @@ import static com.andydennie.vroom.core.service.datastore.OfyManager.ofy;
 
 public abstract class FilterableEntityCollection<
         KO extends KeyedObject<LongKey>,
-        DAO extends Dao<KO>,
+        DAO extends VroomDao<KO>,
         FC>
         extends EntityCollection<KO, DAO>
         implements IFilterableEntityCollection<KO, FC> {
 
     protected FilterableEntityCollection(final Class<KO> domainElementClass,
                                          final Class<DAO> elementDaoClass,
-                                         final Entity<KO, DAO> elementEntity) {
+                                         final VroomEntity<KO, DAO> elementEntity) {
         super(domainElementClass, elementDaoClass, elementEntity);
     }
 

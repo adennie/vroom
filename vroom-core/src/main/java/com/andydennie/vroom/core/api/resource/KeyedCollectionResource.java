@@ -17,24 +17,21 @@ package com.andydennie.vroom.core.api.resource;
 import com.andydennie.vroom.core.biz.ICollectionBiz;
 import com.andydennie.vroom.core.domain.DomainCollection;
 import com.andydennie.vroom.core.domain.KeyedObject;
-import com.andydennie.vroom.core.biz.ICollectionBiz;
-import com.andydennie.vroom.core.domain.DomainCollection;
-import com.andydennie.vroom.core.domain.KeyedObject;
 import org.restlet.resource.ResourceException;
 
-public abstract class KeyedObjectCollectionResource<DC extends DomainCollection<KO>, KO extends KeyedObject>
+public abstract class KeyedCollectionResource<DC extends DomainCollection<KO>, KO extends KeyedObject>
         extends DomainCollectionResource<DC, KO> {
 
-    private Class<? extends KeyedObjectResource> mElementResourceClass;
+    private Class<? extends KeyedResource> mElementResourceClass;
 
     @Override
     protected String getElementCanonicalUri(final KO element) {
-        return KeyedObjectResource.getCanonicalUri(mElementResourceClass, element.getKeyAsString());
+        return ResourceRegistry.getCanonicalUri(mElementResourceClass, element.getKeyAsString());
     }
 
     protected void doInit(final Class<DC> domainCollectionClass,
                           final ICollectionBiz<KO> collectionBiz,
-                          final Class<? extends KeyedObjectResource> elementResourceClass)
+                          final Class<? extends KeyedResource> elementResourceClass)
             throws ResourceException {
         super.doInit(domainCollectionClass, collectionBiz);
         mElementResourceClass = elementResourceClass;

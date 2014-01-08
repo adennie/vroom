@@ -14,16 +14,14 @@ package com.andydennie.vroom.sample.webservice.api.application;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.sample.webservice.api.resource.ImageResource;
-import com.andydennie.vroom.sample.webservice.api.resource.ImageUploaderResource;
-import com.andydennie.vroom.sample.webservice.api.resource.ImagesResource;
-import com.andydennie.vroom.sample.webservice.api.resource.PlacesResource;
-import com.andydennie.vroom.sample.webservice.api.resource.UserResource;
-import com.andydennie.vroom.sample.webservice.api.resource.UsersResource;
-import com.andydennie.vroom.sample.webservice.service.datastore.SampleOfyService;
 import com.andydennie.vroom.core.api.application.VroomApplication;
+import com.andydennie.vroom.core.api.resource.ResourceRegistry;
 import com.andydennie.vroom.core.api.service.CorsService;
 import com.andydennie.vroom.core.service.datastore.OfyService;
+import com.andydennie.vroom.sample.webservice.api.dto_converter.PlaceConverter;
+import com.andydennie.vroom.sample.webservice.api.dto_converter.PlacesConverter;
+import com.andydennie.vroom.sample.webservice.api.dto_converter.UserConverter;
+import com.andydennie.vroom.sample.webservice.api.dto_converter.UsersConverter;
 import com.andydennie.vroom.sample.webservice.api.resource.ImageResource;
 import com.andydennie.vroom.sample.webservice.api.resource.ImageUploaderResource;
 import com.andydennie.vroom.sample.webservice.api.resource.ImagesResource;
@@ -33,11 +31,9 @@ import com.andydennie.vroom.sample.webservice.api.resource.UserResource;
 import com.andydennie.vroom.sample.webservice.api.resource.UsersResource;
 import com.andydennie.vroom.sample.webservice.service.datastore.SampleOfyService;
 import com.andydennie.vroom.sample.webservice.util.Environment;
-import org.restlet.Restlet;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
 import org.restlet.engine.converter.ConverterHelper;
-import org.restlet.routing.Router;
 import org.restlet.service.MetadataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,32 +67,7 @@ public class SampleApplication
     }
 
     @Override
-    public Restlet createInboundRoot() {
-        Restlet result = null;
-        try {
-            Router router = new Router(getContext());
-
-            attach(router, Uris.IMAGES, ImagesResource.class);
-            attach(router, Uris.IMAGE_TEMPLATE, ImageResource.class);
-            attach(router, Uris.IMAGE_UPLOADER, ImageUploaderResource.class);
-            attach(router, Uris.PLACES, PlacesResource.class);
-            attach(router, Uris.PLACE_TEMPLATE, PlaceResource.class);
-            attach(router, Uris.USERS, UsersResource.class);
-            attach(router, Uris.USER_TEMPLATE, UserResource.class);
-
-
-            result = router;
-        } catch (RuntimeException e) {
-            mLogger.warn("SampleApplication.createInboundRoot: exception caught:", e);
-            throw e;
-        }
-
-        return result;
-    }
-
-    @Override
     public synchronized void start() throws Exception {
-        super.start();
 
         // register the URL root
         registerRootUrl(Uris.API_ROOT);
@@ -105,18 +76,28 @@ public class SampleApplication
         MetadataService metadataService = getMetadataService();
         MediaTypes.register(metadataService);
 
-        // register resource classes
-        List<ConverterHelper> converterHelpers = Engine.getInstance().getRegisteredConverters();
-        ImageResource.register();
-        ImagesResource.register(converterHelpers);
-        ImageUploaderResource.register(converterHelpers);
-        PlaceResource.register(converterHelpers);
-        PlacesResource.register(converterHelpers);
-        UserResource.register(converterHelpers);
-        UsersResource.register(converterHelpers);
+        // register resource classes with their URI paths
+        ResourceRegistry.registerResource(ImageResource.class, Uris.IMAGE_TEMPLATE);
+        ResourceRegistry.registerResource(ImagesResource.class, Uris.IMAGES);
+        ResourceRegistry.registerResource(ImageUploaderResource.class, Uris.IMAGE_UPLOADER);
+        ResourceRegistry.registerResource(PlaceResource.class, Uris.PLACE_TEMPLATE);
+        ResourceRegistry.registerResource(PlacesResource.class, Uris.PLACES);
+        ResourceRegistry.registerResource(UserResource.class, Uris.USER_TEMPLATE);
+        ResourceRegistry.registerResource(UsersResource.class, Uris.USERS);
 
-        // request "strict" content negotiation from Restlet
-        getConnegService().setStrict(true);
+        // register ID tokens for Keyed Resources
+        ResourceRegistry.registerIdToken(ImageResource.class, UriTokens.IMAGE_ID);
+        ResourceRegistry.registerIdToken(PlaceResource.class, UriTokens.PLACE_ID);
+        ResourceRegistry.registerIdToken(UserResource.class, UriTokens.USER_ID);
+
+        // register DTO converters
+        List<ConverterHelper> converterHelpers = Engine.getInstance().getRegisteredConverters();
+        converterHelpers.add(new PlaceConverter());
+        converterHelpers.add(new PlacesConverter());
+        converterHelpers.add(new UserConverter());
+        converterHelpers.add(new UsersConverter());
+
+        super.start();
     }
 
     private void configureCors() {

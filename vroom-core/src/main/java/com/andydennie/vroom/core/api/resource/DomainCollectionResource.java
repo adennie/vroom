@@ -19,10 +19,6 @@ import com.andydennie.vroom.core.domain.DomainCollection;
 import com.andydennie.vroom.core.domain.DomainObject;
 import com.andydennie.vroom.core.util.Reflections;
 import com.andydennie.vroom.core.api.application.VroomApplication;
-import com.andydennie.vroom.core.biz.ICollectionBiz;
-import com.andydennie.vroom.core.domain.DomainCollection;
-import com.andydennie.vroom.core.domain.DomainObject;
-import com.andydennie.vroom.core.util.Reflections;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
@@ -41,9 +37,9 @@ public abstract class DomainCollectionResource<
         return mCollectionBiz;
     }
 
-    public static <R extends DomainCollectionResource> String getCanonicalUri(
+    public static <R extends DomainCollectionResource> String getPath(
             Class<R> collectionResourceClass) {
-        return VroomApplication.getServerUrl() + VroomApplication.getRootUrl() + getCanonicalUriPathTemplate
+        return VroomApplication.getServerUrl() + VroomApplication.getRootUrl() + ResourceRegistry.getPathTemplate
                 (collectionResourceClass);
     }
 

@@ -1,4 +1,4 @@
-package com.andydennie.vroom.sample.webservice.service.datastore.dao;
+package com.andydennie.vroom.sample.webservice.service.datastore;
 /*
  * Copyright (c) 2014 Fizz Buzz LLC
  *
@@ -34,7 +34,7 @@ public class UserDao extends TimeStampedDao<User> {
     }
 
     /**
-     * This constructor is invoked via reflection by Entity and EntityCollection.
+     * This constructor is invoked via reflection by VroomEntity and EntityCollection.
      *
      * @param user a User domain object
      */
@@ -43,14 +43,22 @@ public class UserDao extends TimeStampedDao<User> {
         firstName = user.getFirstName();
         lastName = user.getLastName();
         email = user.getEmail();
-        profileImage = Ref.create(Key.create(ImageDao.class, user.getProfileImageKey().get()));
-        home = Ref.create(Key.create(PlaceDao.class, user.getHomeKey().get()));
+        if (user.getProfileImageKey() != null)
+            profileImage = Ref.create(Key.create(ImageDao.class, user.getProfileImageKey().get()));
+        if (user.getHomeKey() != null)
+            home = Ref.create(Key.create(PlaceDao.class, user.getHomeKey().get()));
     }
 
     @Override
     public User toDomainObject() {
-        return new User(new LongKey(getId()), firstName, lastName, email, new LongKey(profileImage.getKey().getId()),
-                new LongKey(home.getKey().getId()));
+        LongKey profileImageKey = null;
+        if (profileImage != null)
+            profileImageKey = new LongKey(profileImage.getKey().getId());
+
+        LongKey homeKey = null;
+        if (home != null)
+            homeKey = new LongKey(home.getKey().getId());
+        return new User(new LongKey(getId()), firstName, lastName, email, profileImageKey, homeKey);
     }
 
 }

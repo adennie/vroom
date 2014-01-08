@@ -16,7 +16,7 @@ package com.andydennie.vroom.sample.webservice.biz;
 
 import com.andydennie.vroom.core.biz.EntityCollectionBiz;
 import com.andydennie.vroom.sample.webservice.domain.Image;
-import com.andydennie.vroom.sample.webservice.service.datastore.entity.ImagesEntityCollection;
+import com.andydennie.vroom.sample.webservice.service.datastore.ImagesEntityCollection;
 
 public class ImagesBiz
         extends EntityCollectionBiz<Image> {

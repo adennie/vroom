@@ -1,4 +1,4 @@
-package com.andydennie.vroom.sample.webservice.service.datastore.dao;
+package com.andydennie.vroom.sample.webservice.service.datastore;
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
  *
@@ -15,7 +15,6 @@ package com.andydennie.vroom.sample.webservice.service.datastore.dao;
 
 import com.andydennie.vroom.sample.webservice.domain.Place;
 import com.andydennie.vroom.core.service.datastore.TimeStampedDao;
-import com.andydennie.vroom.sample.webservice.domain.Place;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 
@@ -29,7 +28,7 @@ public class PlaceDao extends TimeStampedDao<Place> {
     }
 
     /**
-     * This constructor is invoked via reflection by Entity and EntityCollection.
+     * This constructor is invoked via reflection by VroomEntity and EntityCollection.
      *
      * @param place a Place domain object
      */

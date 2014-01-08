@@ -15,27 +15,16 @@ package com.andydennie.vroom.sample.webservice.api.resource;
  */
 
 import com.andydennie.vroom.core.api.application.VroomApplication;
-import com.andydennie.vroom.core.api.resource.KeyedObjectResource;
+import com.andydennie.vroom.core.api.resource.ResourceRegistry;
 import com.andydennie.vroom.core.api.resource.VroomResource;
-import com.andydennie.vroom.sample.webservice.api.application.Uris;
 import com.andydennie.vroom.sample.webservice.biz.ImageUploaderBiz;
-import org.restlet.engine.converter.ConverterHelper;
 import org.restlet.resource.Get;
 
-import java.util.List;
-
 public class ImageUploaderResource extends VroomResource {
-
-    //TODO: If we determine is unnecessary, remove
-
-    static public void register(List<ConverterHelper> converterHelpers) {
-        KeyedObjectResource.registerResource(ImageUploaderResource.class, Uris.IMAGE_UPLOADER);
-    }
-
     @Get("txt")
     // creates a URL for one-time uploading to the blobstore using web-service URI templates
     public String getResource() {
-        String redirectUrl = VroomApplication.getRootUrl() + getCanonicalUriPathTemplate(ImagesResource.class);
+        String redirectUrl = VroomApplication.getRootUrl() + ResourceRegistry.getPathTemplate(ImagesResource.class);
         return new ImageUploaderBiz().getImageUploadUrl(redirectUrl);
     }
 }

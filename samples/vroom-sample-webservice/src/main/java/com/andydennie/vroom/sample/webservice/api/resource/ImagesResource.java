@@ -14,12 +14,9 @@ package com.andydennie.vroom.sample.webservice.api.resource;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.sample.webservice.api.application.Uris;
-import com.andydennie.vroom.sample.webservice.biz.ImagesBiz;
 import com.andydennie.vroom.core.api.application.VroomApplication;
-import com.andydennie.vroom.core.api.resource.KeyedObjectCollectionResource;
-import com.andydennie.vroom.core.api.resource.VroomResource;
-import com.andydennie.vroom.sample.webservice.api.application.Uris;
+import com.andydennie.vroom.core.api.resource.KeyedCollectionResource;
+import com.andydennie.vroom.core.api.resource.ResourceRegistry;
 import com.andydennie.vroom.sample.webservice.biz.ImageUploaderBiz;
 import com.andydennie.vroom.sample.webservice.biz.ImagesBiz;
 import com.andydennie.vroom.sample.webservice.domain.Image;
@@ -29,7 +26,6 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.blobstore.FileInfo;
 import org.restlet.Request;
 import org.restlet.data.Status;
-import org.restlet.engine.converter.ConverterHelper;
 import org.restlet.ext.servlet.ServletUtils;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Post;
@@ -40,15 +36,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
-public class ImagesResource extends KeyedObjectCollectionResource<Images, Image> {
+public class ImagesResource extends KeyedCollectionResource<Images, Image> {
 
     final static String IMAGE_BUCKET = "vroom-sample-webservice-images";
     static final String UPLOADED_BLOBINFO_ATTR =
             "com.google.appengine.api.blobstore.upload.blobinfos";
     private final org.slf4j.Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
 
-    static public void register(List<ConverterHelper> converterHelpers) {
-        VroomResource.registerResource(ImagesResource.class, Uris.IMAGES);
+    static public void register() {
     }
 
     @Post("PNG image | GIF image")
@@ -66,7 +61,8 @@ public class ImagesResource extends KeyedObjectCollectionResource<Images, Image>
             if (attributes == null) {
 
                 // takes multipart-form and redirects to generated blobstore upload URL
-                String callbackUrl = VroomApplication.getRootUrl() + getCanonicalUriPathTemplate(ImagesResource.class);
+                String callbackUrl = VroomApplication.getRootUrl() + ResourceRegistry.getPathTemplate(ImagesResource
+                        .class);
                 String uploadUrl = new ImageUploaderBiz().getImageUploadUrl(callbackUrl);
                 Redirector redirector = new Redirector(getContext(), uploadUrl, Redirector.MODE_CLIENT_TEMPORARY);
                 redirector.handle(getRequest(), getResponse());

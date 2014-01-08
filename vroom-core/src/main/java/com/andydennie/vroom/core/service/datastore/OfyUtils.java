@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OfyUtils {
-    public static <DAO extends Dao> List<Long> getIdsFromRefs(List<Ref<DAO>> refs) {
+    public static <DAO extends VroomDao> List<Long> getIdsFromRefs(List<Ref<DAO>> refs) {
         List<Long> ids = new ArrayList<>();
         for (Ref<DAO> ref : refs) {
             ids.add(ref.getKey().getId());

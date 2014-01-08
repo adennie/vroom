@@ -14,7 +14,8 @@ package com.andydennie.vroom.core.api.application;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.service.datastore.OfyService;
+import com.andydennie.vroom.core.api.resource.ResourceRegistry;
+import com.andydennie.vroom.core.api.resource.VroomResource;
 import com.andydennie.vroom.core.service.datastore.OfyManager;
 import com.andydennie.vroom.core.service.datastore.OfyService;
 import com.google.appengine.api.labs.modules.ModulesService;
@@ -23,9 +24,12 @@ import com.google.appengine.api.utils.SystemProperty;
 import org.restlet.Application;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.Restlet;
 import org.restlet.routing.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 
 public abstract class VroomApplication
@@ -92,6 +96,28 @@ public abstract class VroomApplication
         super.start();
 
         OfyManager.registerOfyService(getOfyService());
+
+        // request "strict" content negotiation from Restlet
+        getConnegService().setStrict(true);
+    }
+
+    @Override
+    public Restlet createInboundRoot() {
+        Restlet result = null;
+        try {
+            Router router = new Router(getContext());
+
+            for (Map.Entry<Class<? extends VroomResource>, String> entry : ResourceRegistry.getPathTemplates().entrySet()) {
+                attach(router, entry.getValue(), entry.getKey());
+            }
+
+            result = router;
+        } catch (RuntimeException e) {
+            mLogger.warn("VroomApplication.createInboundRoot: exception caught:", e);
+            throw e;
+        }
+
+        return result;
     }
 
     protected void attach(Router router, String pathTemplate, java.lang.Class<? extends org.restlet.resource

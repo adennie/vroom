@@ -24,10 +24,10 @@ import static com.googlecode.catchexception.CatchException.caughtException;
 import static com.googlecode.catchexception.apis.CatchExceptionBdd.then;
 import static com.googlecode.catchexception.apis.CatchExceptionBdd.when;
 
-public class BaseEntityTest {
+public class VroomEntityTest {
     TestKeyedObject mKeyedObject;
     TestDao mTestDao;
-    Entity<TestKeyedObject, TestDao> mTestEntity;
+    VroomEntity<TestKeyedObject, TestDao> mTestEntity;
 
     @Rule
     public DataStoreRule dsRule = new DataStoreRule();
@@ -40,7 +40,7 @@ public class BaseEntityTest {
         mKeyedObject = new TestKeyedObject();
         mTestDao = new TestDao();
         OfyManager.getOfyService().factory().register(TestDao.class);
-        mTestEntity = new Entity<TestKeyedObject, TestDao>(TestKeyedObject.class, TestDao.class) {};
+        mTestEntity = new VroomEntity<TestKeyedObject, TestDao>(TestKeyedObject.class, TestDao.class) {};
 
     }
 

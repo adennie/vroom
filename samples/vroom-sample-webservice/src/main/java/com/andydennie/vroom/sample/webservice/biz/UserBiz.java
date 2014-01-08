@@ -15,7 +15,7 @@ package com.andydennie.vroom.sample.webservice.biz;
 
 import com.andydennie.vroom.core.biz.EntityBiz;
 import com.andydennie.vroom.sample.webservice.domain.User;
-import com.andydennie.vroom.sample.webservice.service.datastore.entity.UserEntity;
+import com.andydennie.vroom.sample.webservice.service.datastore.UserEntity;
 
 public class UserBiz
         extends EntityBiz<User> {

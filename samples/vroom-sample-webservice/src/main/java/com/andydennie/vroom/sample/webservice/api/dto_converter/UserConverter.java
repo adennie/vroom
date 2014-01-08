@@ -14,9 +14,8 @@ package com.andydennie.vroom.sample.webservice.api.dto_converter;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.sample.dto.UserDto;
 import com.andydennie.vroom.core.api.dto_converter.KeyedObjectConverter;
-import com.andydennie.vroom.core.api.resource.KeyedObjectResource;
+import com.andydennie.vroom.core.api.resource.ResourceRegistry;
 import com.andydennie.vroom.core.domain.LongKey;
 import com.andydennie.vroom.sample.dto.UserDto;
 import com.andydennie.vroom.sample.webservice.api.application.MediaTypes;
@@ -39,9 +38,16 @@ public class UserConverter
 
     @Override
     public UserDto toDto(final User user) {
-        String profileImageRef = KeyedObjectResource.getCanonicalUri(ImageResource.class, user.getProfileImageKey()
-                .toString());
-        String homeRef = KeyedObjectResource.getCanonicalUri(PlaceResource.class, user.getHomeKey().toString());
+
+        String profileImageRef = null;
+        LongKey profileImageKey = user.getProfileImageKey();
+        if (user.getProfileImageKey() != null)
+            profileImageRef = ResourceRegistry.getCanonicalUri(ImageResource.class, profileImageKey.toString());
+
+        String homeRef = null;
+        LongKey homeKey = user.getHomeKey();
+        if (homeKey != null)
+            ResourceRegistry.getCanonicalUri(PlaceResource.class, homeKey.toString());
 
         return new UserDto(getCanonicalUri(user), user.getFirstName(), user.getLastName(), user.getEmail(),
                 profileImageRef, homeRef);
@@ -49,10 +55,15 @@ public class UserConverter
 
     @Override
     public User toObject(final UserDto dto) {
-        LongKey profileImageKey = new LongKey(KeyedObjectResource.getIdFromUri(ImageResource.class,
-                dto.getProfileImageRef()));
-        LongKey homeKey = new LongKey(KeyedObjectResource.getIdFromUri(PlaceResource.class,
-                dto.getHomeRef()));
+        LongKey profileImageKey = null;
+        String imageRef = dto.getProfileImageRef();
+        if (imageRef != null)
+            profileImageKey = new LongKey(ResourceRegistry.getIdFromUri(ImageResource.class, imageRef));
+
+        LongKey homeKey = null;
+        String homeRef = dto.getHomeRef();
+        if (homeRef != null)
+            homeKey = new LongKey(ResourceRegistry.getIdFromUri(PlaceResource.class, homeRef));
 
         return new User(new LongKey(getIdFromDto(dto)), dto.getFirstName(), dto.getLastName(), dto.getEmail(),
                 profileImageKey, homeKey);

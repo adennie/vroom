@@ -14,10 +14,9 @@ package com.andydennie.vroom.sample.webservice.biz;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.sample.webservice.service.datastore.entity.PlacesEntityCollection;
+import com.andydennie.vroom.sample.webservice.service.datastore.PlacesEntityCollection;
 import com.andydennie.vroom.core.biz.FilterableEntityCollectionBiz;
 import com.andydennie.vroom.sample.webservice.domain.Place;
-import com.andydennie.vroom.sample.webservice.service.datastore.entity.PlacesEntityCollection;
 
 public class PlacesBiz
         extends FilterableEntityCollectionBiz<Place, PlacesBiz.PlaceConstraint> {

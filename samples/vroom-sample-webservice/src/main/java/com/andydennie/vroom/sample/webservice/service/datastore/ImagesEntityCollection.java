@@ -1,4 +1,4 @@
-package com.andydennie.vroom.sample.webservice.service.datastore.entity;
+package com.andydennie.vroom.sample.webservice.service.datastore;
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
  *
@@ -13,10 +13,16 @@ package com.andydennie.vroom.sample.webservice.service.datastore.entity;
  * limitations under the License.
  */
 
-class PackageLogger {
-    // This class exists just to define a static string for use by other classes in this package. Make the constructor
-    // private to prevent instantiation.
-    private PackageLogger() {
+import com.andydennie.vroom.core.service.datastore.EntityCollection;
+import com.andydennie.vroom.sample.webservice.domain.Image;
+
+public class ImagesEntityCollection extends EntityCollection<Image, ImageDao> {
+
+    public ImagesEntityCollection() {
+        super(Image.class, ImageDao.class, new ImageEntity());
     }
 
-    public static final String TAG = "com.andydennie.vroom.sample.webservice.service.datastore.entity";}
+    public Image addImage(final Image image, final String fileName) {
+        return new ImageEntity().create(image, fileName);
+    }
+}

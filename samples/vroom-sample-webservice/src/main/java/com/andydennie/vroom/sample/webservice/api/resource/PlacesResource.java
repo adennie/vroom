@@ -14,28 +14,22 @@ package com.andydennie.vroom.sample.webservice.api.resource;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.sample.webservice.domain.Places;
-import com.andydennie.vroom.core.api.resource.KeyedObjectCollectionResource;
-import com.andydennie.vroom.core.api.resource.VroomResource;
+import com.andydennie.vroom.core.api.resource.KeyedCollectionResource;
 import com.andydennie.vroom.core.domain.DomainCollection;
 import com.andydennie.vroom.sample.webservice.api.application.MediaTypes;
-import com.andydennie.vroom.sample.webservice.api.application.Uris;
-import com.andydennie.vroom.sample.webservice.api.dto_converter.PlacesConverter;
 import com.andydennie.vroom.sample.webservice.biz.PlacesBiz;
 import com.andydennie.vroom.sample.webservice.domain.Place;
 import com.andydennie.vroom.sample.webservice.domain.Places;
-import org.restlet.engine.converter.ConverterHelper;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class PlacesResource
-        extends KeyedObjectCollectionResource<Places, Place> {
+        extends KeyedCollectionResource<Places, Place> {
 
     static final String PARAM_NAME = "name";
     static final String PARAM_CITY = "city";
@@ -45,12 +39,6 @@ public class PlacesResource
     static final String PARAM_ZIP_CODE = "zip_code";
     static final String PARAM_POSTAL_CODE = "postal_code";
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
-
-    static public void register(List<ConverterHelper> converterHelpers) {
-        VroomResource.registerResource(PlacesResource.class, Uris.PLACES);
-
-        converterHelpers.add(new PlacesConverter());
-    }
 
     @Override
     @Get(MediaTypes.PlacesMediaTypes.JSON_V1_0 + "|json")

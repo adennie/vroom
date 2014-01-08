@@ -14,7 +14,7 @@ package com.andydennie.vroom.sample.webservice.resource;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.api.resource.KeyedObjectResource;
+import com.andydennie.vroom.core.api.resource.KeyedResource;
 import com.andydennie.vroom.core.domain.LongKey;
 import com.andydennie.vroom.sample.webservice.biz.ImageBiz;
 import com.andydennie.vroom.sample.webservice.domain.Image;
@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ImageCommonResource
-        extends KeyedObjectResource<ImageBiz, Image> {
+        extends KeyedResource<ImageBiz, Image> {
 
     static final String PARAM_SIZE = "size";
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);

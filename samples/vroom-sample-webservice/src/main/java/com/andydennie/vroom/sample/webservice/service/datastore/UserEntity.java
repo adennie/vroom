@@ -1,7 +1,7 @@
-package com.andydennie.vroom.sample.webservice.service.datastore.entity;
+package com.andydennie.vroom.sample.webservice.service.datastore;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Fizz Buzz LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,10 @@ package com.andydennie.vroom.sample.webservice.service.datastore.entity;
  */
 
 import com.andydennie.vroom.core.service.datastore.TimeStampedEntity;
-import com.andydennie.vroom.sample.webservice.domain.Place;
-import com.andydennie.vroom.sample.webservice.service.datastore.dao.PlaceDao;
+import com.andydennie.vroom.sample.webservice.domain.User;
 
-public class PlaceEntity extends TimeStampedEntity<Place, PlaceDao> {
-    public PlaceEntity() {
-        super(Place.class, PlaceDao.class);
+public class UserEntity extends TimeStampedEntity<User, UserDao> {
+    public UserEntity() {
+        super(User.class, UserDao.class);
     }
 }

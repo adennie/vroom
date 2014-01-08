@@ -18,14 +18,14 @@ import com.andydennie.vroom.core.domain.KeyedObject;
 import com.andydennie.vroom.core.domain.LongKey;
 import com.googlecode.objectify.annotation.Id;
 
-public abstract class Dao<KO extends KeyedObject<LongKey>> {
+public abstract class VroomDao<KO extends KeyedObject<LongKey>> {
     @Id private Long id;
 
     // no-arg constructor used by Objectify
-    protected Dao() {
+    protected VroomDao() {
     }
 
-    protected Dao(final KO keyedObject) {
+    protected VroomDao(final KO keyedObject) {
         this.id = keyedObject.getKey().get();
     }
 

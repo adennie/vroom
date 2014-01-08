@@ -17,7 +17,7 @@ package com.andydennie.vroom.core.service.datastore;
 import com.andydennie.vroom.core.domain.KeyedObject;
 
 /**
- * Interface for "persist" objects that manage individual DomainObjects.
+ * Interface for classes that manage datastore entities
  */
 public interface IEntity<KO extends KeyedObject> {
 

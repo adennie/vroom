@@ -25,23 +25,11 @@ import org.restlet.resource.ServerResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public abstract class VroomResource extends ServerResource {
-    private static Map<Class<? extends VroomResource>, String> mResourceClassToCanonicalUriPathTemplateMap = new
-            HashMap<>();
 
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
-
-    public static <R extends VroomResource> void registerResource(
-            final Class<R> resourceClass, final String canonicalUriPathTemplate) {
-        mResourceClassToCanonicalUriPathTemplateMap.put(resourceClass, canonicalUriPathTemplate);
-    }
-
-    public static <R extends VroomResource> String getCanonicalUriPathTemplate(Class<R> resourceClass) {
-        return mResourceClassToCanonicalUriPathTemplateMap.get(resourceClass);
-    }
 
 
     @Options
@@ -122,14 +110,14 @@ public abstract class VroomResource extends ServerResource {
 
     }
 
-    protected String getCanonicalUriPathTemplate() {
-        return getCanonicalUriPathTemplate(this.getClass());
+    protected String getPathTemplate() {
+        return ResourceRegistry.getPathTemplate(this.getClass());
     }
 
     // this default implementation just returns the path template.  If the template contains any tokens, the
     // subclass should override this method and perform the token substitution.
-    public String getCanonicalUriPath() {
-        String pathTemplate = getCanonicalUriPathTemplate();
+    public String getPath() {
+        String pathTemplate = getPathTemplate();
         if (pathTemplate.contains("{"))
             throw new IllegalStateException("this resource's URI template contains tokens which must be substituted " +
                     "with values.");

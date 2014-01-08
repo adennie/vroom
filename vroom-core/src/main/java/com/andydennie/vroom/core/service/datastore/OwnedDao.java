@@ -29,10 +29,10 @@ import com.googlecode.objectify.annotation.Load;
  * @param <OWNERKO>  the owner domain object type
  * @param <OWNEDKO>  the owned domain object type
  */
-public abstract class OwnedDao<OWNERDAO extends Dao<OWNERKO>,
+public abstract class OwnedDao<OWNERDAO extends VroomDao<OWNERKO>,
         OWNERKO extends KeyedObject<LongKey>,
         OWNEDKO extends OwnedObject<LongKey>>
-        extends Dao<OWNEDKO> {
+        extends VroomDao<OWNEDKO> {
     @Load(OfyLoadGroups.Deep.class)
     Ref<OWNERDAO> owner; // reference to the owner entity
 

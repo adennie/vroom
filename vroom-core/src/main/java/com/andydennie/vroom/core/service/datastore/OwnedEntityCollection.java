@@ -38,7 +38,7 @@ import static com.andydennie.vroom.core.service.datastore.OfyManager.ofy;
 public abstract class OwnedEntityCollection<
         OWNERKO extends KeyedObject<LongKey>,
         OWNEDKO extends OwnedObject<LongKey>,
-        OWNERDAO extends Dao<OWNERKO>,
+        OWNERDAO extends VroomDao<OWNERKO>,
         OWNEDDAO extends OwnedDao<OWNERDAO, OWNERKO, OWNEDKO>>
         extends EntityCollection<OWNEDKO, OWNEDDAO> {
 
@@ -49,7 +49,7 @@ public abstract class OwnedEntityCollection<
                                     final LongKey ownerKey,
                                     final Class<OWNEDKO> ownedDomainObjectClass,
                                     final Class<OWNEDDAO> ownedDaoClass,
-                                    final Entity<OWNEDKO, OWNEDDAO> elementEntity) {
+                                    final VroomEntity<OWNEDKO, OWNEDDAO> elementEntity) {
         super(ownedDomainObjectClass, ownedDaoClass, elementEntity);
         mOwnerDaoClass = ownerDaoClass;
         mOwnerKey = ownerKey;

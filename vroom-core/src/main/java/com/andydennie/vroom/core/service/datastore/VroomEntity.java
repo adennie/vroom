@@ -14,8 +14,6 @@ package com.andydennie.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.exception.NotFoundException;
-import com.andydennie.vroom.core.util.Reflections;
 import com.andydennie.vroom.core.domain.KeyedObject;
 import com.andydennie.vroom.core.domain.LongKey;
 import com.andydennie.vroom.core.exception.NotFoundException;
@@ -26,14 +24,14 @@ import org.slf4j.LoggerFactory;
 import static com.andydennie.vroom.core.service.datastore.OfyManager.ofy;
 
 /**
- * Abstract base class for "entity" objects that correspond to keyed domain objects
+ * Abstract base class for classes which manage datastore entities
  */
-public abstract class Entity<KO extends KeyedObject<LongKey>, DAO extends Dao<KO>> implements IEntity<KO> {
+public abstract class VroomEntity<KO extends KeyedObject<LongKey>, DAO extends VroomDao<KO>> implements IEntity<KO> {
     private final Class<KO> mDomainClass;
     private final Class<DAO> mDaoClass;
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
 
-    protected Entity(final Class<KO> domainClass, final Class<DAO> daoClass) {
+    protected VroomEntity(final Class<KO> domainClass, final Class<DAO> daoClass) {
         mDomainClass = domainClass;
         mDaoClass = daoClass;
     }

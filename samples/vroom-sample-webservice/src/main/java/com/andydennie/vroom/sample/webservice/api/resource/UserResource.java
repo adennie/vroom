@@ -14,33 +14,16 @@ package com.andydennie.vroom.sample.webservice.api.resource;
  * limitations under the License.
  */
 
+import com.andydennie.vroom.core.api.resource.KeyedResource;
 import com.andydennie.vroom.sample.webservice.api.application.MediaTypes;
-import com.andydennie.vroom.sample.webservice.api.application.Uris;
-import com.andydennie.vroom.sample.webservice.api.dto_converter.UserConverter;
-import com.andydennie.vroom.sample.webservice.domain.User;
-import com.andydennie.vroom.core.api.resource.KeyedObjectResource;
-import com.andydennie.vroom.sample.webservice.api.application.MediaTypes;
-import com.andydennie.vroom.sample.webservice.api.application.UriTokens;
-import com.andydennie.vroom.sample.webservice.api.application.Uris;
-import com.andydennie.vroom.sample.webservice.api.dto_converter.UserConverter;
 import com.andydennie.vroom.sample.webservice.biz.UserBiz;
 import com.andydennie.vroom.sample.webservice.domain.User;
-import org.restlet.engine.converter.ConverterHelper;
 import org.restlet.resource.Get;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
-import java.util.List;
-
 public class UserResource
-        extends KeyedObjectResource<UserBiz, User> {
-
-    static public void register(List<ConverterHelper> converterHelpers) {
-        KeyedObjectResource.registerResource(UserResource.class, Uris.USER_TEMPLATE);
-        KeyedObjectResource.registerIdToken(UserResource.class, UriTokens.USER_ID);
-
-        converterHelpers.add(new UserConverter());
-    }
+        extends KeyedResource<UserBiz, User> {
 
     @Get(MediaTypes.UserMediaTypes.JSON_V1_0 + "|json")
     public User getResource() {

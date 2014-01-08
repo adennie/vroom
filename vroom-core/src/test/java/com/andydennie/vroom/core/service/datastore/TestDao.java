@@ -17,7 +17,7 @@ package com.andydennie.vroom.core.service.datastore;
 import com.googlecode.objectify.annotation.Entity;
 
 @Entity
-public class TestDao extends Dao<TestKeyedObject> {
+public class TestDao extends VroomDao<TestKeyedObject> {
     @Override
     public TestKeyedObject toDomainObject() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.

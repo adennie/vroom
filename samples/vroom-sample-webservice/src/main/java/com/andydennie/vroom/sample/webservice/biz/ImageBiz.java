@@ -17,7 +17,7 @@ package com.andydennie.vroom.sample.webservice.biz;
 import com.andydennie.vroom.core.biz.EntityBiz;
 import com.andydennie.vroom.core.domain.LongKey;
 import com.andydennie.vroom.sample.webservice.domain.Image;
-import com.andydennie.vroom.sample.webservice.service.datastore.entity.ImageEntity;
+import com.andydennie.vroom.sample.webservice.service.datastore.ImageEntity;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ServingUrlOptions;

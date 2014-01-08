@@ -1,4 +1,4 @@
-package com.andydennie.vroom.sample.webservice.service.datastore.entity;
+package com.andydennie.vroom.sample.webservice.service.datastore;
 
 /*
  * Copyright (c) 2014 Fizz Buzz LLC
@@ -18,7 +18,6 @@ import com.andydennie.vroom.core.domain.DomainCollection;
 import com.andydennie.vroom.core.service.datastore.FilterableEntityCollection;
 import com.andydennie.vroom.sample.webservice.biz.UsersBiz;
 import com.andydennie.vroom.sample.webservice.domain.User;
-import com.andydennie.vroom.sample.webservice.service.datastore.dao.UserDao;
 import com.googlecode.objectify.cmd.Query;
 
 import java.util.List;

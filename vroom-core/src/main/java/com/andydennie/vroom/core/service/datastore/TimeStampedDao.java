@@ -19,7 +19,7 @@ import com.andydennie.vroom.core.domain.LongKey;
 
 import java.util.Date;
 
-public abstract class TimeStampedDao<KO extends KeyedObject<LongKey>> extends Dao<KO> {
+public abstract class TimeStampedDao<KO extends KeyedObject<LongKey>> extends VroomDao<KO> {
     private Date createdDate;
     private Date modifiedDate;
 

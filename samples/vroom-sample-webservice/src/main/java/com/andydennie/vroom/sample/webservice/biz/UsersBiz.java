@@ -16,7 +16,7 @@ package com.andydennie.vroom.sample.webservice.biz;
 
 import com.andydennie.vroom.core.biz.FilterableEntityCollectionBiz;
 import com.andydennie.vroom.sample.webservice.domain.User;
-import com.andydennie.vroom.sample.webservice.service.datastore.entity.UsersEntityCollection;
+import com.andydennie.vroom.sample.webservice.service.datastore.UsersEntityCollection;
 
 public class UsersBiz
         extends FilterableEntityCollectionBiz<User, UsersBiz.UserConstraint> {

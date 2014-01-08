@@ -22,6 +22,9 @@
         <restlet.version>2.1.4</restlet.version>
         <slf4j.version>1.7.5</slf4j.version>
 
+        <!-- plugin versions -->
+        <maven-war-plugin.version>2.3</maven-war-plugin.version>
+
         <!-- this value is interpolated into app.yaml and becomes the version of the deployed app engine module.  It
              should not be strictly numeric, hence the "v" prefix. -->
         <appengine.module.version>v1</appengine.module.version>
@@ -154,7 +157,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <!-- version & configuration inherited from parent POM -->
+                <version>${maven-war-plugin.version}</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>${basedir}/src/main/webapp</directory>
+                            <filtering>true</filtering>
+                        </resource>
+                    </webResources>
+                </configuration>
             </plugin>
 
             <!-- add target/filtered-java as a source directory -->

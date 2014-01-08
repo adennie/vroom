@@ -15,7 +15,6 @@ package com.andydennie.vroom.core.service.datastore;
  */
 
 import com.andydennie.vroom.core.domain.KeyedObject;
-import com.andydennie.vroom.core.domain.KeyedObject;
 import com.andydennie.vroom.core.domain.LongKey;
 
 import java.util.Date;
@@ -25,7 +24,7 @@ import java.util.Date;
  * maintaining creation and modification date/times.
  */
 public abstract class TimeStampedEntity<KO extends KeyedObject<LongKey>, DAO extends TimeStampedDao<KO>> extends
-        Entity<KO, DAO> {
+        VroomEntity<KO, DAO> {
 
     protected TimeStampedEntity(final Class<KO> domainClass, final Class<DAO> daoClass) {
         super(domainClass, daoClass);

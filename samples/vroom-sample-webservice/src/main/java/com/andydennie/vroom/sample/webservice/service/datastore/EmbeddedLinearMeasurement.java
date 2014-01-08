@@ -1,4 +1,4 @@
-package com.andydennie.vroom.sample.webservice.service.datastore.dao;
+package com.andydennie.vroom.sample.webservice.service.datastore;
 
 /*
  * Copyright (c) 2013 Fizz Buzz LLC

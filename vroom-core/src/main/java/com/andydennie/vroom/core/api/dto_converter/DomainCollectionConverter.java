@@ -19,14 +19,7 @@ import com.andydennie.vroom.core.domain.DomainObject;
 import com.andydennie.vroom.core.util.Reflections;
 import com.andydennie.vroom.dto.SimpleCollectionDto;
 import com.andydennie.vroom.dto.VroomDto;
-import com.andydennie.vroom.core.domain.DomainCollection;
-import com.andydennie.vroom.core.domain.DomainObject;
 import com.andydennie.vroom.core.api.resource.DomainCollectionResource;
-import com.andydennie.vroom.core.util.Reflections;
-import com.andydennie.vroom.dto.CollectionDto;
-import com.andydennie.vroom.dto.VroomDto;
-import com.andydennie.vroom.dto.SimpleCollectionDto;
-import com.andydennie.vroom.dto.VroomDto;
 import org.restlet.data.MediaType;
 import org.restlet.engine.converter.ConverterHelper;
 import org.restlet.engine.resource.VariantInfo;
@@ -182,7 +175,7 @@ public abstract class DomainCollectionConverter<
         }
 
         // get the URI of the collection resource
-        String collectionSelfRef = DomainCollectionResource.getCanonicalUri(resource.getClass());
+        String collectionSelfRef = DomainCollectionResource.getPath(resource.getClass());
 
         // now create/return the SimpleCollectionDto
         SimpleCollectionDto<DTO> result = Reflections.newInstance(mDtoCollectionClass, String.class, List.class,

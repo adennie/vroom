@@ -1,4 +1,4 @@
-package com.andydennie.vroom.sample.webservice.service.datastore.entity;
+package com.andydennie.vroom.sample.webservice.service.datastore;
 /*
  * Copyright (c) 2013 Fizz Buzz LLC
  *
@@ -16,7 +16,6 @@ package com.andydennie.vroom.sample.webservice.service.datastore.entity;
 import com.andydennie.vroom.core.domain.LongKey;
 import com.andydennie.vroom.core.service.datastore.TimeStampedEntity;
 import com.andydennie.vroom.sample.webservice.domain.Image;
-import com.andydennie.vroom.sample.webservice.service.datastore.dao.ImageDao;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
