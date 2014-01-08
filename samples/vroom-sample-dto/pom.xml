@@ -7,6 +7,7 @@
         <groupId>com.andydennie.vroom</groupId>
         <artifactId>vroom-maven-parent</artifactId>
         <version>0.9.2-SNAPSHOT</version>
+        <relativePath>../..</relativePath>
     </parent>
 
     <artifactId>vroom-sample-dto</artifactId>
