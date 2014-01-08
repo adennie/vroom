@@ -17,18 +17,3 @@ Vroom leverages several best-of-breed open source libraries, including:
 
 Note: Vroom is currently in a pre-1.0 stage, and changing rapidly.  Breaking changes are likely.  You've been warned.
 
-To install:
-
-1) clone the github project to your local development environment
-
-2) from a shell prompt while in the vroom-maven-parent folder, install the maven parent POM:
-
-`mvn install`
-
-3) if you're just going to use the vroom-dto library as part of a Vroom client written in Java (e.g. an Android app), you only need to build and install vroom-dto.jar to your local maven repo.  From a shell prompt while in the vroom-dto-folder:
-
-`mvn install`
-
-4) if you're also going to be building a web API using the Vroom framework, in addition to vroom-dto, you'll also need to build and install vroom-core.jar to your local maven repo.  From a shell prompt while in the vroom-core folder:
-
-`mvn install`
