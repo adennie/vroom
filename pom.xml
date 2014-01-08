@@ -81,8 +81,11 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.4.2</version>
                     <configuration>
+                        <!-- don't publish to external repo (i.e. "install", don't "deploy")-->
+                        <goals>install</goals>
                         <autoVersionSubmodules>true</autoVersionSubmodules>
-                        <tagNameFormat>@{project.version}</tagNameFormat> <!-- use "X.Y.Z" labels in git -->
+                        <!-- use "X.Y.Z" labels in git -->
+                        <tagNameFormat>@{project.version}</tagNameFormat>
                     </configuration>
                 </plugin>
             </plugins>
