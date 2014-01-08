@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+<?xml version="1.0" encoding="UTF-8"?><!--
   ~ Copyright (c) 2014 Andy Dennie
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,13 +18,13 @@
     <artifactId>vroom-maven-parent</artifactId>
     <version>0.9.4-SNAPSHOT</version>
     <packaging>pom</packaging>
-	<name>Vroom (parent)</name>
-	<description>A Java framework for building RESTtful web services on Google App Engine</description>
-	<url>https://github.com/adennie/vroom</url>
-	
-	<modules>
-	    <module>vroom-dto</module>
-		<module>vroom-core</module>
+    <name>Vroom (parent)</name>
+    <description>A Java framework for building RESTtful web services on Google App Engine</description>
+    <url>https://github.com/adennie/vroom</url>
+
+    <modules>
+        <module>vroom-dto</module>
+        <module>vroom-core</module>
         <module>extensions/vroom-google-maps-extension</module>
         <module>samples/vroom-sample-webservice</module>
         <module>samples/vroom-sample-dto</module>
@@ -65,7 +64,7 @@
     <build>
         <pluginManagement>
             <plugins>
-			    <plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-invoker-plugin</artifactId>
                     <version>1.7</version>
@@ -75,8 +74,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>2.5.1</version>
                 </plugin>
-				
-		        <plugin>
+
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.4.2</version>
