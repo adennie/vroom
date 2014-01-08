@@ -32,6 +32,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <!-- version inherited from parent POM -->
                 <configuration>
+                    <!-- use Java 6 compatibility in order to work with Android client -->
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
