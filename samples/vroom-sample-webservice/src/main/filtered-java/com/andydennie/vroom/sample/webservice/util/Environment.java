@@ -25,8 +25,11 @@ public class Environment {
     // a semicolon-delimited list of allowed origins for Cross-Origin Resource Sharing.  In a local development
     // environment, something like "*" is probably fine, but in a test or production environment you may want to
     // restrict this to specific origins.
-    public static final String CORS_ALLOWED_ORIGINS = "${env.cors.allowed-origins}";
-    // the name of the GCS bucket for storing images.  These exist in a global namespace,
-    // so you want to use different bucket names for test and production.
-    public static final String GCS_BUCKET_IMAGES = "${env.gcs.bucket.images}";
+    public static final String CORS_ALLOWED_ORIGINS = "${vroom-sample.env.cors.allowed-origins}";
+
+    // Some API implementations define a URL space with a root URL component that precedes all resource paths.   This
+    // is optional in Vroom, but it is supported via VroomApplication.setUrlRoot.   Note: this root must also be
+    // specified in app.yaml when configuring the "restlet-servlet" and "objectify-filter" handlers.
+    public static final String RESOURCE_ROOT = "${vroom-sample.env.resource-root}";
+
 }

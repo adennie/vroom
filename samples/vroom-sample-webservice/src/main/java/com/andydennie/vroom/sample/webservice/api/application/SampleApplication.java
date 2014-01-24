@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.api.application;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import com.andydennie.vroom.sample.webservice.api.dto_converter.PlaceConverter;
 import com.andydennie.vroom.sample.webservice.api.dto_converter.PlacesConverter;
 import com.andydennie.vroom.sample.webservice.api.dto_converter.UserConverter;
 import com.andydennie.vroom.sample.webservice.api.dto_converter.UsersConverter;
+import com.andydennie.vroom.sample.webservice.api.resource.EdgeCacheResource;
 import com.andydennie.vroom.sample.webservice.api.resource.ImageResource;
-import com.andydennie.vroom.sample.webservice.api.resource.ImageUploaderResource;
 import com.andydennie.vroom.sample.webservice.api.resource.ImagesResource;
 import com.andydennie.vroom.sample.webservice.api.resource.PlaceResource;
 import com.andydennie.vroom.sample.webservice.api.resource.PlacesResource;
@@ -52,7 +52,7 @@ public class SampleApplication
             mLogger.info("SampleApplication: starting up application: {}", this);
             setName("Vroom sample API");
             setDescription("A sample REST API built with Vroom");
-            setOwner("Fizz Buzz LLC");
+            setOwner("Andy Dennie");
             // Establish configuration for handling CORS requests.
             configureCors();
 
@@ -70,7 +70,7 @@ public class SampleApplication
     public synchronized void start() throws Exception {
 
         // register the URL root
-        registerRootUrl(Uris.API_ROOT);
+        registerUrlRoot(Environment.RESOURCE_ROOT);
 
         // register the custom media types
         MetadataService metadataService = getMetadataService();
@@ -79,11 +79,13 @@ public class SampleApplication
         // register resource classes with their URI paths
         ResourceRegistry.registerResource(ImageResource.class, Uris.IMAGE_TEMPLATE);
         ResourceRegistry.registerResource(ImagesResource.class, Uris.IMAGES);
-        ResourceRegistry.registerResource(ImageUploaderResource.class, Uris.IMAGE_UPLOADER);
         ResourceRegistry.registerResource(PlaceResource.class, Uris.PLACE_TEMPLATE);
         ResourceRegistry.registerResource(PlacesResource.class, Uris.PLACES);
         ResourceRegistry.registerResource(UserResource.class, Uris.USER_TEMPLATE);
         ResourceRegistry.registerResource(UsersResource.class, Uris.USERS);
+
+        ResourceRegistry.registerResource(EdgeCacheResource.class, "/edge_cached");
+
 
         // register ID tokens for Keyed Resources
         ResourceRegistry.registerIdToken(ImageResource.class, UriTokens.IMAGE_ID);

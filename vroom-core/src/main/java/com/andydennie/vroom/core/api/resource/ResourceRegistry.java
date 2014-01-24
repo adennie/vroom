@@ -32,7 +32,7 @@ public class ResourceRegistry {
         sResourceToPathTemplateMap.put(resourceClass, pathTemplate);
     }
 
-    public static <R extends VroomResource> String getPathTemplate(Class<R> resourceClass) {
+    public static <R extends IVroomResource> String getPathTemplate(Class<R> resourceClass) {
         return sResourceToPathTemplateMap.get(resourceClass);
     }
 
@@ -71,5 +71,11 @@ public class ResourceRegistry {
         String uriTemplate = getPathTemplate(keyedResourceClass);
         String idToken = getIdToken(keyedResourceClass);
         return UriHelper.getLongTokenValue(uri, VroomApplication.getRootUrl() + uriTemplate, idToken);
+    }
+
+    public static <R extends IDomainCollectionResource> String getPath(
+            Class<R> collectionResourceClass) {
+        return VroomApplication.getServerUrl() + VroomApplication.getRootUrl() + ResourceRegistry.getPathTemplate
+                (collectionResourceClass);
     }
 }

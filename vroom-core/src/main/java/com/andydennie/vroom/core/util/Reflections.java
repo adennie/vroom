@@ -96,7 +96,9 @@ public class Reflections {
         T result = null;
 
         try {
-            result = clazz.newInstance();
+            Constructor<T> ctor = getDefaultConstructor(clazz);
+            ctor.setAccessible(true);
+            result = ctor.newInstance();
         } catch (Exception e) {
             throw new RuntimeException("failed to instantiate class: " + clazz.getName());
         }
@@ -116,6 +118,7 @@ public class Reflections {
         T result = null;
 
         try {
+            ctor.setAccessible(true);
             result = ctor.newInstance(args);
         }
         catch (Exception e) {
@@ -148,6 +151,23 @@ public class Reflections {
 
     // this is just a collection of static methods. Make the constructor private to prevent instantiation.
     private Reflections() {
+    }
+
+    /**
+     *
+     * @param clazz       a Class object for the target type
+     * @param <T>         the target type
+     * @return            the default constructor for clazz, or null if one does not exist
+     */
+    public static<T> Constructor<T> getDefaultConstructor(final Class<T> clazz) {
+        Constructor[] ctors = clazz.getDeclaredConstructors();
+        Constructor ctor = null;
+        for (int i = 0; i < ctors.length; i++) {
+            ctor = ctors[i];
+            if (ctor.getGenericParameterTypes().length == 0)
+                break;
+        }
+        return ctor;
     }
 
 }

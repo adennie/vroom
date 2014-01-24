@@ -14,25 +14,30 @@ package com.andydennie.vroom.core.domain;
  * limitations under the License.
  */
 
-public abstract class KeyedObject<K extends KeyType> extends DomainObject {
+public abstract class KeyedObject<K extends KeyType> implements IKeyedObject<K> {
     private K mKey;
 
     public KeyedObject(final K key) {
         mKey = key;
     }
 
+    @Override
     public K getKey() {
         return mKey;
     }
 
+    @Override
     public String getKeyAsString() {
         return mKey.toString();
     }
 
+    @Override
     public void setKey(final K key) {
         mKey = key;
     }
 
+    @Override
     public void validate() {
+        // subclasses should override to provide domain-specific validation
     }
 }

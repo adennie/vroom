@@ -15,8 +15,7 @@ package com.andydennie.vroom.core.service.datastore;
  */
 
 import com.andydennie.vroom.core.domain.DomainCollection;
-import com.andydennie.vroom.core.domain.KeyedObject;
-import com.andydennie.vroom.core.domain.LongKey;
+import com.andydennie.vroom.core.domain.IEntityObject;
 import com.googlecode.objectify.Key;
 
 import java.util.ArrayList;
@@ -28,39 +27,26 @@ import static com.andydennie.vroom.core.service.datastore.OfyManager.ofy;
  * Base class for entity collections.
  */
 public abstract class EntityCollection<
-        KO extends KeyedObject<LongKey>,
-        DAO extends VroomDao<KO>>
-        implements IEntityCollection<KO> {
+        EO extends IEntityObject,
+        DAO extends VroomDao<EO>,
+        E extends VroomEntity<EO, DAO>>
+        implements IEntityCollection<EO> {
 
-    private final Class<KO> mDomainElementClass;
-    private final Class<DAO> mElementDaoClass;
-    private final VroomEntity<KO, DAO> mElementEntity;
+    private final E mElementEntity;
 
-    protected EntityCollection(final Class<KO> domainElementClass,
-                               final Class<DAO> elementDaoClass,
-                               final VroomEntity<KO, DAO> elementEntity) {
-        mDomainElementClass = domainElementClass;
-        mElementDaoClass = elementDaoClass;
+    protected EntityCollection(final E elementEntity) {
         mElementEntity = elementEntity;
     }
 
     @Override
-    public DomainCollection<KO> getElements() {
-        List<DAO> daos = ofy().load().type(mElementDaoClass).list();
+    public DomainCollection<EO> getElements() {
+        List<DAO> daos = ofy().load().type(mElementEntity.getDaoClass()).list();
         return toDomainCollection(daos);
     }
 
     @Override
-    public KO addElement(final KO keyedObject) {
-
-        //TODO: addElement() - seriously consider making this method return void.
-
-        mElementEntity.create(keyedObject);
-        return keyedObject;
-    }
-
-    public Class<KO> getDomainElementClass() {
-        return mDomainElementClass;
+    public void addElement(final EO entityObject) {
+        mElementEntity.create(entityObject);
     }
 
     @Override
@@ -70,43 +56,16 @@ public abstract class EntityCollection<
     }
 
     @Override
-    public void delete(List<KO> keyedObjectCollection) {
+    public void delete(List<EO> entityObjectCollection) {
         List<Key<DAO>> keys = new ArrayList<>();
-        for (KO keyedObject : keyedObjectCollection) {
-            keys.add(Key.create(getElementDaoClass(), keyedObject.getKey().toString()));
+        for (EO entityObjectObject : entityObjectCollection) {
+            keys.add(Key.create(getElementDaoClass(), entityObjectObject.getKey().toString()));
         }
         deleteEntitiesByKey(keys);
     }
 
-    /**
-     * Instantiates a DAO from a PersistentObject
-     *
-     * @param keyedObject the PersistentObject
-     * @return the DAO
-     */
-    protected DAO createElementDao(KO keyedObject) {
-        if (keyedObject.getKey().get() != null)
-            throw new IllegalArgumentException("Cannot create an entity for a domain object with an existing ID; the " +
-                    "ID will be assigned by the persistence layer on the initial save operation.");
-
-        // instantiate the appropriate kind of DAO, using the constructor that takes a single domain object argument
-        DAO result = mElementEntity.createDao(keyedObject);
-
-
-        return result;
-    }
-
-    /**
-     * Saves a new VroomEntity in the datastore
-     *
-     * @param dao
-     */
-    protected void saveElementEntity(DAO dao) {
-
-    }
-
-    protected DomainCollection<KO> toDomainCollection(List<DAO> daoCollection) {
-        DomainCollection<KO> domainCollection = new DomainCollection<>();
+    protected DomainCollection<EO> toDomainCollection(List<DAO> daoCollection) {
+        DomainCollection<EO> domainCollection = new DomainCollection<>();
         for (DAO dao : daoCollection) {
             domainCollection.add(dao.toDomainObject());
         }
@@ -114,10 +73,14 @@ public abstract class EntityCollection<
     }
 
     protected Class<DAO> getElementDaoClass() {
-        return mElementDaoClass;
+        return mElementEntity.getDaoClass();
     }
 
     private void deleteEntitiesByKey(Iterable<Key<DAO>> keys) {
         ofy().delete().keys(keys);
+    }
+
+    public E getElementEntity() {
+        return mElementEntity;
     }
 }

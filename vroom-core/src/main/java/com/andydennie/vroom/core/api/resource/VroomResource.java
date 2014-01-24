@@ -18,19 +18,65 @@ import com.andydennie.vroom.core.api.application.VroomApplication;
 import com.andydennie.vroom.core.exception.ConflictException;
 import com.andydennie.vroom.core.exception.InvalidResourceUriException;
 import com.andydennie.vroom.core.exception.NotFoundException;
+import org.restlet.Response;
+import org.restlet.data.CacheDirective;
 import org.restlet.data.Status;
+import org.restlet.engine.header.Header;
+import org.restlet.engine.header.HeaderConstants;
 import org.restlet.resource.Options;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
+import org.restlet.util.Series;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-public abstract class VroomResource extends ServerResource {
+public abstract class VroomResource<R extends Object> extends ServerResource implements IVroomResource<R> {
+
+    private List<CacheDirective> mEdgeCacheDirectives = new ArrayList<>();
 
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
+    private boolean mEdgeCachingEnabled = false;
 
+    public boolean isEdgeCachingEnabled() {
+        return mEdgeCachingEnabled;
+    }
+
+    public void enableEdgeCaching(final int maxAge) {
+        // limit to 364 days.  See https://groups.google.com/d/msg/google-appengine/6xAV2Q5x8AU/QI26C0ofvhwJ
+        if (maxAge > 60*60*24*364)
+            throw new IllegalArgumentException("For Edge Caching, max-age should be no more than 364 days");
+
+        mEdgeCachingEnabled = true;
+        mEdgeCacheDirectives.clear();
+        mEdgeCacheDirectives.add(CacheDirective.publicInfo());
+        mEdgeCacheDirectives.add(CacheDirective.maxAge(maxAge));
+    }
+
+    public void disableEdgeCaching() {
+        mEdgeCachingEnabled = false;
+    }
+
+    @Override
+    public R getResource() {
+        return null;
+    }
+
+    @Override
+    public void putResource(final R object) {
+    }
+
+    @Override
+    public R postResource(final R object) {
+        return null;
+    }
+
+    @Override
+    public void deleteResource() {
+    }
 
     @Options
     public void doOptions() {
@@ -40,6 +86,23 @@ public abstract class VroomResource extends ServerResource {
 
     public VroomApplication getApplication() {
         return (VroomApplication) super.getApplication();
+    }
+
+    // this default implementation just returns the path template.  If the template contains any tokens, the
+    // subclass should override this method and perform the token substitution.
+    public String getPath() {
+        String pathTemplate = getPathTemplate();
+        if (pathTemplate.contains("{"))
+            throw new IllegalStateException("this resource's URI template contains tokens which must be substituted " +
+                    "with values.");
+        return pathTemplate;
+
+    }
+
+    protected void addEdgeCachingHeaders() {
+        // See https://groups.google.com/d/msg/google-appengine/6xAV2Q5x8AU/QI26C0ofvhwJ
+        getResponse().setCacheDirectives(mEdgeCacheDirectives);
+        addPragmaResponseHeader("Public");
     }
 
     protected void doCatch(final RuntimeException e) {
@@ -93,7 +156,6 @@ public abstract class VroomResource extends ServerResource {
         return result;
     }
 
-
     protected Long getLongParamValue(final String paramName) {
         String paramAsString = null;
         Map<String, String> params = getQuery().getValuesMap();
@@ -114,20 +176,26 @@ public abstract class VroomResource extends ServerResource {
         return ResourceRegistry.getPathTemplate(this.getClass());
     }
 
-    // this default implementation just returns the path template.  If the template contains any tokens, the
-    // subclass should override this method and perform the token substitution.
-    public String getPath() {
-        String pathTemplate = getPathTemplate();
-        if (pathTemplate.contains("{"))
-            throw new IllegalStateException("this resource's URI template contains tokens which must be substituted " +
-                    "with values.");
-        return pathTemplate;
-
-    }
-
     // this is really just here to provide access to the doInit method from the unit test
     @Override
     protected void doInit() throws ResourceException {
         super.doInit();
+    }
+
+    protected void addPragmaResponseHeader(final String value) {
+        addResponseHeader(HeaderConstants.HEADER_PRAGMA, value);
+    }
+
+    protected void addResponseHeader(final String header, final String value) {
+
+        Response response = getResponse();
+        Series<Header> responseHeaders = (Series<Header>)
+                response.getAttributes().get(HeaderConstants.ATTRIBUTE_HEADERS);
+        if (responseHeaders == null) {
+            responseHeaders = new Series(Header.class);
+            response.getAttributes().put(HeaderConstants.ATTRIBUTE_HEADERS,
+                    responseHeaders);
+        }
+        responseHeaders.add(new Header(header, value));
     }
 }

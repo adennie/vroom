@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.andydennie.vroom</groupId>
+        <artifactId>vroom-maven-parent</artifactId>
+        <version>0.9.4-SNAPSHOT</version>
+        <relativePath>../..</relativePath>
+    </parent>
+
+    <artifactId>vroom-sample-webapp</artifactId>
+    <packaging>war</packaging>
+
+    <properties>
+        <!-- this value is interpolated into app.yaml and becomes the version of the deployed app engine module.  It
+             should not be strictly numeric, hence the "v" prefix. -->
+        <appengine.module.version>v1</appengine.module.version>
+        <!-- this value is interpolated into app.yaml -->
+        <appengine.app.name>vroom-sample</appengine.app.name>
+
+    </properties>
+
+
+    <dependencies>
+        <!-- Compile/runtime dependencies -->
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-1.0-sdk</artifactId>
+            <version>${appengine.target.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.google.appengine</groupId>
+                <artifactId>appengine-maven-plugin</artifactId>
+                <version>${appengine.target.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-war-plugin.version}</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>${basedir}/src/main/webapp</directory>
+                            <filtering>true</filtering>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- these profiles define properties with values appropriate to different runtime environments -->
+        <profile>
+            <id>vroom-sample-local-dev</id>
+            <properties>
+                <vroom-sample.env.name>Local Dev</vroom-sample.env.name>
+            </properties>
+        </profile>
+        <profile>
+            <id>vroom-sample-prod</id>
+            <properties>
+                <vroom-sample.env.name>Prod</vroom-sample.env.name>
+            </properties>
+        </profile>
+    </profiles>
+</project>

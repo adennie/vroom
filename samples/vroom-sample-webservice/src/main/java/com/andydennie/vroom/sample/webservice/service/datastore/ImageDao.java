@@ -1,6 +1,7 @@
 package com.andydennie.vroom.sample.webservice.service.datastore;
+
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,34 +14,15 @@ package com.andydennie.vroom.sample.webservice.service.datastore;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.service.datastore.TimeStampedDao;
-import com.andydennie.vroom.sample.webservice.domain.Image;
+import com.andydennie.vroom.core.domain.LongKey;
+import com.andydennie.vroom.extension.googlecloudstorage.domain.GcsFile;
+import com.andydennie.vroom.extension.googlecloudstorage.service.datastore.GcsDao;
 import com.googlecode.objectify.annotation.Entity;
 
 @Entity
-public class ImageDao extends TimeStampedDao<Image> {
-    private String fileName;
-
-    // no-arg constructor needed by Objectify
-    public ImageDao() {
-    }
-
-    /**
-     * This constructor is invoked via reflection by VroomEntity and EntityCollection.
-     *
-     * @param image an Image domain object
-     */
-    public ImageDao(final Image image, String fileName) {
-        super(image);
-        this.fileName = fileName;
-    }
-
+public class ImageDao extends GcsDao<GcsFile> {
     @Override
-    public Image toDomainObject() {
-        return new Image(getId());
-    }
-
-    public String getFileName() {
-        return fileName;
+    public GcsFile toDomainObject() {
+        return new GcsFile(new LongKey(getId()), getBucketName(), getFileName());
     }
 }

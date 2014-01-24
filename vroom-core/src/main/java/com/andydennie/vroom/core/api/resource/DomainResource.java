@@ -14,8 +14,7 @@ package com.andydennie.vroom.core.api.resource;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.domain.DomainObject;
-import com.andydennie.vroom.core.domain.DomainObject;
+import com.andydennie.vroom.core.domain.IDomainObject;
 
-public abstract class DomainResource<DO extends DomainObject> extends VroomResource {
+public abstract class DomainResource<DO extends IDomainObject> extends VroomResource {
 }

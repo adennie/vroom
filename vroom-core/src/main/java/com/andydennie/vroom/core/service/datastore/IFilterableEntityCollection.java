@@ -15,11 +15,13 @@ package com.andydennie.vroom.core.service.datastore;
  */
 
 import com.andydennie.vroom.core.domain.DomainCollection;
-import com.andydennie.vroom.core.domain.KeyedObject;
+import com.andydennie.vroom.core.domain.IEntityObject;
 
 import java.util.Map;
 
-public interface IFilterableEntityCollection<KO extends KeyedObject,
-        FC> extends IEntityCollection<KO> {
-    public DomainCollection<KO> getFilteredElements(final Map<FC, Object> constraints);
+public interface IFilterableEntityCollection<
+        EO extends IEntityObject,
+        FC>
+        extends IEntityCollection<EO> {
+    public DomainCollection<EO> getFilteredElements(final Map<FC, Object> constraints);
 }

@@ -16,5 +16,5 @@ package com.andydennie.vroom.core.domain;
 
 import java.util.ArrayList;
 
-public class DomainCollection<DO extends DomainObject> extends ArrayList<DO> {
+public class DomainCollection<DO extends IDomainObject> extends ArrayList<DO> {
 }

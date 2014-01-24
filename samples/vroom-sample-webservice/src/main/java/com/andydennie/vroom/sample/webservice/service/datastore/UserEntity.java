@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.service.datastore;
 
 /*
- * Copyright (c) 2014 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@ package com.andydennie.vroom.sample.webservice.service.datastore;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.service.datastore.TimeStampedEntity;
+import com.andydennie.vroom.core.service.datastore.VroomEntity;
 import com.andydennie.vroom.sample.webservice.domain.User;
 
-public class UserEntity extends TimeStampedEntity<User, UserDao> {
+public class UserEntity extends VroomEntity<User, UserDao> {
     public UserEntity() {
         super(User.class, UserDao.class);
     }

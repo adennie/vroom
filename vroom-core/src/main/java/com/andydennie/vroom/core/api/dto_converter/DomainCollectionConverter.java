@@ -14,12 +14,13 @@ package com.andydennie.vroom.core.api.dto_converter;
  * limitations under the License.
  */
 
+import com.andydennie.vroom.core.api.resource.IDomainCollectionResource;
+import com.andydennie.vroom.core.api.resource.ResourceRegistry;
 import com.andydennie.vroom.core.domain.DomainCollection;
-import com.andydennie.vroom.core.domain.DomainObject;
+import com.andydennie.vroom.core.domain.IDomainObject;
 import com.andydennie.vroom.core.util.Reflections;
 import com.andydennie.vroom.dto.SimpleCollectionDto;
 import com.andydennie.vroom.dto.VroomDto;
-import com.andydennie.vroom.core.api.resource.DomainCollectionResource;
 import org.restlet.data.MediaType;
 import org.restlet.engine.converter.ConverterHelper;
 import org.restlet.engine.resource.VariantInfo;
@@ -36,7 +37,7 @@ public abstract class DomainCollectionConverter<
         DTC extends SimpleCollectionDto<DTO>,
         DTO extends VroomDto,
         DC extends DomainCollection<DO>,
-        DO extends DomainObject>
+        DO extends IDomainObject>
         extends ConverterHelper {
 
     private final Class<DC> mDomainCollectionClass;
@@ -158,7 +159,7 @@ public abstract class DomainCollectionConverter<
                                            final Variant target,
                                            final Resource resource) throws IOException {
 
-        SimpleCollectionDto<DTO> dtc = toDto((DomainCollectionResource<DC, DO>) resource, (DomainCollection<DO>) source);
+        SimpleCollectionDto<DTO> dtc = toDto((IDomainCollectionResource<DC, DO>) resource, (DomainCollection<DO>) source);
 
         // create a JacksonRepresentation for the DTC
         JacksonRepresentation<?> jacksonRep = new JacksonRepresentation<SimpleCollectionDto<DTO>>(target.getMediaType(), dtc);
@@ -166,7 +167,7 @@ public abstract class DomainCollectionConverter<
         return jacksonRep;
     }
 
-    protected SimpleCollectionDto<DTO> toDto(DomainCollectionResource<DC, DO> resource,
+    protected SimpleCollectionDto<DTO> toDto(IDomainCollectionResource<DC, DO> resource,
                                        final DomainCollection<DO> domainCollection) {
         // first convert the DO objects into DTO objects
         List<DTO> dtos = new ArrayList<DTO>();
@@ -175,7 +176,7 @@ public abstract class DomainCollectionConverter<
         }
 
         // get the URI of the collection resource
-        String collectionSelfRef = DomainCollectionResource.getPath(resource.getClass());
+        String collectionSelfRef = ResourceRegistry.getPath(resource.getClass());
 
         // now create/return the SimpleCollectionDto
         SimpleCollectionDto<DTO> result = Reflections.newInstance(mDtoCollectionClass, String.class, List.class,

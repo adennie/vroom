@@ -1,0 +1,4 @@
+<web-app>
+    <!-- this placeholder web.xml only exists to mollify maven-war-plugin.  The "real" web.xml is generated from
+         app.yaml and resides below /target  -->
+</web-app>

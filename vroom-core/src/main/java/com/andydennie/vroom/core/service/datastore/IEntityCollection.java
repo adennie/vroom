@@ -14,32 +14,31 @@ package com.andydennie.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.domain.KeyedObject;
-import com.andydennie.vroom.core.domain.KeyedObject;
+import com.andydennie.vroom.core.domain.IEntityObject;
 
 import java.util.List;
 
 /**
- * Interface for "persist" classes that manage collections of domain objects
+ * Interface for entity collection classes
  */
 public interface IEntityCollection<
-        KO extends KeyedObject> {
+        EO extends IEntityObject> {
 
     /**
-     * Returns a set of KeyedObjects corresponding to the entities in an entity collection
+     * Returns a set of domain objects corresponding to the entities in an entity collection
      *
      * @return the elements in the collection
      */
-    public List<KO> getElements();
+    public List<EO> getElements();
 
     /**
-     * Creates an entity in an entity collection corresponding to a keyed object.  Note: the provided keyed object
-     * should not have an assigned key at invocation time (its value should be -1); however, on successful return,
+     * Creates an entity in an entity collection corresponding to a domain object.  Note: the provided domain object
+     * should not have an assigned key at invocation time (its value should be null); however, on successful return,
      * the key will be assigned.
      *
-     * @param keyedObject
+     * @param domainObject
      */
-    public KO addElement(final KO keyedObject);
+    public void addElement(final EO domainObject);
 
     /**
      * Deletes all entities in a collection
@@ -47,9 +46,9 @@ public interface IEntityCollection<
     public void deleteAll();
 
     /**
-     * Deletes entities in a collection corresponding to a a list of keyed objects
+     * Deletes entities in a collection corresponding to a list of domain objects
      *
-     * @param keyedObjects the domain objects to delete
+     * @param domainObjects the domain objects to delete
      */
-    public void delete(final List<KO> keyedObjects);
+    public void delete(final List<EO> domainObjects);
 }

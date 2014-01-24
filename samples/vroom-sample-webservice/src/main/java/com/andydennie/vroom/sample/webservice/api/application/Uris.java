@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.api.application;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,9 @@ package com.andydennie.vroom.sample.webservice.api.application;
 import com.andydennie.vroom.core.api.util.UriHelper;
 
 public class Uris {
-    /* Many APIs define their URL space using a base URL component such as "/api" or "/v1", or something similar.
-       This is optional in Vroom but it is supported via VroomApplication.setUrlRoot.
-       Note: this root must also be specified in app.yaml for the "restlet-servlet" and "objectify-filter"
-       handlers.
-      */
-    public static final String API_ROOT = "/api";
-
-    /* the rest of these strings are URL paths that appear after the URL root */
+    // these resource paths appear after the URL root defined by Environment.RESOURCE_ROOT
     public static final String IMAGES = "/images/";
     public static final String IMAGE_TEMPLATE = IMAGES + UriHelper.tokenize(UriTokens.IMAGE_ID);
-    public static final String IMAGE_UPLOADER = "/image_uploader";
     public static final String PLACES = "/places/";
     public static final String PLACE_TEMPLATE = PLACES + UriHelper.tokenize(UriTokens.PLACE_ID);
     public static final String USERS = "/users/";

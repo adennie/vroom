@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.api.dto_converter;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@ package com.andydennie.vroom.sample.webservice.api.dto_converter;
  */
 
 import com.andydennie.vroom.core.api.dto_converter.KeyedObjectConverter;
+import com.andydennie.vroom.core.domain.LongKey;
 import com.andydennie.vroom.sample.dto.LocationProperty;
 import com.andydennie.vroom.sample.dto.PlaceDto;
 import com.andydennie.vroom.sample.webservice.api.application.MediaTypes;
@@ -49,6 +50,6 @@ public class PlaceConverter
                 dto.getLocation().getAddress(),
                 dto.getLocation().getLatitude(),
                 dto.getLocation().getLongitude());
-        return new Place(getIdFromDto(dto), dto.getName(), location);
+        return new Place(new LongKey(getIdFromDto(dto)), dto.getName(), location);
     }
 }

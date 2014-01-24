@@ -1,6 +1,6 @@
 package com.andydennie.vroom.sample.webservice.service.datastore;
 /*
- * Copyright (c) 2014 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,8 @@ package com.andydennie.vroom.sample.webservice.service.datastore;
  */
 
 import com.andydennie.vroom.core.domain.LongKey;
-import com.andydennie.vroom.core.service.datastore.TimeStampedDao;
+import com.andydennie.vroom.core.service.datastore.VroomDao;
+import com.andydennie.vroom.extension.googlecloudstorage.service.datastore.GcsDao;
 import com.andydennie.vroom.sample.webservice.domain.User;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
@@ -22,29 +23,20 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 
 @Entity
-public class UserDao extends TimeStampedDao<User> {
+public class UserDao extends VroomDao<User> {
     @Index private String firstName;
     @Index private String lastName;
     @Index private String email;
-    private Ref<ImageDao> profileImage;
+    private Ref<GcsDao> profileImage;
     private Ref<PlaceDao> home;
 
-    // no-arg constructor needed by Objectify
-    public UserDao() {
-    }
-
-    /**
-     * This constructor is invoked via reflection by VroomEntity and EntityCollection.
-     *
-     * @param user a User domain object
-     */
-    public UserDao(final User user) {
-        super(user);
+    @Override
+    public void fromDomainObject(final User user) {
         firstName = user.getFirstName();
         lastName = user.getLastName();
         email = user.getEmail();
         if (user.getProfileImageKey() != null)
-            profileImage = Ref.create(Key.create(ImageDao.class, user.getProfileImageKey().get()));
+            profileImage = Ref.create(Key.create(GcsDao.class, user.getProfileImageKey().get()));
         if (user.getHomeKey() != null)
             home = Ref.create(Key.create(PlaceDao.class, user.getHomeKey().get()));
     }

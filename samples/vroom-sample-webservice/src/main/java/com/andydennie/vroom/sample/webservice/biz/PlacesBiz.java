@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.biz;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import com.andydennie.vroom.core.biz.FilterableEntityCollectionBiz;
 import com.andydennie.vroom.sample.webservice.domain.Place;
 
 public class PlacesBiz
-        extends FilterableEntityCollectionBiz<Place, PlacesBiz.PlaceConstraint> {
+        extends FilterableEntityCollectionBiz<Place, PlacesEntityCollection, PlacesBiz.PlaceConstraint> {
 
     public enum PlaceConstraint {
         NAME_EQUALS,

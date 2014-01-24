@@ -1,0 +1,16 @@
+application: ${appengine.app.name}
+module: default
+version: ${appengine.module.version}
+runtime: java
+threadsafe: true
+
+public_root: /static
+
+static_files:
+  - include: /**
+
+welcome_files:
+  - index.html
+
+
+

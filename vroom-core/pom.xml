@@ -28,12 +28,16 @@
     <properties>
         <!-- dependency versions -->
         <appengine.target.version>1.8.8</appengine.target.version>
+        <catch-exception.version>1.2.0</catch-exception.version>
+        <commons-fileupload.version>1.2</commons-fileupload.version>
+        <fest-assert.version>2.0M10</fest-assert.version>
         <guava.version>14.0.1</guava.version>
         <!-- note: keep jackson version in sync with restlet version-->
         <jackson-version>1.9.8</jackson-version>
         <junit.version>4.11</junit.version>
         <objectify.version>4.0rc2</objectify.version>
         <restlet.version>2.1.4</restlet.version>
+        <servlet-api.version>2.5</servlet-api.version>
         <slf4j.version>1.7.5</slf4j.version>
     </properties>
 
@@ -56,13 +60,13 @@
         <dependency>
             <groupId>com.googlecode.catch-exception</groupId>
             <artifactId>catch-exception</artifactId>
-            <version>1.2.0</version>
+            <version>${catch-exception.version}</version>
         </dependency>
 
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
+            <version>${servlet-api.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -76,7 +80,7 @@
         <dependency>
             <groupId>org.easytesting</groupId>
             <artifactId>fest-assert-core</artifactId>
-            <version>2.0M10</version>
+            <version>${fest-assert.version}</version>
         </dependency>
 
         <!-- Compile/runtime dependencies -->
@@ -108,6 +112,19 @@
             <groupId>com.googlecode.objectify</groupId>
             <artifactId>objectify</artifactId>
             <version>${objectify.version}</version>
+            <exclusions>
+                <!-- objectify wants to use an older version of guava, so exclude it -->
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons-fileupload.version}</version>
         </dependency>
 
         <dependency>

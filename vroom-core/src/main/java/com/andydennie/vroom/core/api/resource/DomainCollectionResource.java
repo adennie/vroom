@@ -16,31 +16,28 @@ package com.andydennie.vroom.core.api.resource;
 
 import com.andydennie.vroom.core.biz.ICollectionBiz;
 import com.andydennie.vroom.core.domain.DomainCollection;
-import com.andydennie.vroom.core.domain.DomainObject;
+import com.andydennie.vroom.core.domain.IDomainObject;
 import com.andydennie.vroom.core.util.Reflections;
-import com.andydennie.vroom.core.api.application.VroomApplication;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
-import org.restlet.resource.Delete;
 import org.restlet.resource.ResourceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class DomainCollectionResource<
         DC extends DomainCollection<DO>,
-        DO extends DomainObject>
+        DO extends IDomainObject,
+        CB extends ICollectionBiz<DO>>
         extends VroomResource {
+
     private Class<DC> mDomainCollectionClass;
-    private ICollectionBiz<DO> mCollectionBiz;
+    private CB mCollectionBiz;
+    private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
 
-    public ICollectionBiz<DO> getCollectionBiz() {
+    public CB getCollectionBiz() {
         return mCollectionBiz;
-    }
-
-    public static <R extends DomainCollectionResource> String getPath(
-            Class<R> collectionResourceClass) {
-        return VroomApplication.getServerUrl() + VroomApplication.getRootUrl() + ResourceRegistry.getPathTemplate
-                (collectionResourceClass);
     }
 
     public DomainCollection<DO> getResource() {
@@ -54,21 +51,21 @@ public abstract class DomainCollectionResource<
     }
 
     public DO postResource(final DO element) {
-        DO idObject = null;
         try {
-            idObject = mCollectionBiz.add(element);
+            mCollectionBiz.add(element);
             getResponse().setStatus(Status.SUCCESS_CREATED);
             // set the Location response header
-            getResponse().setLocationRef(getElementCanonicalUri(element));
+            String uri = getElementUri(element);
+            getResponse().setLocationRef(uri);
+            mLogger.info("created new resource at location: {}",uri );
         } catch (RuntimeException e) {
             doCatch(e);
         }
-        return idObject;
+        return element;
     }
 
-    @Delete
     public void deleteResource() {
-        mCollectionBiz.deleteAll();
+            mCollectionBiz.deleteAll();
     }
 
     @Override
@@ -85,10 +82,10 @@ public abstract class DomainCollectionResource<
     }
 
     protected void doInit(final Class<DC> domainCollectionClass,
-                          final ICollectionBiz<DO> collectionBiz) throws ResourceException {
+                          final CB collectionBiz) throws ResourceException {
         mDomainCollectionClass = domainCollectionClass;
         mCollectionBiz = collectionBiz;
     }
 
-    protected abstract String getElementCanonicalUri(final DO element);
+    protected abstract String getElementUri(final DO element);
 }

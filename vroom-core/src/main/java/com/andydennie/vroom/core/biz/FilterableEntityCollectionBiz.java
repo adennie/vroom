@@ -14,9 +14,7 @@ package com.andydennie.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.domain.KeyedObject;
-import com.andydennie.vroom.core.service.datastore.IFilterableEntityCollection;
-import com.andydennie.vroom.core.domain.KeyedObject;
+import com.andydennie.vroom.core.domain.IEntityObject;
 import com.andydennie.vroom.core.service.datastore.IFilterableEntityCollection;
 
 import java.util.List;
@@ -24,7 +22,7 @@ import java.util.Map;
 
 /**
  * A business logic class for collections of persistent entities, with filtering support.  The filtering
- * constraints are expressed via a parameterized type.  For example, this could be an enum like
+ * constraints are expressed via a generic type.  For example, this could be an enum like
  * <pre>
  * enum MyConstraint {
  *     NAME_EQUALS,
@@ -32,18 +30,22 @@ import java.util.Map;
  *     OWNED_BY}
  * </pre>
  * The {@link #getFilteredElements} method takes a map of these constraints and values.
- * }
- * @param <KO> a KeyedObject subtype
+ *
+ * @param <EO> a domain object type implementing the IEntityObject interface
+ * @param <EC> a domain collection type implementing the IFilterableEntityCollection interface
  * @param <FC> a filter constraint type
  */
-public class FilterableEntityCollectionBiz<KO extends KeyedObject, FC extends Object> extends
-        EntityCollectionBiz<KO> {
+public class FilterableEntityCollectionBiz<
+        EO extends IEntityObject,
+        EC extends IFilterableEntityCollection<EO, FC>,
+        FC extends Object>
+        extends EntityCollectionBiz<EO, EC> {
 
-    public FilterableEntityCollectionBiz(final IFilterableEntityCollection<KO, FC> entityCollection) {
+    public FilterableEntityCollectionBiz(final EC entityCollection) {
         super(entityCollection);
     }
 
-    public List<KO> getFilteredElements(final Map<FC, Object> constraints) {
+    public List<EO> getFilteredElements(final Map<FC, Object> constraints) {
         return ((IFilterableEntityCollection)getEntityCollection()).getFilteredElements(constraints);
     }
 

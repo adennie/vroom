@@ -14,7 +14,6 @@
 
     <properties>
         <!-- dependency versions -->
-        <appengine.target.version>1.8.8</appengine.target.version>
         <guava.version>14.0.1</guava.version>
         <jackson-version>1.9.8</jackson-version>
         <joda-time.version>2.3</joda-time.version>
@@ -23,12 +22,14 @@
         <restlet.version>2.1.4</restlet.version>
         <slf4j.version>1.7.5</slf4j.version>
 
-        <!-- plugin versions -->
-        <maven-war-plugin.version>2.3</maven-war-plugin.version>
-
         <!-- this value is interpolated into app.yaml and becomes the version of the deployed app engine module.  It
              should not be strictly numeric, hence the "v" prefix. -->
         <appengine.module.version>v1</appengine.module.version>
+        <!-- this value is interpolated into app.yaml -->
+        <appengine.app.name>vroom-sample</appengine.app.name>
+
+        <vroom-sample.env.resource-root>/root</vroom-sample.env.resource-root>
+
     </properties>
 
     <dependencies>
@@ -46,9 +47,16 @@
             <artifactId>vroom-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.andydennie.vroom</groupId>
             <artifactId>vroom-google-maps-extension</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.andydennie.vroom</groupId>
+            <artifactId>vroom-google-cloud-storage-extension</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -96,6 +104,13 @@
         </dependency>
 
         <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+
+        <dependency>
             <groupId>org.restlet.gae</groupId>
             <artifactId>org.restlet.ext.jackson</artifactId>
             <version>${restlet.version}</version>
@@ -119,13 +134,7 @@
             <version>${slf4j.version}</version>
         </dependency>
 
-        <!-- provided dependencies -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-            <scope>provided</scope>
-        </dependency>
+
     </dependencies>
 
     <build>
@@ -173,7 +182,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <!-- version & configuration inherited from parent POM -->
+                <!-- version inherited from parent POM -->
                 <executions>
                     <execution>
                         <phase>generate-sources</phase>
@@ -192,19 +201,22 @@
     </build>
 
     <profiles>
+        <!-- these profiles define properties with values appropriate to the different runtime environments -->
         <profile>
-            <id>vroom-sample-webservice-local-dev</id>
+            <id>vroom-sample-local-dev</id>
             <properties>
-                <!-- this value is interpolated into app.yaml -->
-                <appengine.app.name>vroom-sample-webservice-local-dev</appengine.app.name>
-
-                <!-- allowed origins for CORS requests.  Caution: you probably only want to use "*" in a local dev env!!! -->
-                <env.cors.allowed-origins>*</env.cors.allowed-origins>
-
-                <env.gcs.bucket.images>vroom-sample-webservice-images</env.gcs.bucket.images>
-
+                <!-- allowed origins for CORS requests. -->
+                <vroom-sample.env.cors.allowed-origins>*</vroom-sample.env.cors.allowed-origins>
+                <vroom-sample.env.api-base-url>http://localhost:8080/root/</vroom-sample.env.api-base-url>
             </properties>
-
+        </profile>
+        <profile>
+            <id>vroom-sample-prod</id>
+            <properties>
+                <!-- allowed origins for CORS requests.  -->
+                <vroom-sample.env.cors.allowed-origins>http://vroom-sample.appspot.com</vroom-sample.env.cors.allowed-origins>
+                <vroom-sample.env.api-base-url>http://api.vroom-sample.appspot.com/root/</vroom-sample.env.api-base-url>
+            </properties>
         </profile>
     </profiles>
 

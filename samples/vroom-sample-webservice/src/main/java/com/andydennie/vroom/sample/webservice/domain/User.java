@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.domain;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@ package com.andydennie.vroom.sample.webservice.domain;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.domain.KeyedObject;
+import com.andydennie.vroom.core.domain.EntityObject;
 import com.andydennie.vroom.core.domain.LongKey;
 
-public class User extends KeyedObject<LongKey> {
+public class User extends EntityObject {
     private String mFirstName;
     private String mLastName;
     private String mEmail;

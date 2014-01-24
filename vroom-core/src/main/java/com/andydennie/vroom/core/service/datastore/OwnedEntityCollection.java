@@ -15,9 +15,9 @@ package com.andydennie.vroom.core.service.datastore;
  */
 
 import com.andydennie.vroom.core.domain.DomainCollection;
-import com.andydennie.vroom.core.domain.KeyedObject;
+import com.andydennie.vroom.core.domain.IEntityObject;
+import com.andydennie.vroom.core.domain.IOwnedEntityObject;
 import com.andydennie.vroom.core.domain.LongKey;
-import com.andydennie.vroom.core.domain.OwnedObject;
 import com.googlecode.objectify.Key;
 
 import java.util.List;
@@ -26,37 +26,35 @@ import static com.andydennie.vroom.core.service.datastore.OfyManager.ofy;
 
 
 /**
- * A base persist class for managing collections of entities which are logically "owned" by another entity.
+ * A base class for managing collections of entities which are logically "owned" by another entity.
  * The owned entity stores a reference to the key of its owner, allowing the {@link #getElements()} method to
  * constrain the results to those belonging to that particular owner.
  *
- * @param <OWNERKO>  the owner domain object type (a KeyedObject<Long>)
- * @param <OWNEDKO>  the owned domain object type (a KeyedObject<Long>)
+ * @param <OWNEDEO>  the owned domain object type (a KeyedObject<Long>)
  * @param <OWNERDAO> the owner DAO type
  * @param <OWNEDDAO> the owned DAO type
  */
 public abstract class OwnedEntityCollection<
-        OWNERKO extends KeyedObject<LongKey>,
-        OWNEDKO extends OwnedObject<LongKey>,
-        OWNERDAO extends VroomDao<OWNERKO>,
-        OWNEDDAO extends OwnedDao<OWNERDAO, OWNERKO, OWNEDKO>>
-        extends EntityCollection<OWNEDKO, OWNEDDAO> {
+        OWNEREO extends IEntityObject,
+        OWNEDEO extends IOwnedEntityObject,
+        OWNERDAO extends VroomDao<OWNEREO>,
+        OWNEDDAO extends OwnedDao<OWNERDAO, OWNEREO, OWNEDEO>,
+        E extends VroomEntity<OWNEDEO, OWNEDDAO>>
+        extends EntityCollection<OWNEDEO, OWNEDDAO, E> {
 
     private Class<OWNERDAO> mOwnerDaoClass;
     private LongKey mOwnerKey;
 
     protected OwnedEntityCollection(final Class<OWNERDAO> ownerDaoClass,
                                     final LongKey ownerKey,
-                                    final Class<OWNEDKO> ownedDomainObjectClass,
-                                    final Class<OWNEDDAO> ownedDaoClass,
-                                    final VroomEntity<OWNEDKO, OWNEDDAO> elementEntity) {
-        super(ownedDomainObjectClass, ownedDaoClass, elementEntity);
+                                    final E elementEntity) {
+        super(elementEntity);
         mOwnerDaoClass = ownerDaoClass;
         mOwnerKey = ownerKey;
     }
 
     @Override
-    public DomainCollection<OWNEDKO> getElements() {
+    public DomainCollection<OWNEDEO> getElements() {
         List<OWNEDDAO> daos = ofy().load().type(getElementDaoClass())
                 .filter("owner", Key.create(mOwnerDaoClass, mOwnerKey.get())).list();
         return toDomainCollection(daos);

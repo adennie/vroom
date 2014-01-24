@@ -1,0 +1,59 @@
+/* Style file to override bootstrap style */
+
+/* INDEX */
+#container-partials{
+	margin-top: 70px;
+}
+
+/* LIST PLACES */
+#list-places form.form-search div.button-container{
+	text-align: center;
+	margin-top: 10px;
+}
+#list-places table td{
+	vertical-align: middle;
+}
+
+#list-places #btn-create{
+	float: right;
+}
+.row-delete{
+	background-color: red;
+}
+
+/* CREATE PLACE */
+#create-place form{
+	text-align: center;
+	margin-top: 30px;	
+	width: 40%;
+	float: left;
+}
+#create-place div.demo-map{
+	display: block;
+	margin-bottom: 20px;
+	width: 45%;
+	float: right;
+	height: 480px;
+}
+#create-place input.ng-invalid.ng-dirty {
+	background-color: #FA787E;
+}
+
+#create-place input.ng-valid.ng-dirty {
+	background-color: #78FA89;
+}
+/* CREATE PLACE */
+#create-place hr{
+	clear: both;
+	float: none;
+}
+
+/* CREATE EVENT */
+/* For the cost input */
+#create-event .form-horizontal .controls.input-prepend{
+	margin-left: 20px;
+}
+#create-event .form-horizontal .controls.input-prepend #inputCost{
+	width: 179px;
+}
+

@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.api.resource;
 
 /*
- * Copyright (c) 2014 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import com.andydennie.vroom.sample.webservice.api.application.MediaTypes;
 import com.andydennie.vroom.sample.webservice.biz.UsersBiz;
 import com.andydennie.vroom.sample.webservice.domain.User;
 import com.andydennie.vroom.sample.webservice.domain.Users;
+import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UsersResource
-        extends KeyedCollectionResource<Users, User> {
+        extends KeyedCollectionResource<Users, User, UsersBiz> {
 
     static final String PARAM_EMAIL = "email";
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
@@ -58,6 +59,14 @@ public class UsersResource
             + MediaTypes.UserMediaTypes.JSON_V1_0 + "|json")
     public User postResource(final User User) {
         return super.postResource(User);
+    }
+
+    @Override
+    @Delete
+    public void deleteResource() {
+        // this override just exposes the underlying default implementation through the API, through use of the
+        // @Delete annotation.
+        super.deleteResource();
     }
 
     @Override

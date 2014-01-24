@@ -25,9 +25,9 @@ import static com.googlecode.catchexception.apis.CatchExceptionBdd.then;
 import static com.googlecode.catchexception.apis.CatchExceptionBdd.when;
 
 public class VroomEntityTest {
-    TestKeyedObject mKeyedObject;
+    TestEntityObject mTestEntityObject;
     TestDao mTestDao;
-    VroomEntity<TestKeyedObject, TestDao> mTestEntity;
+    VroomEntity<TestEntityObject, TestDao> mTestEntity;
 
     @Rule
     public DataStoreRule dsRule = new DataStoreRule();
@@ -37,20 +37,20 @@ public class VroomEntityTest {
 
     @Before
     public void setup() {
-        mKeyedObject = new TestKeyedObject();
+        mTestEntityObject = new TestEntityObject();
         mTestDao = new TestDao();
         OfyManager.getOfyService().factory().register(TestDao.class);
-        mTestEntity = new VroomEntity<TestKeyedObject, TestDao>(TestKeyedObject.class, TestDao.class) {};
+        mTestEntity = new VroomEntity<TestEntityObject, TestDao>(TestEntityObject.class, TestDao.class) {};
 
     }
 
     @Test
     public void createFailsWhenKeyedObjectAlreadyHasAKey() {
         // given a keyed object with a key
-        mKeyedObject.setKey(new LongKey(0L));
+        mTestEntityObject.setKey(new LongKey(0L));
 
         // when attempting to create an entity for that keyed object
-        when(mTestEntity).create(mKeyedObject);
+        when(mTestEntity).create(mTestEntityObject);
 
         // then an IllegalArgumentException should be thrown
         then(caughtException())

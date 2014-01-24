@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.api.resource;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@ package com.andydennie.vroom.sample.webservice.api.resource;
  */
 
 import com.andydennie.vroom.core.api.resource.KeyedResource;
+import com.andydennie.vroom.core.domain.LongKey;
 import com.andydennie.vroom.sample.webservice.api.application.MediaTypes;
 import com.andydennie.vroom.sample.webservice.biz.PlaceBiz;
 import com.andydennie.vroom.sample.webservice.domain.Place;
@@ -23,9 +24,10 @@ import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
 public class PlaceResource
-        extends KeyedResource<PlaceBiz, Place> {
+        extends KeyedResource<LongKey, PlaceBiz, Place> {
 
 
+    @Override
     @Get(MediaTypes.PlaceMediaTypes.JSON_V1_0 + "|json")
     public Place getResource() {
         return super.getResource();

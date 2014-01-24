@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.biz;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,17 @@ package com.andydennie.vroom.sample.webservice.biz;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.biz.EntityCollectionBiz;
-import com.andydennie.vroom.sample.webservice.domain.Image;
+import com.andydennie.vroom.core.biz.FileEntityCollectionBiz;
+import com.andydennie.vroom.extension.googlecloudstorage.domain.GcsFile;
 import com.andydennie.vroom.sample.webservice.service.datastore.ImagesEntityCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ImagesBiz
-        extends EntityCollectionBiz<Image> {
+        extends FileEntityCollectionBiz<GcsFile, ImagesEntityCollection> {
+    private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
 
     public ImagesBiz() {
         super(new ImagesEntityCollection());
-    }
-
-    public Image addImage(final Image image, final String fileName) {
-        ((ImagesEntityCollection) getEntityCollection()).addImage(image, fileName);
-        return image;
     }
 }

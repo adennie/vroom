@@ -13,30 +13,16 @@ package com.andydennie.vroom.sample.webservice.service.datastore;
  * limitations under the License.
  */
 
+import com.andydennie.vroom.core.domain.LongKey;
+import com.andydennie.vroom.core.service.datastore.VroomDao;
 import com.andydennie.vroom.sample.webservice.domain.Place;
-import com.andydennie.vroom.core.service.datastore.TimeStampedDao;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 
 @Entity
-public class PlaceDao extends TimeStampedDao<Place> {
+public class PlaceDao extends VroomDao<Place> {
     @Index private String name;
     private EmbeddedLocationDao location;
-
-    // no-arg constructor needed by Objectify
-    public PlaceDao() {
-    }
-
-    /**
-     * This constructor is invoked via reflection by VroomEntity and EntityCollection.
-     *
-     * @param place a Place domain object
-     */
-    public PlaceDao(final Place place) {
-        super(place);
-        name = place.getName();
-        location = new EmbeddedLocationDao(place.getLocation());
-    }
 
     public EmbeddedLocationDao getLocation() {
         return location;
@@ -44,6 +30,12 @@ public class PlaceDao extends TimeStampedDao<Place> {
 
     @Override
     public Place toDomainObject() {
-        return new Place(getId(), name, location.toLocation());
+        return new Place(new LongKey(getId()), name, location.toLocation());
+    }
+
+    @Override
+    public void fromDomainObject(final Place place) {
+        name = place.getName();
+        location = new EmbeddedLocationDao(place.getLocation());
     }
 }

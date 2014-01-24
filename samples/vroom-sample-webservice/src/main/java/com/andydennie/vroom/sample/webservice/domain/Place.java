@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.domain;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@ package com.andydennie.vroom.sample.webservice.domain;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.domain.KeyedObject;
+import com.andydennie.vroom.core.domain.EntityObject;
 import com.andydennie.vroom.core.domain.LongKey;
 
-public class Place extends KeyedObject<LongKey> {
+public class Place extends EntityObject {
     private String mName;
     private Location mLocation;
 
 
-    public Place(final Long key, final String name, final Location location) {
-        super(new LongKey(key));
+    public Place(final LongKey key, final String name, final Location location) {
+        super(key);
         mName = name;
         mLocation = location;
     }

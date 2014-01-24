@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.api.application;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ public class MediaTypes {
         // v1.0
         public static final String JSON_V1_0 = "place-1.0-json";
         public static final MediaType JSON_V1_0_MEDIATYPE =
-                MediaType.register("application/vnd.fizzbuzz.place-v1+json; level=0",
+                MediaType.register("application/vnd.vroomsample.place-v1+json; level=0",
                         "Vroom Place JSON version 1.0");
 
         public static void register(final MetadataService metadataService) {
@@ -42,7 +42,7 @@ public class MediaTypes {
         // v1.0
         public static final String JSON_V1_0 = "places-1.0-json";
         public static final MediaType JSON_V1_0_MEDIATYPE =
-                MediaType.register("application/vnd.fizzbuzz.places-v1+json; level=0",
+                MediaType.register("application/vnd.vroomsample.places-v1+json; level=0",
                         "Vroom Places JSON version 1.0");
 
         public static void register(final MetadataService metadataService) {
@@ -53,7 +53,7 @@ public class MediaTypes {
         // v1.0
         public static final String JSON_V1_0 = "user-1.0-json";
         public static final MediaType JSON_V1_0_MEDIATYPE =
-                MediaType.register("application/vnd.fizzbuzz.user-v1+json; level=0",
+                MediaType.register("application/vnd.vroomsample.user-v1+json; level=0",
                         "Vroom User JSON version 1.0");
 
         public static void register(final MetadataService metadataService) {
@@ -65,7 +65,7 @@ public class MediaTypes {
         // v1.0
         public static final String JSON_V1_0 = "users-1.0-json";
         public static final MediaType JSON_V1_0_MEDIATYPE =
-                MediaType.register("application/vnd.fizzbuzz.users-v1+json; level=0",
+                MediaType.register("application/vnd.vroomsample.users-v1+json; level=0",
                         "Vroom Users JSON version 1.0");
 
         public static void register(final MetadataService metadataService) {
