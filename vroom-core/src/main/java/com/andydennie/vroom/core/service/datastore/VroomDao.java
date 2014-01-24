@@ -14,29 +14,51 @@ package com.andydennie.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.domain.KeyedObject;
-import com.andydennie.vroom.core.domain.LongKey;
+import com.andydennie.vroom.core.domain.IEntityObject;
 import com.googlecode.objectify.annotation.Id;
 
-public abstract class VroomDao<KO extends KeyedObject<LongKey>> {
+import static com.andydennie.vroom.core.service.datastore.OfyManager.ofy;
+
+public abstract class VroomDao<EO extends IEntityObject> {
     @Id private Long id;
 
-    // no-arg constructor used by Objectify
-    protected VroomDao() {
-    }
+    /**
+     * Creates a domain object of the type associated with this DAO class and initializes it from the state of the DAO.
+     *
+     * @return the domain object
+     */
+    public abstract EO toDomainObject();
 
-    protected VroomDao(final KO keyedObject) {
-        this.id = keyedObject.getKey().get();
+    /**
+     * Updates the state of the DAO using information taken from a domain object.  This method is used both
+     * when creating new datastore entities and when updating existing ones.  Subclasses should override as needed
+     * to assign values to fields based on the domain object's state.
+     * <p/>
+     * Note: if the values of any fields in the DAO need to be generated or calculated, it is recommended to
+     * accomplish this be providing setters in the DAO class and calling them from the Entity class' {@link
+     * VroomEntity#createDao} and/or {@link VroomEntity#updateDao} overrides.  This way,
+     * persistence-related business logic is kept in one class.
+     *
+     * @param domainObject
+     */
+    public abstract void fromDomainObject(final EO domainObject);
+
+    public Long getId() {
+        return id;
     }
 
     /**
-     * Converts this DAO to an object of its corresponding domain object type
+     * Allocates a datastore ID for this DAO using Objectify's
+     * {@link com.googlecode.objectify.ObjectifyFactory#allocateId(java.lang.Class<T> clazz)} method.  Subclasses
+     * should override this method if they wish to use a different ID allocation mechanism
      *
-     * @return the corresponding domain object
+     * @return
      */
-    public abstract KO toDomainObject();
+    protected Long allocateId() {
+        if (id != null)
+            throw new IllegalStateException("attempted to allocate a datastore ID for a DAO that already has one");
 
-    public Long getId() {
+        id = ofy().factory().allocateId(this.getClass()).getId();
         return id;
     }
 }

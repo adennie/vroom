@@ -14,7 +14,7 @@ package com.andydennie.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.domain.KeyedObject;
+import com.andydennie.vroom.core.domain.IEntityObject;
 import com.andydennie.vroom.core.service.datastore.IEntityCollection;
 
 import java.util.List;
@@ -22,28 +22,32 @@ import java.util.List;
 /**
  * A business logic class for collections of persistent entities.  The associated persistence class is wired to an
  * object of this class via its constructor.
- * @param <KO> a KeyedObject subtype
+ * @param <EO> a domain object type implementing the IEntityObject interface
+ * @param <EC></EC> a domain collection type implementing the IEntityCollection interface
  */
-public class EntityCollectionBiz<KO extends KeyedObject> implements ICollectionBiz<KO> {
-    private IEntityCollection<KO> mEntityCollection;
+public class EntityCollectionBiz<
+        EO extends IEntityObject,
+        EC extends IEntityCollection<EO>>
+        implements ICollectionBiz<EO> {
+    private EC mEntityCollection;
 
-    public EntityCollectionBiz(IEntityCollection<KO> entityCollection) {
+    public EntityCollectionBiz(EC entityCollection) {
         mEntityCollection = entityCollection;
     }
 
     @Override
-    public List<KO> getElements() {
+    public List<EO> getElements() {
         return mEntityCollection.getElements();
     }
 
-    protected IEntityCollection<KO> getEntityCollection() {
+    protected EC getEntityCollection() {
         return mEntityCollection;
     }
 
     @Override
-    public KO add(final KO idObject) {
-        idObject.validate();
-        return (KO) getEntityCollection().addElement(idObject);
+    public void add(final EO domainObject) {
+        domainObject.validate();
+        getEntityCollection().addElement(domainObject);
     }
 
     @Override
@@ -52,7 +56,7 @@ public class EntityCollectionBiz<KO extends KeyedObject> implements ICollectionB
     }
 
     @Override
-    public void delete(List<KO> idObjects) {
-        getEntityCollection().delete(idObjects);
+    public void delete(List<EO> domainObjects) {
+        getEntityCollection().delete(domainObjects);
     }
 }

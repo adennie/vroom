@@ -14,41 +14,41 @@ package com.andydennie.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.domain.KeyedObject;
+import com.andydennie.vroom.core.domain.IEntityObject;
 
 /**
  * Interface for classes that manage datastore entities
  */
-public interface IEntity<KO extends KeyedObject> {
+public interface IEntity<EO extends IEntityObject> {
 
     /**
-     * Creates a new entity corresponding to a keyed domain object
+     * Creates a new entity corresponding to a entity object
      *
-     * @param keyedObject the domain object
+     * @param domainObject the domain object
      */
-    public void create(KO keyedObject);
+    public void create(EO domainObject);
 
     /**
      * Returns the KeyedObject having the provided key
      *
-     * @param key the KeyedObject's key
-     * @return the KeyedObject corresponding to the provided key
+     * @param key the entity object's key
+     * @return the entity object corresponding to the provided key
      */
-    public KO get(final Long key);
+    public EO get(final Long key);
 
     /**
-     * Updates an entity's state.  Often this will require merging the state of the provided KeyedObject with the
-     * existing persisted state of that object and then saving that new, merged state.
+     * Updates an entity's state.  Often this will require merging the state of the provided entity object with the
+     * existing saved state of that object and then saving that new, merged state.
      *
-     * @param keyedObject the new state for the KeyedObject
+     * @param domainObject the new state for the entity object
      */
-    public void update(final KO keyedObject);
+    public void update(final EO domainObject);
 
     /**
-     * Deletes the PersistentObject having the provided ID
+     * Deletes the domain object having the provided key
      *
-     * @param id the PersistentObject's ID
+     * @param key the domain object's key
      */
-    public void delete(final Long id);
+    public void delete(final Long key);
 
 }

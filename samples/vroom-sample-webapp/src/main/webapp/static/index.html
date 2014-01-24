@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html ng-app="Vroom-sample-webapp">
+<head>
+  <title></title>
+  <!-- JS Libs -->
+  <script type="text/javascript" src="lib/angularjs/angular.js"></script>
+  <script type="text/javascript" src="lib/angularjs/angular-resource.js"></script>
+  <script type="text/javascript" src="lib/jquery/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript" src="lib/bootstrap/bootstrap.js"></script>
+
+  <!-- CONFIG -->
+  <script type="text/javascript" src="js/config.js"></script>
+
+  <!-- UTILS -->
+  <script type="text/javascript" src="js/utils.js"></script>
+
+  <!-- AngularJS -->
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/controllers/controller.js"></script>
+  <script type="text/javascript" src="js/services/service.js"></script>
+  <script type="text/javascript" src="js/directives/directive.js"></script>
+
+  <!-- CSS -->
+  <link href="css/bootstrap/bootstrap.css" media="all" rel="stylesheet" type="text/css" />
+  <link href="css/style.css" media="all" rel="stylesheet" type="text/css" />
+</head>
+<body id="body-index">
+
+  <div class="container">
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation"> 
+      <!-- Static navbar -->
+      <div class="navbar-header">        
+        <a class="navbar-brand" href="#">Vroom Sample Web App (${vroom-sample.env.name})</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav" ng-controller="MainMenuCtrl">
+          <li ng-class="getClass('/index')"><a href="#/index">Places</a></li>
+          <li ng-class="getClass('/place/create')"><a href="#/place/create">Create Place</a></li>          
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+    
+    <div class="row-fluid">
+      <!-- Use partials for the views -->
+      <div id="container-partials" ng-view></div>
+    </div>
+
+    <hr>
+
+    <div class="footer">
+      <p>&copy; 2014 Andy Dennie </p>
+    </div>
+
+  </div> <!-- /container -->
+
+</body>
+</html>

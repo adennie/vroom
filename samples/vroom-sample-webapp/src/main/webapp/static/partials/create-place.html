@@ -1,0 +1,55 @@
+<div id="create-place">	
+	<div google-map ng-model="searchLocation" class="demo-map">
+	</div> 
+	<form class="form-horizontal" role="form" ng-submit="submit()">
+		<div>	
+			<ng-include src="'partials/notification.html'"></ng-icnlude>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="inputName">Name*</label>
+			<div class="col-sm-10">
+				<input class="form-control" type="text" id="inputName" placeholder="Name" ng-model="place.name" required/>
+			</div>
+		</div>		
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="inputAddress">Address*</label>
+			<div class="col-sm-10">
+				<input class="form-control onchange-target" type="text" id="inputAddress" placeholder="Address" ng-model="place.location.address" required/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="inputNotes">Notes</label>
+			<div class="col-sm-10">
+				<textarea class="form-control" rows="6" id="inputNotes" placeholder="Notes" ng-model="place.notes">
+				</textarea>
+			</div>
+		</div>
+		<fieldset>
+			<legend>Coordinates</legend>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="inputLat">Latitude</label>
+				<div class="col-sm-10">
+					<input class="form-control" type="text" id="inputLat" readonly ng-model="place.latitude" placeholder="7.32671"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="inputLng">Longitude</label>
+				<div class="col-sm-10">
+					<input class="form-control" type="text" id="inputLng" readonly ng-model="place.longitude" placeholder="47.32671"/>
+				</div>
+			</div>
+		</fieldset>
+		<div class="form-group">
+			<div class="col-sm-12">				
+				<button id="btn-place-create" type="submit"  class="btn btn-primary">
+					<span class="glyphicon glyphicon-ok"></span>&nbsp;
+					{{ buttonName }}
+				</button>
+				<button type="button" class="btn btn-danger" ng-hide="isEditMode" ng-click="reset()">
+					Reset
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+<br clear="both"/>

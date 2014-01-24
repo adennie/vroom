@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.service.datastore;
 
 /*
- * Copyright (c) 2014 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,10 +23,10 @@ import com.googlecode.objectify.cmd.Query;
 import java.util.List;
 import java.util.Map;
 
-public class UsersEntityCollection extends FilterableEntityCollection<User, UserDao, UsersBiz.UserConstraint> {
+public class UsersEntityCollection extends FilterableEntityCollection<User, UserDao, UserEntity, UsersBiz.UserConstraint> {
 
     public UsersEntityCollection() {
-        super(User.class, UserDao.class, new UserEntity());
+        super(new UserEntity());
     }
 
     @Override

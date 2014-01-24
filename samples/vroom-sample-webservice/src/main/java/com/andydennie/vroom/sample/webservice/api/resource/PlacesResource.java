@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.api.resource;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import com.andydennie.vroom.sample.webservice.api.application.MediaTypes;
 import com.andydennie.vroom.sample.webservice.biz.PlacesBiz;
 import com.andydennie.vroom.sample.webservice.domain.Place;
 import com.andydennie.vroom.sample.webservice.domain.Places;
+import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlacesResource
-        extends KeyedCollectionResource<Places, Place> {
+        extends KeyedCollectionResource<Places, Place, PlacesBiz> {
 
     static final String PARAM_NAME = "name";
     static final String PARAM_CITY = "city";
@@ -38,7 +39,6 @@ public class PlacesResource
     static final String PARAM_ADMIN_AREA_LEVEL_1 = "admin_area_level_1";
     static final String PARAM_ZIP_CODE = "zip_code";
     static final String PARAM_POSTAL_CODE = "postal_code";
-    private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
 
     @Override
     @Get(MediaTypes.PlacesMediaTypes.JSON_V1_0 + "|json")
@@ -88,6 +88,14 @@ public class PlacesResource
             + MediaTypes.PlaceMediaTypes.JSON_V1_0 + "|json")
     public Place postResource(final Place place) {
         return super.postResource(place);
+    }
+
+    @Override
+    @Delete
+    public void deleteResource() {
+        // this override just exposes the underlying default implementation through the API, through use of the
+        // @Delete annotation.
+        super.deleteResource();
     }
 
     @Override

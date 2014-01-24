@@ -14,24 +14,22 @@ package com.andydennie.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.domain.KeyedObject;
-import com.andydennie.vroom.core.domain.LongKey;
+import com.andydennie.vroom.core.domain.IEntityObject;
 import com.googlecode.objectify.cmd.LoadType;
 import com.googlecode.objectify.cmd.Query;
 
 import static com.andydennie.vroom.core.service.datastore.OfyManager.ofy;
 
 public abstract class FilterableEntityCollection<
-        KO extends KeyedObject<LongKey>,
-        DAO extends VroomDao<KO>,
+        EO extends IEntityObject,
+        DAO extends VroomDao<EO>,
+        E extends VroomEntity<EO, DAO>,
         FC>
-        extends EntityCollection<KO, DAO>
-        implements IFilterableEntityCollection<KO, FC> {
+        extends EntityCollection<EO, DAO, E>
+        implements IFilterableEntityCollection<EO, FC> {
 
-    protected FilterableEntityCollection(final Class<KO> domainElementClass,
-                                         final Class<DAO> elementDaoClass,
-                                         final VroomEntity<KO, DAO> elementEntity) {
-        super(domainElementClass, elementDaoClass, elementEntity);
+    protected FilterableEntityCollection(final E elementEntity) {
+        super(elementEntity);
     }
 
 

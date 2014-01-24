@@ -1,6 +1,7 @@
 package com.andydennie.vroom.sample.webservice.service.datastore;
+
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +14,11 @@ package com.andydennie.vroom.sample.webservice.service.datastore;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.service.datastore.EntityCollection;
-import com.andydennie.vroom.sample.webservice.domain.Image;
+import com.andydennie.vroom.extension.googlecloudstorage.domain.GcsFile;
+import com.andydennie.vroom.extension.googlecloudstorage.service.datastore.GcsEntityCollection;
 
-public class ImagesEntityCollection extends EntityCollection<Image, ImageDao> {
-
+public class ImagesEntityCollection extends GcsEntityCollection<GcsFile, ImageDao, ImageEntity> {
     public ImagesEntityCollection() {
-        super(Image.class, ImageDao.class, new ImageEntity());
-    }
-
-    public Image addImage(final Image image, final String fileName) {
-        return new ImageEntity().create(image, fileName);
+        super(new ImageEntity());
     }
 }

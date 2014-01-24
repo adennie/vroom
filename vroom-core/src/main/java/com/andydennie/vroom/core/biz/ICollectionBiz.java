@@ -14,12 +14,11 @@ package com.andydennie.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.domain.DomainObject;
-import com.andydennie.vroom.core.domain.DomainObject;
+import com.andydennie.vroom.core.domain.IDomainObject;
 
 import java.util.List;
 
-public interface ICollectionBiz<DO extends DomainObject> {
+public interface ICollectionBiz<DO extends IDomainObject> {
     /**
      * Returns the list of domain objects within a collection
      * @return the list of domain objects
@@ -31,7 +30,7 @@ public interface ICollectionBiz<DO extends DomainObject> {
      *
      * @param domainObject
      */
-    public DO add(final DO domainObject);
+    public void add(final DO domainObject);
 
     /**
      * Deletes all domain objects in the collection

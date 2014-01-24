@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.service.datastore;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,10 +23,11 @@ import com.googlecode.objectify.cmd.Query;
 import java.util.List;
 import java.util.Map;
 
-public class PlacesEntityCollection extends FilterableEntityCollection<Place, PlaceDao, PlacesBiz.PlaceConstraint> {
+public class PlacesEntityCollection
+        extends FilterableEntityCollection<Place, PlaceDao, PlaceEntity, PlacesBiz.PlaceConstraint> {
 
     public PlacesEntityCollection() {
-        super(Place.class, PlaceDao.class, new PlaceEntity());
+        super(new PlaceEntity());
     }
 
     @Override
@@ -58,4 +59,6 @@ public class PlacesEntityCollection extends FilterableEntityCollection<Place, Pl
         List<PlaceDao> daos = query.list();
         return toDomainCollection(daos);
     }
+
+
 }

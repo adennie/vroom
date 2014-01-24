@@ -1,6 +1,6 @@
 # the s~ prefix is related to remote_api config.  See https://developers.google.com/appengine/docs/python/tools/uploadingdata
 application: s~${appengine.app.name}
-module: vroom-sample-webservice
+module: api
 version: ${appengine.module.version}
 runtime: java
 threadsafe: true
@@ -17,7 +17,7 @@ system_properties:
   java.util.logging.config.file: WEB-INF/logging.properties
   
 handlers:
-  - url: /api/*
+  - url: ${vroom-sample.env.resource-root}/*
     name: restlet-servlet
     servlet: org.restlet.ext.servlet.ServerServlet
     init_params:
@@ -25,10 +25,10 @@ handlers:
       # uncomment to enable outbound requests...
       # org.restlet.clients: HTTP HTTPS
 
-  - url: /api/*
+  - url: ${vroom-sample.env.resource-root}/*
     name: objectify-filter
     filter: com.googlecode.objectify.ObjectifyFilter
 
-  - url: /_ah/remote_api
+  - url: ${vroom-sample.env.resource-root}/remote_api
     name: remote-api
     servlet: com.google.apphosting.utils.remoteapi.RemoteApiServlet

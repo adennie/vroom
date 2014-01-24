@@ -19,18 +19,21 @@ import com.andydennie.vroom.core.domain.DomainCollection;
 import com.andydennie.vroom.core.domain.KeyedObject;
 import org.restlet.resource.ResourceException;
 
-public abstract class KeyedCollectionResource<DC extends DomainCollection<KO>, KO extends KeyedObject>
-        extends DomainCollectionResource<DC, KO> {
+public abstract class KeyedCollectionResource<
+        DC extends DomainCollection<KO>,
+        KO extends KeyedObject,
+        CB extends ICollectionBiz<KO>>
+        extends DomainCollectionResource<DC, KO, CB> {
 
     private Class<? extends KeyedResource> mElementResourceClass;
 
     @Override
-    protected String getElementCanonicalUri(final KO element) {
+    protected String getElementUri(final KO element) {
         return ResourceRegistry.getCanonicalUri(mElementResourceClass, element.getKeyAsString());
     }
 
     protected void doInit(final Class<DC> domainCollectionClass,
-                          final ICollectionBiz<KO> collectionBiz,
+                          final CB collectionBiz,
                           final Class<? extends KeyedResource> elementResourceClass)
             throws ResourceException {
         super.doInit(domainCollectionClass, collectionBiz);

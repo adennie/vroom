@@ -1,6 +1,7 @@
 package com.andydennie.vroom.sample.webservice.service.datastore;
+
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,47 +14,49 @@ package com.andydennie.vroom.sample.webservice.service.datastore;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.domain.LongKey;
-import com.andydennie.vroom.core.service.datastore.TimeStampedEntity;
-import com.andydennie.vroom.sample.webservice.domain.Image;
-import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.andydennie.vroom.extension.googlecloudstorage.domain.GcsFile;
+import com.andydennie.vroom.extension.googlecloudstorage.service.datastore.GcsEntity;
+import com.google.appengine.tools.cloudstorage.GcsFileOptions;
+import com.google.common.io.Files;
 
-public class ImageEntity extends TimeStampedEntity<Image, ImageDao> {
+import java.util.HashMap;
+import java.util.Map;
 
-    private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
+public class ImageEntity extends GcsEntity<GcsFile, ImageDao> {
+    private static String BUCKET_NAME = "vroom-sample-images";
+    private static Map<String, String> MEDIA_TYPES;
+
+    static {
+        MEDIA_TYPES = new HashMap<>();
+        MEDIA_TYPES.put("png", "image/png");
+        MEDIA_TYPES.put("gif", "image/gif");
+        MEDIA_TYPES.put("jpg", "image/jpg");
+    }
 
     public ImageEntity() {
-        super(Image.class, ImageDao.class);
+        super(GcsFile.class, ImageDao.class);
     }
 
     @Override
-    public Image get(final Long key) {
-        return super.get(key);
-    }
+    public void create(final GcsFile file, final byte[] content) {
+        String extension = Files.getFileExtension(file.getFileName()).toLowerCase();
+        if (extension.isEmpty())
+            throw new IllegalArgumentException("ImageEntity.create: the file extension for file \""
+                    + file.getFileName() + "\" is missing");
 
-    public Image create(final Image image, final String fileName) {
-        ImageDao dao = new ImageDao(image, fileName);
-        saveDao(dao);
-        image.setKey(new LongKey(dao.getId()));
-        mLogger.debug("Image key is: " + image.getKeyAsString());
-        return image;
-    }
+        String mediaType = MEDIA_TYPES.get(extension);
+        if (mediaType == null)
+            throw new IllegalArgumentException("The file extension for file \"" +
+                    file.getFileName() + "\" does not correspond to a supported image type");
 
-    @Override
-    public void delete(final Long key) {
-        ImageDao imageDao = getDao(key);
-        BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-        BlobKey blobKey = blobstoreService.createGsBlobKey(imageDao.getFileName());
-        blobstoreService.delete(blobKey);
-        super.delete(key);
-    }
+        // build the GcsFileOptions, specifying the media type and cache control metadata
+        GcsFileOptions gcsFileOptions = (new GcsFileOptions.Builder())
+                .mimeType(mediaType)
+                .cacheControl("public, max-age=31449600")
+                .build();
 
-    public String getFileName(final Long imageKey) {
-        ImageDao imageDao = getDao(imageKey);
-        return imageDao.getFileName();
+        // assign the bucket name into the domain object
+        file.setBucketName(BUCKET_NAME);
+        super.create(file, gcsFileOptions, content);
     }
 }

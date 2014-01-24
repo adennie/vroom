@@ -14,10 +14,9 @@ package com.andydennie.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.domain.DomainObject;
-import com.andydennie.vroom.core.domain.DomainObject;
+import com.andydennie.vroom.core.domain.IDomainObject;
 
-public interface IObjectBiz<DO extends DomainObject>{
+public interface IObjectBiz<DO extends IDomainObject>{
     public IObjectBiz get();
 
     /**

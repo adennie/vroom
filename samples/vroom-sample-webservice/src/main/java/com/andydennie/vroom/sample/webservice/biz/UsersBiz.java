@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.biz;
 
 /*
- * Copyright (c) 2014 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import com.andydennie.vroom.sample.webservice.domain.User;
 import com.andydennie.vroom.sample.webservice.service.datastore.UsersEntityCollection;
 
 public class UsersBiz
-        extends FilterableEntityCollectionBiz<User, UsersBiz.UserConstraint> {
+        extends FilterableEntityCollectionBiz<User, UsersEntityCollection, UsersBiz.UserConstraint> {
 
     public enum UserConstraint {
         EMAIL_EQUALS

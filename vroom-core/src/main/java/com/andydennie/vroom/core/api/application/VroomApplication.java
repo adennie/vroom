@@ -56,7 +56,7 @@ public abstract class VroomApplication
         return mRootUrl;
     }
 
-    public static void registerRootUrl(final String rootUrl) {
+    public static void registerUrlRoot(final String rootUrl) {
         mRootUrl = rootUrl;
     }
 

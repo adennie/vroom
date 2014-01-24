@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.biz;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,14 @@ package com.andydennie.vroom.sample.webservice.biz;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.biz.EntityBiz;
-import com.andydennie.vroom.core.domain.LongKey;
-import com.andydennie.vroom.sample.webservice.domain.Image;
+import com.andydennie.vroom.extension.googlecloudstorage.biz.GcsImageBiz;
+import com.andydennie.vroom.extension.googlecloudstorage.domain.GcsFile;
 import com.andydennie.vroom.sample.webservice.service.datastore.ImageEntity;
-import com.google.appengine.api.images.ImagesService;
-import com.google.appengine.api.images.ImagesServiceFactory;
-import com.google.appengine.api.images.ServingUrlOptions;
 
 public class ImageBiz
-        extends EntityBiz<Image> {
+        extends GcsImageBiz<GcsFile, ImageEntity> {
 
     public ImageBiz() {
         super(new ImageEntity());
-    }
-
-    public String getServingUrl(LongKey imageKey, Integer size) {
-        // method for Resource class to specify (if requested) image size and generate serving URL
-        String fileName = ((ImageEntity) getEntity()).getFileName(imageKey.get());
-        ImagesService imagesService = ImagesServiceFactory.getImagesService();
-        ServingUrlOptions servingUrlOptions = ServingUrlOptions.Builder.withGoogleStorageFileName(fileName);
-        if (size != null)
-            servingUrlOptions.imageSize(size);
-
-        String result = imagesService.getServingUrl(servingUrlOptions);
-        return result;
     }
 }

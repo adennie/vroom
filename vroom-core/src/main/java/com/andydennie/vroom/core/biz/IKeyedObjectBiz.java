@@ -14,10 +14,10 @@ package com.andydennie.vroom.core.biz;
  * limitations under the License.
  */
 
+import com.andydennie.vroom.core.domain.IKeyedObject;
 import com.andydennie.vroom.core.domain.KeyType;
-import com.andydennie.vroom.core.domain.KeyedObject;
 
-public interface IKeyedObjectBiz<KO extends KeyedObject<K>, K extends KeyType> {
+public interface IKeyedObjectBiz<KO extends IKeyedObject<K>, K extends KeyType> {
     /**
      * Returns the KeyedObject having the provided ID
      *

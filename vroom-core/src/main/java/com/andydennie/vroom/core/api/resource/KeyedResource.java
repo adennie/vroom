@@ -15,17 +15,19 @@ package com.andydennie.vroom.core.api.resource;
  */
 
 import com.andydennie.vroom.core.biz.IKeyedObjectBiz;
+import com.andydennie.vroom.core.domain.IKeyedObject;
+import com.andydennie.vroom.core.domain.KeyType;
 import com.andydennie.vroom.core.domain.KeyedObject;
 import org.restlet.data.Status;
-import org.restlet.resource.Delete;
 import org.restlet.resource.ResourceException;
 
 /*
  * Base server resource class for objects with IDs (fetched from the URL).
  */
 public abstract class KeyedResource<
-        B extends IKeyedObjectBiz<KO, ?>,
-        KO extends KeyedObject<?>>
+        K extends KeyType,
+        B extends IKeyedObjectBiz<KO, K>,
+        KO extends IKeyedObject<K>>
         extends DomainResource<KO> {
 
     private String mKeyString;
@@ -64,7 +66,6 @@ public abstract class KeyedResource<
         }
     }
 
-    @Delete
     public void deleteResource() {
         try {
             mBiz.delete(mKeyString);

@@ -1,8 +1,7 @@
 package com.andydennie.vroom.core.service.datastore;
 
-import com.andydennie.vroom.core.domain.KeyedObject;
-import com.andydennie.vroom.core.domain.LongKey;
-import com.andydennie.vroom.core.domain.OwnedObject;
+import com.andydennie.vroom.core.domain.IEntityObject;
+import com.andydennie.vroom.core.domain.IOwnedEntityObject;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Load;
@@ -26,26 +25,22 @@ import com.googlecode.objectify.annotation.Load;
  * owner DAO.
  *
  * @param <OWNERDAO> the owner DAO type
- * @param <OWNERKO>  the owner domain object type
- * @param <OWNEDKO>  the owned domain object type
+ * @param <OWNERDO>  the owner domain object type
+ * @param <OWNEDDO>  the owned domain object type
  */
-public abstract class OwnedDao<OWNERDAO extends VroomDao<OWNERKO>,
-        OWNERKO extends KeyedObject<LongKey>,
-        OWNEDKO extends OwnedObject<LongKey>>
-        extends VroomDao<OWNEDKO> {
+public abstract class OwnedDao<
+        OWNERDAO extends VroomDao<OWNERDO>,
+        OWNERDO extends IEntityObject,
+        OWNEDDO extends IOwnedEntityObject>
+        extends VroomDao<OWNEDDO> {
     @Load(OfyLoadGroups.Deep.class)
     Ref<OWNERDAO> owner; // reference to the owner entity
 
-    // no-arg constructor used by Objectify
-    protected OwnedDao() {
+    public void setOwnerId(final OWNEDDO owned, final Class<OWNERDAO> ownerDaoClass) {
+        owner = Ref.create(Key.create(ownerDaoClass, owned.getOwnerKey().get()));
     }
 
-    protected OwnedDao(final OWNEDKO owned, final Class<OWNERDAO> ownerDaoClass) {
-        super(owned);
-        owner = Ref.create(Key.create(ownerDaoClass, owned.getParentKey().get()));
-    }
-
-    protected long getOwnerId() {
+    public long getOwnerId() {
         return owner.getKey().getId();
     }
 }

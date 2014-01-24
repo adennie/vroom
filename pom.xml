@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+<?xml version="1.0" encoding="UTF-8"?><!--
   ~ Copyright (c) 2014 Andy Dennie
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,20 +18,32 @@
     <artifactId>vroom-maven-parent</artifactId>
     <version>0.9.4-SNAPSHOT</version>
     <packaging>pom</packaging>
-	<name>Vroom (parent)</name>
-	<description>A Java framework for building RESTtful web services on Google App Engine</description>
-	<url>https://github.com/adennie/vroom</url>
-	
-	<modules>
-	    <module>vroom-dto</module>
-		<module>vroom-core</module>
+    <name>Vroom (parent)</name>
+    <description>A Java framework for building RESTtful web services on Google App Engine</description>
+    <url>https://github.com/adennie/vroom</url>
+
+    <modules>
+        <module>vroom-dto</module>
+        <module>vroom-core</module>
         <module>extensions/vroom-google-maps-extension</module>
+        <module>extensions/vroom-google-cloud-storage-extension</module>
         <module>samples/vroom-sample-webservice</module>
         <module>samples/vroom-sample-dto</module>
+        <module>samples/vroom-sample-webapp</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <appengine.target.version>1.8.8</appengine.target.version>
+
+        <!--  plugin versions -->
+        <build-helper-maven-plugin.version>1.8</build-helper-maven-plugin.version>
+        <maven-enforcer-plugin.version>1.1.1</maven-enforcer-plugin.version>
+        <maven-surefire-plugin.version>2.14</maven-surefire-plugin.version>
+        <maven-release-plugin.version>2.3.2</maven-release-plugin.version>
+        <maven-compiler-plugin.version>2.5.1</maven-compiler-plugin.version>
+        <maven-war-plugin.version>2.3</maven-war-plugin.version>
+
     </properties>
 
     <scm>
@@ -65,21 +76,22 @@
     <build>
         <pluginManagement>
             <plugins>
-			    <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-invoker-plugin</artifactId>
-                    <version>1.7</version>
-                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.5.1</version>
+                    <version>${maven-compiler-plugin.version}</version>
                 </plugin>
-				
-		        <plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-invoker-plugin</artifactId>
+                    <version>${maven-invoker-plugin.version}</version>
+                </plugin>
+
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>2.4.2</version>
+                    <version>${maven-release-plugin.version}</version>
                     <configuration>
                         <!-- don't publish to external repo (i.e. "install", don't "deploy")-->
                         <goals>install</goals>
@@ -88,7 +100,40 @@
                         <tagNameFormat>@{project.version}</tagNameFormat>
                     </configuration>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper-maven-plugin.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven-enforcer-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <configuration>
+                            <rules>
+                                <DependencyConvergence />
+                            </rules>
+                        </configuration>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>

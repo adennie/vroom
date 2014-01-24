@@ -14,30 +14,28 @@ package com.andydennie.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.domain.KeyedObject;
-import com.andydennie.vroom.core.service.datastore.IEntity;
-import com.andydennie.vroom.core.domain.KeyedObject;
+import com.andydennie.vroom.core.domain.IEntityObject;
 import com.andydennie.vroom.core.domain.LongKey;
 import com.andydennie.vroom.core.service.datastore.IEntity;
 
-public class EntityBiz<KO extends KeyedObject<LongKey>> implements IKeyedObjectBiz<KO, LongKey> {
-    private IEntity<KO> mEntity;
+public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E> {
+    private IEntity<E> mEntity;
 
-    public EntityBiz(final IEntity<KO> entity) {
+    public EntityBiz(final IEntity<E> entity) {
         mEntity = entity;
     }
 
-    public IEntity<KO> getEntity() {
+    public IEntity<E> getEntity() {
         return mEntity;
     }
 
     @Override
-    public KO get(final LongKey key) {
+    public E get(final LongKey key) {
         return mEntity.get(key.get());
     }
 
     @Override
-    public KO get(final String keyString) {
+    public E get(final String keyString) {
         try {
             return get(new LongKey(keyString));
         } catch (NumberFormatException e) {
@@ -46,8 +44,8 @@ public class EntityBiz<KO extends KeyedObject<LongKey>> implements IKeyedObjectB
     }
 
     @Override
-    public void update(final KO idObject) {
-        mEntity.update(idObject);
+    public void update(final E entityObject) {
+        mEntity.update(entityObject);
     }
 
     @Override

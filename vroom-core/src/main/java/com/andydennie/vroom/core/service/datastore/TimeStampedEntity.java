@@ -1,21 +1,10 @@
 package com.andydennie.vroom.core.service.datastore;
 
 /*
- * Copyright (c) 2014 Andy Dennie
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright (c) 2014 Fitivity Inc.
  */
 
-import com.andydennie.vroom.core.domain.KeyedObject;
-import com.andydennie.vroom.core.domain.LongKey;
+import com.andydennie.vroom.core.domain.IEntityObject;
 
 import java.util.Date;
 
@@ -23,41 +12,35 @@ import java.util.Date;
  * Abstract base class for "entity" objects that correspond to keyed domain objects, with built-in support for
  * maintaining creation and modification date/times.
  */
-public abstract class TimeStampedEntity<KO extends KeyedObject<LongKey>, DAO extends TimeStampedDao<KO>> extends
-        VroomEntity<KO, DAO> {
+public abstract class TimeStampedEntity<EO extends IEntityObject, DAO extends TimeStampedDao<EO>> extends
+        VroomEntity<EO, DAO> {
 
-    protected TimeStampedEntity(final Class<KO> domainClass, final Class<DAO> daoClass) {
+    protected TimeStampedEntity(final Class<EO> domainClass, final Class<DAO> daoClass) {
         super(domainClass, daoClass);
     }
 
     /**
-     * Updates the stored entity for a KeyedObject.  The creation date/time from the previously stored entity is
-     * reused and the modification date/time is updated to the current time.
-     *
-     * @param keyedObject
+     * Updates the DAO's modification date/time to the current date/time.
+     * @param domainObject the domain object containing the new state
+     * @return the created DAO
      */
     @Override
-    public void update(final KO keyedObject) {
-        DAO oldDao = getDao(keyedObject.getKey().get());
-        DAO newDao = createDao(keyedObject);
-        newDao.setCreatedDate(oldDao.getCreatedDate());
-        newDao.setModifiedDate(new Date(System.currentTimeMillis()));
-        saveDao(newDao);
+    protected DAO createDao(final EO domainObject) {
+        DAO dao = super.createDao(domainObject);
+        Date now = new Date(System.currentTimeMillis());
+        dao.setCreatedDate(now);
+        return dao;
     }
 
     /**
-     * Creates a DAO that is initialized from the provided domain object, with its creation and modification
-     * date/time set to now.
-     *
-     * @param keyedObject a keyed domain object
-     * @return a DAO initialized from the domain object
+     * Updates the DAO's modification date/time to the current date/time.
+     * @param dao the DAO to update
+     * @param domainObject the domain object containing the new state
      */
     @Override
-    protected DAO createDao(final KO keyedObject) {
-        DAO result = super.createDao(keyedObject);
+    protected void updateDao(final DAO dao, final EO domainObject) {
+        super.updateDao(dao, domainObject);
         Date now = new Date(System.currentTimeMillis());
-        result.setCreatedDate(now);
-        result.setModifiedDate(now);
-        return result;
+        dao.setModifiedDate(now);
     }
 }

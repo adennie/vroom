@@ -1,7 +1,7 @@
 package com.andydennie.vroom.sample.webservice.domain;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Andy Dennie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@ package com.andydennie.vroom.sample.webservice.domain;
  */
 
 import com.andydennie.vroom.core.domain.DomainCollection;
+import com.andydennie.vroom.core.domain.File;
 
-public class Images extends DomainCollection<Image> {
+public class Images extends DomainCollection<File> {
 }
