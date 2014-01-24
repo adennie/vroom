@@ -19,7 +19,7 @@
     <parent>
         <groupId>com.andydennie.vroom</groupId>
         <artifactId>vroom-maven-parent</artifactId>
-        <version>0.9.4-SNAPSHOT</version>
+        <version>0.9.4</version>
     </parent>
 
     <artifactId>vroom-dto</artifactId>
