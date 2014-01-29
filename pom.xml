@@ -22,49 +22,6 @@
     <description>A Java framework for building RESTtful web services on Google App Engine</description>
     <url>https://github.com/adennie/vroom</url>
 
-    <modules>
-        <module>vroom-dto</module>
-        <module>vroom-core</module>
-        <module>extensions/vroom-google-maps-extension</module>
-        <module>extensions/vroom-google-cloud-storage-extension</module>
-        <module>samples/vroom-sample-webservice</module>
-        <module>samples/vroom-sample-dto</module>
-        <module>samples/vroom-sample-webapp</module>
-    </modules>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <appengine.target.version>1.8.8</appengine.target.version>
-
-        <!--  plugin versions -->
-        <build-helper-maven-plugin.version>1.8</build-helper-maven-plugin.version>
-        <maven-enforcer-plugin.version>1.1.1</maven-enforcer-plugin.version>
-        <maven-surefire-plugin.version>2.14</maven-surefire-plugin.version>
-        <maven-release-plugin.version>2.3.2</maven-release-plugin.version>
-        <maven-compiler-plugin.version>2.5.1</maven-compiler-plugin.version>
-        <maven-war-plugin.version>2.3</maven-war-plugin.version>
-
-    </properties>
-
-    <repositories>
-        <repository>
-            <id>maven-restlet</id>
-            <url>http://maven.restlet.org</url>
-        </repository>
-    </repositories>
-
-    <scm>
-        <url>http://github.com/adennie/vroom/</url>
-        <connection>scm:git:https://github.com/adennie/vroom.git</connection>
-        <developerConnection>scm:git:https://github.com/adennie/vroom.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
-
-    <issueManagement>
-        <system>GitHub Issues</system>
-        <url>http://github.com/adennie/vroom/issues</url>
-    </issueManagement>
-
     <licenses>
         <license>
             <name>Apache 2.0</name>
@@ -79,6 +36,48 @@
             <url>www.andydennie.com</url>
         </developer>
     </developers>
+
+    <modules>
+        <module>vroom-dto</module>
+        <module>vroom-core</module>
+        <module>extensions/vroom-google-maps-extension</module>
+        <module>extensions/vroom-google-cloud-storage-extension</module>
+        <module>samples/vroom-sample-webservice</module>
+        <module>samples/vroom-sample-dto</module>
+        <module>samples/vroom-sample-webapp</module>
+    </modules>
+
+    <scm>
+        <url>http://github.com/adennie/vroom/</url>
+        <connection>scm:git:https://github.com/adennie/vroom.git</connection>
+        <developerConnection>scm:git:https://github.com/adennie/vroom.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>http://github.com/adennie/vroom/issues</url>
+    </issueManagement>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <appengine.target.version>1.8.8</appengine.target.version>
+
+        <!--  plugin versions -->
+        <build-helper-maven-plugin.version>1.8</build-helper-maven-plugin.version>
+        <maven-enforcer-plugin.version>1.1.1</maven-enforcer-plugin.version>
+        <maven-surefire-plugin.version>2.14</maven-surefire-plugin.version>
+        <maven-release-plugin.version>2.3.2</maven-release-plugin.version>
+        <maven-compiler-plugin.version>2.5.1</maven-compiler-plugin.version>
+        <maven-war-plugin.version>2.3</maven-war-plugin.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>maven-restlet</id>
+            <url>http://maven.restlet.org</url>
+        </repository>
+    </repositories>
 
     <build>
         <pluginManagement>
