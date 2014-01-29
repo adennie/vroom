@@ -19,18 +19,20 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 
 public class EdgeCacheResource
-        extends VroomResource<Void> {
+        extends VroomResource<String> {
 
     @Override
     @Get
-    public Void getResource() {
+    public String getResource() {
+        String result = null;
         try {
-            super.getResource();
+            result = "Cache me if you can!";
             addEdgeCachingHeaders();
+            throw new IllegalArgumentException();
         } catch (RuntimeException e) {
             doCatch(e);
         }
-        return null;
+        return result;
     }
 
     @Override

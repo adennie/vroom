@@ -18,6 +18,8 @@ import com.andydennie.vroom.core.domain.LongKey;
 import com.andydennie.vroom.extension.googlecloudstorage.api.resource.FilesResource;
 import com.andydennie.vroom.extension.googlecloudstorage.domain.GcsFile;
 import com.andydennie.vroom.sample.webservice.biz.ImagesBiz;
+import org.apache.commons.fileupload.FileItemStream;
+import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Delete;
 import org.restlet.resource.Post;
@@ -25,7 +27,7 @@ import org.restlet.resource.Post;
 public class ImagesResource extends FilesResource<GcsFile, ImagesBiz> {
 
     @Override
-    @Post("PNG image | GIF image")
+    @Post("multipart/form-data")
     public void postResource(final Representation rep) {
         try {
             super.postResource(rep);
@@ -37,18 +39,30 @@ public class ImagesResource extends FilesResource<GcsFile, ImagesBiz> {
     @Override
     @Delete
     public void deleteResource() {
-        // this override just exposes the underlying default implementation through the API, through use of the
-        // @Delete annotation.
-        super.deleteResource();
+        try {
+            super.deleteResource();
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
     }
 
     @Override
     protected GcsFile createFile(final String fileName) {
-        return new GcsFile(new LongKey((Long)null), null, fileName);
+        return new GcsFile(new LongKey((Long) null), null, fileName);
     }
 
     @Override
     protected void doInit() {
         super.doInit(ImageResource.class, new ImagesBiz());
+    }
+
+    @Override
+    protected void validateFileItemStream(final FileItemStream fileItemStream) {
+        super.validateFileItemStream(fileItemStream);
+        String contentType = fileItemStream.getContentType();
+        if (!(contentType.equals(MediaType.IMAGE_PNG.getName())) || contentType.equals(MediaType.IMAGE_GIF.getName())) {
+            throw new IllegalArgumentException("image content type must be either image/png or image/gif");
+        }
+
     }
 }

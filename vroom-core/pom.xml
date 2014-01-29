@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+<?xml version="1.0" encoding="UTF-8"?><!--
   ~ Copyright (c) 2014 Andy Dennie
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,9 +26,7 @@
 
     <properties>
         <!-- dependency versions -->
-        <appengine.target.version>1.8.8</appengine.target.version>
         <catch-exception.version>1.2.0</catch-exception.version>
-        <commons-fileupload.version>1.2</commons-fileupload.version>
         <fest-assert.version>2.0M10</fest-assert.version>
         <guava.version>14.0.1</guava.version>
         <!-- note: keep jackson version in sync with restlet version-->
@@ -122,12 +119,6 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>${commons-fileupload.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.restlet.gae</groupId>
             <artifactId>org.restlet</artifactId>
             <version>${restlet.version}</version>
@@ -170,6 +161,17 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -184,6 +186,7 @@
                     </webResources>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>

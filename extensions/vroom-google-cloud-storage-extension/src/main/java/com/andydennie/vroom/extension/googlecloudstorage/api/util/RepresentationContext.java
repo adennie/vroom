@@ -1,4 +1,4 @@
-package com.andydennie.vroom.core.api.util;
+package com.andydennie.vroom.extension.googlecloudstorage.api.util;
 
 /**
  * Copyright 2005-2013 Restlet S.A.S.

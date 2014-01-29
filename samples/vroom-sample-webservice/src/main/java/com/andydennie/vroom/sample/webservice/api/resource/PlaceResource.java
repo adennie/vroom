@@ -30,13 +30,23 @@ public class PlaceResource
     @Override
     @Get(MediaTypes.PlaceMediaTypes.JSON_V1_0 + "|json")
     public Place getResource() {
-        return super.getResource();
+        Place result = null;
+        try {
+            result = super.getResource();
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
+        return result;
     }
 
     @Override
     @Put(MediaTypes.PlaceMediaTypes.JSON_V1_0 + "|json")
     public void putResource(final Place place) {
-        super.putResource(place);
+        try {
+            super.putResource(place);
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
     }
 
     @Override

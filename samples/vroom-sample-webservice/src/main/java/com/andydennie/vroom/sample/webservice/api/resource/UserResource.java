@@ -29,19 +29,27 @@ public class UserResource
     @Override
     @Get(MediaTypes.UserMediaTypes.JSON_V1_0 + "|json")
     public User getResource() {
-        return super.getResource();
+        User result = null;
+        try {
+            result = super.getResource();
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
+        return result;
     }
 
     @Override
     @Put(MediaTypes.UserMediaTypes.JSON_V1_0 + "|json")
     public void putResource(final User user) {
-        super.putResource(user);
+        try {
+            super.putResource(user);
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
     }
 
     @Override
     protected void doInit() throws ResourceException {
         super.doInit(new UserBiz());
     }
-
-
 }

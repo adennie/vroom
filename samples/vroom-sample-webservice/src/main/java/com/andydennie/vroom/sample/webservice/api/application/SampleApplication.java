@@ -77,15 +77,13 @@ public class SampleApplication
         MediaTypes.register(metadataService);
 
         // register resource classes with their URI paths
+        ResourceRegistry.registerResource(EdgeCacheResource.class, Uris.EDGE_CACHED);
         ResourceRegistry.registerResource(ImageResource.class, Uris.IMAGE_TEMPLATE);
         ResourceRegistry.registerResource(ImagesResource.class, Uris.IMAGES);
         ResourceRegistry.registerResource(PlaceResource.class, Uris.PLACE_TEMPLATE);
         ResourceRegistry.registerResource(PlacesResource.class, Uris.PLACES);
         ResourceRegistry.registerResource(UserResource.class, Uris.USER_TEMPLATE);
         ResourceRegistry.registerResource(UsersResource.class, Uris.USERS);
-
-        ResourceRegistry.registerResource(EdgeCacheResource.class, "/edge_cached");
-
 
         // register ID tokens for Keyed Resources
         ResourceRegistry.registerIdToken(ImageResource.class, UriTokens.IMAGE_ID);

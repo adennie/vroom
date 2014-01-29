@@ -34,14 +34,16 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <appengine.target.version>1.8.8</appengine.target.version>
+        <appengine.target.version>1.8.9</appengine.target.version>
 
         <!--  plugin versions -->
         <build-helper-maven-plugin.version>1.8</build-helper-maven-plugin.version>
-        <maven-enforcer-plugin.version>1.1.1</maven-enforcer-plugin.version>
-        <maven-surefire-plugin.version>2.14</maven-surefire-plugin.version>
-        <maven-release-plugin.version>2.3.2</maven-release-plugin.version>
         <maven-compiler-plugin.version>2.5.1</maven-compiler-plugin.version>
+        <maven-enforcer-plugin.version>1.1.1</maven-enforcer-plugin.version>
+        <maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
+        <maven-release-plugin.version>2.3.2</maven-release-plugin.version>
+        <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+        <maven-surefire-plugin.version>2.14</maven-surefire-plugin.version>
         <maven-war-plugin.version>2.3</maven-war-plugin.version>
 
     </properties>
@@ -83,6 +85,34 @@
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven-source-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
