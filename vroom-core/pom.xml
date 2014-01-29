@@ -194,12 +194,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>maven-restlet</id>
-            <url>http://maven.restlet.org</url>
-        </repository>
-    </repositories>
-
 </project>
