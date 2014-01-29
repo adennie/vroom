@@ -46,6 +46,13 @@
 
     </properties>
 
+    <repositories>
+        <repository>
+            <id>maven-restlet</id>
+            <url>http://maven.restlet.org</url>
+        </repository>
+    </repositories>
+
     <scm>
         <url>http://github.com/adennie/vroom/</url>
         <connection>scm:git:https://github.com/adennie/vroom.git</connection>
