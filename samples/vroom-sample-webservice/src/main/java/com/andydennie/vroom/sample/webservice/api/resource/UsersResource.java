@@ -15,7 +15,6 @@ package com.andydennie.vroom.sample.webservice.api.resource;
  */
 
 import com.andydennie.vroom.core.api.resource.KeyedCollectionResource;
-import com.andydennie.vroom.core.domain.DomainCollection;
 import com.andydennie.vroom.sample.webservice.api.application.MediaTypes;
 import com.andydennie.vroom.sample.webservice.biz.UsersBiz;
 import com.andydennie.vroom.sample.webservice.domain.User;
@@ -37,20 +36,22 @@ public class UsersResource
 
     @Override
     @Get(MediaTypes.UsersMediaTypes.JSON_V1_0 + "|json")
-    public DomainCollection<User> getResource() {
+    public Users getResource() {
         Users result = new Users();
+        try {
+            Map<UsersBiz.UserConstraint, Object> constraints = new HashMap<>();
 
-        Map<UsersBiz.UserConstraint, Object> constraints = new HashMap<>();
+            String email = getStringParamValue(PARAM_EMAIL);
+            if (email != null)
+                constraints.put(UsersBiz.UserConstraint.EMAIL_EQUALS, email);
 
-        String email = getStringParamValue(PARAM_EMAIL);
-        if (email != null)
-            constraints.put(UsersBiz.UserConstraint.EMAIL_EQUALS, email);
-
-        if (constraints.isEmpty())
-            result.addAll(super.getResource());
-        else
-            result.addAll(((UsersBiz) getCollectionBiz()).getFilteredElements(constraints));
-
+            if (constraints.isEmpty())
+                result.addAll(super.getResource());
+            else
+                result.addAll(((UsersBiz) getCollectionBiz()).getFilteredElements(constraints));
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
         return result;
     }
 
@@ -58,15 +59,23 @@ public class UsersResource
     @Post(MediaTypes.UserMediaTypes.JSON_V1_0 + "|json" + ":"
             + MediaTypes.UserMediaTypes.JSON_V1_0 + "|json")
     public User postResource(final User User) {
-        return super.postResource(User);
+        User result = null;
+        try {
+            return super.postResource(User);
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
+        return result;
     }
 
     @Override
     @Delete
     public void deleteResource() {
-        // this override just exposes the underlying default implementation through the API, through use of the
-        // @Delete annotation.
-        super.deleteResource();
+        try {
+            super.deleteResource();
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
     }
 
     @Override

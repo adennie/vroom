@@ -15,12 +15,18 @@
 
     <properties>
         <!-- dependency versions -->
-        <appengine.target.version>1.8.8</appengine.target.version>
+        <commons-fileupload.version>1.2</commons-fileupload.version>
         <junit.version>4.11</junit.version>
     </properties>
 
     <dependencies>
         <!-- Compile/runtime dependencies -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons-fileupload.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.andydennie.vroom</groupId>
             <artifactId>vroom-core</artifactId>
@@ -58,4 +64,17 @@
 
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

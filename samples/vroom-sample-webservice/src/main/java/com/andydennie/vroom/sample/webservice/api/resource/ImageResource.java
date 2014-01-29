@@ -26,13 +26,14 @@ public class ImageResource
     @Override
     @Get("PNG image | GIF image")
     public GcsFile getResource() {
+        GcsFile result = null;
         try {
-            super.getResource();
+            result = super.getResource();
             addEdgeCachingHeaders();
         } catch (RuntimeException e) {
             doCatch(e);
         }
-        return null;
+        return result;
     }
 
     @Override

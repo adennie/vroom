@@ -75,9 +75,10 @@ public abstract class VroomApplication
     public static String getServerUrl() {
         if (mServerUrl == null) {
             ModulesService modulesService = ModulesServiceFactory.getModulesService();
-            mServerUrl = "http://" + modulesService.getModuleHostname(modulesService.getCurrentModule(),
+            mServerUrl = "http://" + modulesService.getVersionHostname(modulesService.getCurrentModule(),
                     modulesService.getCurrentVersion());
         }
+
         return mServerUrl;
     }
 

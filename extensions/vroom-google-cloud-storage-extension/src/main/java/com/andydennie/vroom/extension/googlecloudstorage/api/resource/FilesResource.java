@@ -17,9 +17,9 @@ package com.andydennie.vroom.extension.googlecloudstorage.api.resource;
 import com.andydennie.vroom.core.api.resource.KeyedResource;
 import com.andydennie.vroom.core.api.resource.ResourceRegistry;
 import com.andydennie.vroom.core.api.resource.VroomResource;
-import com.andydennie.vroom.core.api.util.RepresentationContext;
 import com.andydennie.vroom.core.biz.IFileCollectionBiz;
 import com.andydennie.vroom.core.domain.IFile;
+import com.andydennie.vroom.extension.googlecloudstorage.api.util.RepresentationContext;
 import com.google.common.io.ByteStreams;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
@@ -38,10 +38,14 @@ public abstract class FilesResource<
         CB extends IFileCollectionBiz<F>>
         extends VroomResource {
 
+    private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
     private CB mCollectionBiz;
     private Class<? extends KeyedResource> mElementResourceClass;
-    private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
 
+    /**
+     *
+     * @param rep
+     */
     public void postResource(final Representation rep) {
         if (rep == null)
             setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
@@ -51,6 +55,7 @@ public abstract class FilesResource<
                 FileItemIterator fileItemIterator = fileUpload.getItemIterator(new RepresentationContext(rep));
                 if (fileItemIterator.hasNext()) {
                     FileItemStream fileItemStream = fileItemIterator.next();
+                    validateFileItemStream(fileItemStream);
                     String fileName = fileItemStream.getName();
                     byte[] bytes = ByteStreams.toByteArray(fileItemStream.openStream());
 
@@ -76,13 +81,16 @@ public abstract class FilesResource<
         }
     }
 
-
+    /**
+     * Deletes a collection of files
+     */
     public void deleteResource() {
-            mCollectionBiz.deleteAll();
+        mCollectionBiz.deleteAll();
     }
 
     /**
-     * Creates a domain object of generic type F.
+     * Creates a domain object of generic type F.  Concrete subclasses must override and provide an appropriate
+     * implementation.
      *
      * @param fileName
      * @return
@@ -97,5 +105,15 @@ public abstract class FilesResource<
             throws ResourceException {
         mElementResourceClass = elementResourceClass;
         mCollectionBiz = collectionBiz;
+    }
+
+    /**
+     * Validates a FileItemStream within a multi-part form.  Subclasses may wish to override this method to ensure
+     * the file element(s) within the form have valid content types, names, etc., throwing an appropriate exception if
+     * an element is not valid.
+     *
+     * @param fileItemStream
+     */
+    protected void validateFileItemStream(final FileItemStream fileItemStream) {
     }
 }

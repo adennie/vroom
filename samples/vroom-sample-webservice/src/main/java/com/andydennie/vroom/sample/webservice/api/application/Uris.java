@@ -18,6 +18,7 @@ import com.andydennie.vroom.core.api.util.UriHelper;
 
 public class Uris {
     // these resource paths appear after the URL root defined by Environment.RESOURCE_ROOT
+    public static final String EDGE_CACHED = "/edge_cached";
     public static final String IMAGES = "/images/";
     public static final String IMAGE_TEMPLATE = IMAGES + UriHelper.tokenize(UriTokens.IMAGE_ID);
     public static final String PLACES = "/places/";

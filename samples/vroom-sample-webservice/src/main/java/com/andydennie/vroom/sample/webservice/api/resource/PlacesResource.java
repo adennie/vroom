@@ -15,7 +15,6 @@ package com.andydennie.vroom.sample.webservice.api.resource;
  */
 
 import com.andydennie.vroom.core.api.resource.KeyedCollectionResource;
-import com.andydennie.vroom.core.domain.DomainCollection;
 import com.andydennie.vroom.sample.webservice.api.application.MediaTypes;
 import com.andydennie.vroom.sample.webservice.biz.PlacesBiz;
 import com.andydennie.vroom.sample.webservice.domain.Place;
@@ -23,8 +22,6 @@ import com.andydennie.vroom.sample.webservice.domain.Places;
 import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,44 +39,47 @@ public class PlacesResource
 
     @Override
     @Get(MediaTypes.PlacesMediaTypes.JSON_V1_0 + "|json")
-    public DomainCollection<Place> getResource() {
+    public Places getResource() {
         Places result = new Places();
+        try {
 
-        Map<PlacesBiz.PlaceConstraint, Object> constraints = new HashMap<>();
+            Map<PlacesBiz.PlaceConstraint, Object> constraints = new HashMap<>();
 
-        String name = getStringParamValue(PARAM_NAME);
-        if (name != null)
-            constraints.put(PlacesBiz.PlaceConstraint.NAME_EQUALS, name);
+            String name = getStringParamValue(PARAM_NAME);
+            if (name != null)
+                constraints.put(PlacesBiz.PlaceConstraint.NAME_EQUALS, name);
 
-        String locality = getStringParamValue(PARAM_CITY);
-        if (locality != null)
-            constraints.put(PlacesBiz.PlaceConstraint.LOCALITY_EQUALS, locality);
+            String locality = getStringParamValue(PARAM_CITY);
+            if (locality != null)
+                constraints.put(PlacesBiz.PlaceConstraint.LOCALITY_EQUALS, locality);
 
-        locality = getStringParamValue(PARAM_LOCALITY);
-        if (locality != null)
-            constraints.put(PlacesBiz.PlaceConstraint.LOCALITY_EQUALS, locality);
+            locality = getStringParamValue(PARAM_LOCALITY);
+            if (locality != null)
+                constraints.put(PlacesBiz.PlaceConstraint.LOCALITY_EQUALS, locality);
 
-        String adminAreaLevelOne = getStringParamValue(PARAM_STATE);
-        if (adminAreaLevelOne != null)
-            constraints.put(PlacesBiz.PlaceConstraint.ADMIN_AREA_LEVEL_1_EQUALS, adminAreaLevelOne);
+            String adminAreaLevelOne = getStringParamValue(PARAM_STATE);
+            if (adminAreaLevelOne != null)
+                constraints.put(PlacesBiz.PlaceConstraint.ADMIN_AREA_LEVEL_1_EQUALS, adminAreaLevelOne);
 
-        adminAreaLevelOne = getStringParamValue(PARAM_ADMIN_AREA_LEVEL_1);
-        if (adminAreaLevelOne != null)
-            constraints.put(PlacesBiz.PlaceConstraint.ADMIN_AREA_LEVEL_1_EQUALS, adminAreaLevelOne);
+            adminAreaLevelOne = getStringParamValue(PARAM_ADMIN_AREA_LEVEL_1);
+            if (adminAreaLevelOne != null)
+                constraints.put(PlacesBiz.PlaceConstraint.ADMIN_AREA_LEVEL_1_EQUALS, adminAreaLevelOne);
 
-        String postalCode = getStringParamValue(PARAM_ZIP_CODE);
-        if (postalCode != null)
-            constraints.put(PlacesBiz.PlaceConstraint.POSTAL_CODE_EQUALS, postalCode);
+            String postalCode = getStringParamValue(PARAM_ZIP_CODE);
+            if (postalCode != null)
+                constraints.put(PlacesBiz.PlaceConstraint.POSTAL_CODE_EQUALS, postalCode);
 
-        postalCode = getStringParamValue(PARAM_POSTAL_CODE);
-        if (postalCode != null)
-            constraints.put(PlacesBiz.PlaceConstraint.POSTAL_CODE_EQUALS, postalCode);
+            postalCode = getStringParamValue(PARAM_POSTAL_CODE);
+            if (postalCode != null)
+                constraints.put(PlacesBiz.PlaceConstraint.POSTAL_CODE_EQUALS, postalCode);
 
-        if (constraints.isEmpty())
-            result.addAll(super.getResource());
-        else
-            result.addAll(((PlacesBiz) getCollectionBiz()).getFilteredElements(constraints));
-
+            if (constraints.isEmpty())
+                result.addAll(super.getResource());
+            else
+                result.addAll(((PlacesBiz) getCollectionBiz()).getFilteredElements(constraints));
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
         return result;
     }
 
@@ -87,15 +87,23 @@ public class PlacesResource
     @Post(MediaTypes.PlaceMediaTypes.JSON_V1_0 + "|json" + ":"
             + MediaTypes.PlaceMediaTypes.JSON_V1_0 + "|json")
     public Place postResource(final Place place) {
-        return super.postResource(place);
+        Place result = null;
+        try {
+            result = super.postResource(place);
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
+        return result;
     }
 
     @Override
     @Delete
     public void deleteResource() {
-        // this override just exposes the underlying default implementation through the API, through use of the
-        // @Delete annotation.
-        super.deleteResource();
+        try {
+            super.deleteResource();
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
     }
 
     @Override
