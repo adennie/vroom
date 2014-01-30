@@ -30,7 +30,8 @@ public abstract class DomainCollectionResource<
         DC extends DomainCollection<DO>,
         DO extends IDomainObject,
         CB extends ICollectionBiz<DO>>
-        extends VroomResource {
+        extends VroomResource<DC>
+        implements IDomainCollectionResource<DC, DO> {
 
     private Class<DC> mDomainCollectionClass;
     private CB mCollectionBiz;
@@ -40,8 +41,8 @@ public abstract class DomainCollectionResource<
         return mCollectionBiz;
     }
 
-    public DomainCollection<DO> getResource() {
-        DomainCollection<DO> result = Reflections.newInstance(mDomainCollectionClass);
+    public DC getResource() {
+        DC result = Reflections.newInstance(mDomainCollectionClass);
         try {
             result.addAll(mCollectionBiz.getElements());
         } catch (RuntimeException e) {
@@ -49,6 +50,7 @@ public abstract class DomainCollectionResource<
         }
         return result;
     }
+
 
     public DO postResource(final DO element) {
         try {

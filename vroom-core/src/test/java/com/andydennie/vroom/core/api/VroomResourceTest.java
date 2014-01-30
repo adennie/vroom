@@ -27,7 +27,7 @@ public class VroomResourceTest {
     @Test
     public void testGetCanonicalUriPathThrowsWithTokenInUriTemplate() throws Exception {
         // given a registered resource with a token element in its template URI
-        VroomResource vroomResource = new VroomResource(){};
+        VroomResource vroomResource = new VroomResource<Object>(){};
         VroomApplication.registerUrlRoot("http://test.com");
         ResourceRegistry.registerResource(vroomResource.getClass(), "/{token}");
 

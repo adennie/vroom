@@ -22,9 +22,9 @@ import org.restlet.representation.Variant;
 public interface IDomainCollectionResource<
         DC extends DomainCollection<DO>,
         DO extends IDomainObject>
-        extends IVroomResource {
+        extends IVroomResource<DC> {
 
-    public DomainCollection<DO> getResource();
+    public DC getResource();
 
     public DO postResource(final DO element);
 
