@@ -17,6 +17,5 @@ package com.andydennie.vroom.core.api.resource;
 public interface IVroomResource<O extends Object> {
     public O getResource();
     public void putResource(O object );
-    public O postResource(O object);
     public void deleteResource();
 }

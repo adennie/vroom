@@ -70,11 +70,6 @@ public abstract class VroomResource<R extends Object> extends ServerResource imp
     }
 
     @Override
-    public R postResource(final R object) {
-        return null;
-    }
-
-    @Override
     public void deleteResource() {
     }
 
