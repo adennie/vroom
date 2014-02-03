@@ -17,6 +17,7 @@ package com.andydennie.vroom.extension.googlecloudstorage.biz;
 import com.andydennie.vroom.core.domain.LongKey;
 import com.andydennie.vroom.extension.googlecloudstorage.domain.IGcsFile;
 import com.andydennie.vroom.extension.googlecloudstorage.service.datastore.GcsEntity;
+import com.andydennie.vroom.extension.googlecloudstorage.service.gcs.GcsFileObject;
 import com.andydennie.vroom.extension.googlecloudstorage.service.gcs.GcsImageObject;
 
 public class GcsImageBiz<F extends IGcsFile, E extends GcsEntity<F, ?>>
@@ -27,8 +28,8 @@ public class GcsImageBiz<F extends IGcsFile, E extends GcsEntity<F, ?>>
     }
 
     public String getServingUrl(LongKey fileKey, Integer size) {
-        F file = getEntity().get(fileKey.get());
-        GcsImageObject gcsImage = new GcsImageObject(file.getBucketName(), file.getFileName());
+        GcsFileObject gcsFileObject = ((E)getEntity()).getGcsFileObject(fileKey.get());
+        GcsImageObject gcsImage = new GcsImageObject(gcsFileObject.getBucketName(), gcsFileObject.getFileName());
         return gcsImage.getServingUrl(size);
     }
 }

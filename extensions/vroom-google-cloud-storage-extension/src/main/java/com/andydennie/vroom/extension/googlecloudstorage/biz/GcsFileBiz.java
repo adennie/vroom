@@ -29,7 +29,7 @@ public class GcsFileBiz<F extends IGcsFile, E extends GcsEntity<F, ?>>
     }
     @Override
     public String getServingUrl(LongKey fileKey) {
-        String result = ((E) getEntity()).getGcsFile(fileKey.get()).getServingUrl();
+        String result = ((E) getEntity()).getGcsFileObject(fileKey.get()).getServingUrl();
         return result;
     }
 }

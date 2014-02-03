@@ -21,4 +21,8 @@ public interface IGcsFile extends IFile {
     public String getBucketName();
 
     public void setBucketName(final String bucketName);
+
+    public String getGcsFileName();
+
+    public void setGcsFileName(final String gcsFileName);
 }
