@@ -16,7 +16,7 @@
 
     <groupId>com.andydennie.vroom</groupId>
     <artifactId>vroom-maven-parent</artifactId>
-    <version>0.9.7</version>
+    <version>0.9.8-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Vroom (parent)</name>
     <description>A Java framework for building RESTtful web services on Google App Engine</description>
@@ -51,7 +51,7 @@
         <url>http://github.com/adennie/vroom/</url>
         <connection>scm:git:https://github.com/adennie/vroom.git</connection>
         <developerConnection>scm:git:https://github.com/adennie/vroom.git</developerConnection>
-        <tag>0.9.7</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
