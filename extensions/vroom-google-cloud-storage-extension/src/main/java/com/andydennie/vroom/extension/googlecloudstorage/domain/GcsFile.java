@@ -20,16 +20,29 @@ import com.andydennie.vroom.core.domain.LongKey;
 public class GcsFile extends File implements IGcsFile {
 
     private String mBucketName;
+    private String mGcsFileName;
 
     public GcsFile(final LongKey key, final String bucketName, final String fileName) {
         super(key, fileName);
         mBucketName = bucketName;
     }
 
+    @Override
+    public String getGcsFileName() {
+        return mGcsFileName;
+    }
+
+    @Override
+    public void setGcsFileName(final String gcsFileName) {
+        mGcsFileName = gcsFileName;
+    }
+
+    @Override
     public String getBucketName() {
         return mBucketName;
     }
 
+    @Override
     public void setBucketName(final String bucketName) {
         mBucketName = bucketName;
     }

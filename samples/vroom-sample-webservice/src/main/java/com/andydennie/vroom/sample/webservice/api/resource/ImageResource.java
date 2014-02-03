@@ -17,6 +17,7 @@ package com.andydennie.vroom.sample.webservice.api.resource;
 import com.andydennie.vroom.extension.googlecloudstorage.api.resource.GcsImageResource;
 import com.andydennie.vroom.extension.googlecloudstorage.domain.GcsFile;
 import com.andydennie.vroom.sample.webservice.biz.ImageBiz;
+import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 
@@ -34,6 +35,16 @@ public class ImageResource
             doCatch(e);
         }
         return result;
+    }
+
+    @Override
+    @Delete
+    public void deleteResource() {
+        try {
+            super.deleteResource();
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
     }
 
     @Override

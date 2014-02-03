@@ -13,12 +13,28 @@ package com.andydennie.vroom.extension.googlecloudstorage.service.datastore;
  * limitations under the License.
  */
 
-import com.andydennie.vroom.core.domain.IFile;
 import com.andydennie.vroom.core.service.datastore.FileDao;
+import com.andydennie.vroom.extension.googlecloudstorage.domain.IGcsFile;
 
 
-public abstract class GcsDao<F extends IFile> extends FileDao<F> {
+public abstract class GcsDao<F extends IGcsFile> extends FileDao<F> {
     private String bucketName;
+    private String gcsFileName;
+
+    @Override
+    public void fromDomainObject(final F file) {
+        bucketName = file.getBucketName();
+        gcsFileName = file.getGcsFileName();
+        super.fromDomainObject(file);
+    }
+
+    public String getGcsFileName() {
+        return gcsFileName;
+    }
+
+    public void setGcsFileName(final String gcsFileName) {
+        this.gcsFileName = gcsFileName;
+    }
 
     public String getBucketName() {
         return bucketName;

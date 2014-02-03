@@ -55,8 +55,6 @@ public class ImageEntity extends GcsEntity<GcsFile, ImageDao> {
                 .cacheControl("public, max-age=31449600")
                 .build();
 
-        // assign the bucket name into the domain object
-        file.setBucketName(BUCKET_NAME);
-        super.create(file, gcsFileOptions, content);
+        super.create(file, BUCKET_NAME, gcsFileOptions, content);
     }
 }
