@@ -31,24 +31,24 @@ public abstract class GcsImageResource<BIZ extends GcsImageBiz<F, ?>, F extends 
 
     public F getResource() {
         // accept image size constraints from client and call Biz method to generate image serving URL
+        Integer size = null;
         try {
-            Long size = getLongParamValue(PARAM_SIZE);
-            String servingUrl = getBiz().getServingUrl(new LongKey(getKeyString()),
-                    size == null ? null : size.intValue());
-            mLogger.debug("File serving URL is: " + servingUrl);
-
-            // apply client-side redirect from request URL to image serving URL
-            // Note: this will return a status code 307 to the client
-            // Note: subclasses may want to specify cache control headers in the response, to control
-            // whether the response should be cached.
-            Redirector redirector = new Redirector(getContext(), servingUrl, Redirector.MODE_CLIENT_TEMPORARY);
-            redirector.handle(getRequest(), getResponse());
+            size = getIntegerParamValue(PARAM_SIZE);
         } catch (NumberFormatException e) {
             String msg = "Invalid format for size parameter.  Must be an integer, " +
                     "but value was " + getStringParamValue(PARAM_SIZE);
             mLogger.error(msg);
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg, e);
         }
+
+        String servingUrl = getBiz().getServingUrl(new LongKey(getKeyString()), size);
+        mLogger.debug("File serving URL is: " + servingUrl);
+
+        // apply client-side redirect from request URL to file serving URL (this will return a status code 303).
+        // Note: subclasses may want to specify cache control headers in the response, to control
+        // whether the response should be cached.
+        Redirector redirector = new Redirector(getContext(), servingUrl, Redirector.MODE_CLIENT_TEMPORARY);
+        redirector.handle(getRequest(), getResponse());
 
         // no representation is returned in the response body
         return null;

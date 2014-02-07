@@ -161,6 +161,17 @@ public abstract class VroomResource<R extends Object> extends ServerResource imp
         return Long.parseLong(paramAsString);
     }
 
+    protected Integer getIntegerParamValue(final String paramName) {
+        String paramAsString = null;
+        Map<String, String> params = getQuery().getValuesMap();
+        paramAsString = params.get(paramName);
+
+        if (paramAsString == null)
+            return null;
+        return Integer.parseInt(paramAsString);
+    }
+
+
     protected String getStringParamValue(final String paramName) {
         Map<String, String> params = getQuery().getValuesMap();
         return params.get(paramName);
