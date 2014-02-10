@@ -34,8 +34,6 @@ public abstract class GcsFileResource<
         mLogger.debug("File serving URL is: " + servingUrl);
 
         // apply client-side redirect from request URL to file serving URL (this will return a status code 303).
-        // Note: subclasses may want to specify cache control headers in the response, to control
-        // whether the response should be cached.
         Redirector redirector = new Redirector(getContext(), servingUrl, Redirector.MODE_CLIENT_SEE_OTHER);
         redirector.handle(getRequest(), getResponse());
 
