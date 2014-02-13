@@ -83,4 +83,10 @@ public abstract class EntityCollection<
     public E getElementEntity() {
         return mElementEntity;
     }
+
+    //load and save all entities to completely migration to a new version of DAO .
+    protected void rewriteAll() {
+        List<DAO> daos = ofy().load().type(mElementEntity.getDaoClass()).list();
+        ofy().save().entities(daos).now();
+    }
 }
