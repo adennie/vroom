@@ -59,4 +59,8 @@ public class EntityCollectionBiz<
     public void delete(List<EO> domainObjects) {
         getEntityCollection().delete(domainObjects);
     }
+
+    public void rewriteAll() {
+        getEntityCollection().rewriteAll();
+    }
 }
