@@ -42,4 +42,11 @@ public interface ICollectionBiz<DO extends IDomainObject> {
      * @param domainCollection
      */
     public void delete(List<DO> domainCollection);
+
+    /**
+     * Load and Save a Entity to migrate data to the current Schema
+     *
+     */
+    public void rewriteAll();
+
 }

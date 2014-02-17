@@ -51,4 +51,9 @@ public interface IEntityCollection<
      * @param domainObjects the domain objects to delete
      */
     public void delete(final List<EO> domainObjects);
+
+    /*
+      Load and Saves all entities to migrate entity completely to any schema change
+     */
+    public void rewriteAll();
 }
