@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.andydennie.vroom</groupId>
+        <groupId>com.fizz-buzz.vroom</groupId>
         <artifactId>vroom-maven-parent</artifactId>
         <version>0.9.9-SNAPSHOT</version>
         <relativePath>../..</relativePath>
@@ -43,25 +43,25 @@
 
         <!-- Compile/runtime dependencies -->
         <dependency>
-            <groupId>com.andydennie.vroom</groupId>
+            <groupId>com.fizz-buzz.vroom</groupId>
             <artifactId>vroom-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.andydennie.vroom</groupId>
+            <groupId>com.fizz-buzz.vroom</groupId>
             <artifactId>vroom-google-maps-extension</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.andydennie.vroom</groupId>
+            <groupId>com.fizz-buzz.vroom</groupId>
             <artifactId>vroom-google-cloud-storage-extension</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.andydennie.vroom</groupId>
+            <groupId>com.fizz-buzz.vroom</groupId>
             <artifactId>vroom-sample-dto</artifactId>
             <version>${project.version}</version>
         </dependency>
