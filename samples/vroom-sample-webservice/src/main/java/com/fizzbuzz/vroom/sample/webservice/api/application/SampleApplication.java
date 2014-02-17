@@ -1,7 +1,7 @@
 package com.fizzbuzz.vroom.sample.webservice.api.application;
 
 /*
- * Copyright (c) 2014 Andy Dennie
+ * Copyright (c) 2014 Fizz Buzz LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ public class SampleApplication
             mLogger.info("SampleApplication: starting up application: {}", this);
             setName("Vroom sample API");
             setDescription("A sample REST API built with Vroom");
-            setOwner("Andy Dennie");
+            setOwner("Fizz Buzz LLC");
             // Establish configuration for handling CORS requests.
             configureCors();
 
