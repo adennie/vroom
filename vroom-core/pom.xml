@@ -16,7 +16,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.andydennie.vroom</groupId>
+        <groupId>com.fizz-buzz.vroom</groupId>
         <artifactId>vroom-maven-parent</artifactId>
         <version>0.9.9-SNAPSHOT</version>
     </parent>
@@ -82,7 +82,7 @@
 
         <!-- Compile/runtime dependencies -->
         <dependency>
-            <groupId>com.andydennie.vroom</groupId>
+            <groupId>com.fizz-buzz.vroom</groupId>
             <artifactId>vroom-dto</artifactId>
             <version>${project.version}</version>
         </dependency>
