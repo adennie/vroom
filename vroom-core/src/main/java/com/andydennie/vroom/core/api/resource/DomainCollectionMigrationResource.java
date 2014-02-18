@@ -40,21 +40,16 @@ public abstract class DomainCollectionMigrationResource<
         return mCollectionBiz;
     }
 
-    public DC postResource() {
-        DC result = Reflections.newInstance(mDomainCollectionClass);
+    public void postResource() {
         try {
             //Rewite All Entities
             mCollectionBiz.rewriteAll();
-
-            // return all entities
-            result.addAll(mCollectionBiz.getElements());
 
             getResponse().setStatus(Status.SUCCESS_TRANSFORMATION_APPLIED);
             mLogger.info("Entity Migration complete");
         } catch (RuntimeException e) {
             doCatch(e);
         }
-        return result;
     }
 
     public void deleteResource() {
