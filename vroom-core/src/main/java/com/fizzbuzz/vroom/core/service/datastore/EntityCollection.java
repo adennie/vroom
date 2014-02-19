@@ -83,4 +83,9 @@ public abstract class EntityCollection<
     public E getElementEntity() {
         return mElementEntity;
     }
+
+    public void rewriteAll() {
+        List<DAO> daos = ofy().load().type(mElementEntity.getDaoClass()).list();
+        ofy().save().entities(daos).now();
+    }
 }
