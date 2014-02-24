@@ -14,8 +14,15 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
+import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.IEntityObject;
 import com.fizzbuzz.vroom.core.domain.IOwnedEntityObject;
+import com.fizzbuzz.vroom.core.domain.LongKey;
+import com.googlecode.objectify.Key;
+
+import java.util.List;
+
+import static com.fizzbuzz.vroom.core.service.datastore.OfyManager.ofy;
 
 public class OwnedEntity<
         OWNERDO extends IEntityObject,
@@ -24,11 +31,14 @@ public class OwnedEntity<
         OWNEDDAO extends OwnedDao<OWNERDAO, OWNERDO, OWNEDDO>>
         extends VroomEntity<OWNEDDO, OWNEDDAO> {
     private Class<OWNERDAO> mOwnerDaoClass;
+    private LongKey mOwnerKey;
 
     protected OwnedEntity(final Class<OWNEDDO> domainClass, final Class<OWNERDAO> ownerDaoClass,
-                          final Class<OWNEDDAO> ownedDaoClass) {
+                          final Class<OWNEDDAO> ownedDaoClass,
+                          final LongKey ownerKey) {
         super(domainClass, ownedDaoClass);
         mOwnerDaoClass = ownerDaoClass;
+        mOwnerKey = ownerKey;
     }
 
     /**
@@ -41,5 +51,12 @@ public class OwnedEntity<
     protected void updateDao(final OWNEDDAO dao, final OWNEDDO domainObject) {
         super.updateDao(dao, domainObject);
         dao.setOwnerId(domainObject, mOwnerDaoClass);
+    }
+
+    @Override
+    public DomainCollection<OWNEDDO> getAll() {
+        List<OWNEDDAO> daos = ofy().load().type(getDaoClass())
+                .filter("owner", Key.create(mOwnerDaoClass, mOwnerKey.get())).list();
+        return toDomainCollection(daos);
     }
 }

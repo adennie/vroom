@@ -14,12 +14,17 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
+import com.fizzbuzz.vroom.core.domain.DomainCollection;
 import com.fizzbuzz.vroom.core.domain.IEntityObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.fizzbuzz.vroom.core.exception.NotFoundException;
 import com.fizzbuzz.vroom.core.util.Reflections;
+import com.googlecode.objectify.Key;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.fizzbuzz.vroom.core.service.datastore.OfyManager.ofy;
 
@@ -72,6 +77,46 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         ofy().delete().type(mDaoClass).id(key).now();
     }
 
+    @Override
+    public DomainCollection<EO> getAll() {
+        List<DAO> daos = ofy().load().type(getDaoClass()).list();
+        return toDomainCollection(daos);
+    }
+
+    @Override
+    public void deleteAll() {
+        Iterable<Key<DAO>> keys = ofy().load().type(getDaoClass()).keys();
+        deleteEntitiesByKey(keys);
+    }
+
+    @Override
+    public void delete(List<EO> entityObjectCollection) {
+        List<Key<DAO>> keys = new ArrayList<>();
+        for (EO entityObjectObject : entityObjectCollection) {
+            keys.add(Key.create(getDaoClass(), entityObjectObject.getKey().toString()));
+        }
+        deleteEntitiesByKey(keys);
+    }
+
+    protected DomainCollection<EO> toDomainCollection(List<DAO> daoCollection) {
+        DomainCollection<EO> domainCollection = new DomainCollection<>();
+        for (DAO dao : daoCollection) {
+            domainCollection.add(dao.toDomainObject());
+        }
+        return domainCollection;
+    }
+
+
+    private void deleteEntitiesByKey(Iterable<Key<DAO>> keys) {
+        ofy().delete().keys(keys);
+    }
+
+    public void rewriteAll() {
+        List<DAO> daos = ofy().load().type(getDaoClass()).list();
+        ofy().save().entities(daos).now();
+    }
+
+
     /**
      * Updates a DAO's state (typically in preparation for saving it to the datastore).
      * Subclasses should override if they need to assign state to the DAO beyond that which the DAO can get from
@@ -122,7 +167,7 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         return dao;
     }
 
-    Class<DAO> getDaoClass() {
+    protected Class<DAO> getDaoClass() {
         return mDaoClass;
     }
 }

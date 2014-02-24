@@ -23,7 +23,7 @@ public interface ICollectionBiz<DO extends IDomainObject> {
      * Returns the list of domain objects within a collection
      * @return the list of domain objects
      */
-    public List<DO> getElements();
+    public List<DO> getAll();
 
     /**
      * Adds a domain object to the collection.

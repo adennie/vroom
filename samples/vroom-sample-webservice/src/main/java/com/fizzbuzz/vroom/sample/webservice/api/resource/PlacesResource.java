@@ -16,7 +16,7 @@ package com.fizzbuzz.vroom.sample.webservice.api.resource;
 
 import com.fizzbuzz.vroom.core.api.resource.KeyedCollectionResource;
 import com.fizzbuzz.vroom.sample.webservice.api.application.MediaTypes;
-import com.fizzbuzz.vroom.sample.webservice.biz.PlacesBiz;
+import com.fizzbuzz.vroom.sample.webservice.biz.PlaceBiz;
 import com.fizzbuzz.vroom.sample.webservice.domain.Place;
 import com.fizzbuzz.vroom.sample.webservice.domain.Places;
 import org.restlet.resource.Delete;
@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlacesResource
-        extends KeyedCollectionResource<Places, Place, PlacesBiz> {
+        extends KeyedCollectionResource<Places, Place, PlaceBiz> {
 
     static final String PARAM_NAME = "name";
     static final String PARAM_CITY = "city";
@@ -43,40 +43,40 @@ public class PlacesResource
         Places result = new Places();
         try {
 
-            Map<PlacesBiz.PlaceConstraint, Object> constraints = new HashMap<>();
+            Map<PlaceBiz.PlaceConstraint, Object> constraints = new HashMap<>();
 
             String name = getStringParamValue(PARAM_NAME);
             if (name != null)
-                constraints.put(PlacesBiz.PlaceConstraint.NAME_EQUALS, name);
+                constraints.put(PlaceBiz.PlaceConstraint.NAME_EQUALS, name);
 
             String locality = getStringParamValue(PARAM_CITY);
             if (locality != null)
-                constraints.put(PlacesBiz.PlaceConstraint.LOCALITY_EQUALS, locality);
+                constraints.put(PlaceBiz.PlaceConstraint.LOCALITY_EQUALS, locality);
 
             locality = getStringParamValue(PARAM_LOCALITY);
             if (locality != null)
-                constraints.put(PlacesBiz.PlaceConstraint.LOCALITY_EQUALS, locality);
+                constraints.put(PlaceBiz.PlaceConstraint.LOCALITY_EQUALS, locality);
 
             String adminAreaLevelOne = getStringParamValue(PARAM_STATE);
             if (adminAreaLevelOne != null)
-                constraints.put(PlacesBiz.PlaceConstraint.ADMIN_AREA_LEVEL_1_EQUALS, adminAreaLevelOne);
+                constraints.put(PlaceBiz.PlaceConstraint.ADMIN_AREA_LEVEL_1_EQUALS, adminAreaLevelOne);
 
             adminAreaLevelOne = getStringParamValue(PARAM_ADMIN_AREA_LEVEL_1);
             if (adminAreaLevelOne != null)
-                constraints.put(PlacesBiz.PlaceConstraint.ADMIN_AREA_LEVEL_1_EQUALS, adminAreaLevelOne);
+                constraints.put(PlaceBiz.PlaceConstraint.ADMIN_AREA_LEVEL_1_EQUALS, adminAreaLevelOne);
 
             String postalCode = getStringParamValue(PARAM_ZIP_CODE);
             if (postalCode != null)
-                constraints.put(PlacesBiz.PlaceConstraint.POSTAL_CODE_EQUALS, postalCode);
+                constraints.put(PlaceBiz.PlaceConstraint.POSTAL_CODE_EQUALS, postalCode);
 
             postalCode = getStringParamValue(PARAM_POSTAL_CODE);
             if (postalCode != null)
-                constraints.put(PlacesBiz.PlaceConstraint.POSTAL_CODE_EQUALS, postalCode);
+                constraints.put(PlaceBiz.PlaceConstraint.POSTAL_CODE_EQUALS, postalCode);
 
             if (constraints.isEmpty())
                 result.addAll(super.getResource());
             else
-                result.addAll(((PlacesBiz) getCollectionBiz()).getFilteredElements(constraints));
+                result.addAll((getBiz()).getMatching(constraints));
         } catch (RuntimeException e) {
             doCatch(e);
         }
@@ -108,6 +108,6 @@ public class PlacesResource
 
     @Override
     protected void doInit() {
-        super.doInit(Places.class, new PlacesBiz(), PlaceResource.class);
+        super.doInit(Places.class, new PlaceBiz(), PlaceResource.class);
     }
 }

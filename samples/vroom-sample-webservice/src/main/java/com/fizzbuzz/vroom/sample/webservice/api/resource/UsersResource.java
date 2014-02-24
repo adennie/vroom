@@ -16,7 +16,7 @@ package com.fizzbuzz.vroom.sample.webservice.api.resource;
 
 import com.fizzbuzz.vroom.core.api.resource.KeyedCollectionResource;
 import com.fizzbuzz.vroom.sample.webservice.api.application.MediaTypes;
-import com.fizzbuzz.vroom.sample.webservice.biz.UsersBiz;
+import com.fizzbuzz.vroom.sample.webservice.biz.UserBiz;
 import com.fizzbuzz.vroom.sample.webservice.domain.User;
 import com.fizzbuzz.vroom.sample.webservice.domain.Users;
 import org.restlet.resource.Delete;
@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UsersResource
-        extends KeyedCollectionResource<Users, User, UsersBiz> {
+        extends KeyedCollectionResource<Users, User, UserBiz> {
 
     static final String PARAM_EMAIL = "email";
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
@@ -39,16 +39,16 @@ public class UsersResource
     public Users getResource() {
         Users result = new Users();
         try {
-            Map<UsersBiz.UserConstraint, Object> constraints = new HashMap<>();
+            Map<UserBiz.UserConstraint, Object> constraints = new HashMap<>();
 
             String email = getStringParamValue(PARAM_EMAIL);
             if (email != null)
-                constraints.put(UsersBiz.UserConstraint.EMAIL_EQUALS, email);
+                constraints.put(UserBiz.UserConstraint.EMAIL_EQUALS, email);
 
             if (constraints.isEmpty())
                 result.addAll(super.getResource());
             else
-                result.addAll(((UsersBiz) getCollectionBiz()).getFilteredElements(constraints));
+                result.addAll(((UserBiz) getBiz()).getMatching(constraints));
         } catch (RuntimeException e) {
             doCatch(e);
         }
@@ -80,6 +80,6 @@ public class UsersResource
 
     @Override
     protected void doInit() {
-        super.doInit(Users.class, new UsersBiz(), UserResource.class);
+        super.doInit(Users.class, new UserBiz(), UserResource.class);
     }
 }

@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.sample.webservice.biz;
+package com.fizzbuzz.vroom.core.biz;
 
 /*
  * Copyright (c) 2014 Fizz Buzz LLC
@@ -14,21 +14,19 @@ package com.fizzbuzz.vroom.sample.webservice.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.sample.webservice.service.datastore.PlacesEntityCollection;
-import com.fizzbuzz.vroom.core.biz.FilterableEntityCollectionBiz;
-import com.fizzbuzz.vroom.sample.webservice.domain.Place;
+import com.fizzbuzz.vroom.core.domain.IFile;
+import com.fizzbuzz.vroom.core.service.datastore.IFileEntity;
 
-public class PlacesBiz
-        extends FilterableEntityCollectionBiz<Place, PlacesEntityCollection, PlacesBiz.PlaceConstraint> {
+public class FileEntityBiz<
+        F extends IFile>
+        extends EntityBiz<F>
+        implements IFileBiz<F> {
 
-    public enum PlaceConstraint {
-        NAME_EQUALS,
-        LOCALITY_EQUALS,
-        ADMIN_AREA_LEVEL_1_EQUALS,
-        POSTAL_CODE_EQUALS
+    public FileEntityBiz(final IFileEntity<F> entity) {
+        super(entity);
     }
 
-    public PlacesBiz() {
-        super(new PlacesEntityCollection());
+    public void create(final F file, final byte[] content) {
+        ((IFileEntity<F>)getEntity()).create(file, content);
     }
 }

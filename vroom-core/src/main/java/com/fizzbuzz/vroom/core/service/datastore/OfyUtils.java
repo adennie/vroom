@@ -15,9 +15,13 @@ package com.fizzbuzz.vroom.core.service.datastore;
  */
 
 import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.cmd.LoadType;
+import com.googlecode.objectify.cmd.Query;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.fizzbuzz.vroom.core.service.datastore.OfyManager.ofy;
 
 public class OfyUtils {
     public static <DAO extends VroomDao> List<Long> getIdsFromRefs(List<Ref<DAO>> refs) {
@@ -28,5 +32,28 @@ public class OfyUtils {
         return ids;
     }
 
+    /**
+     * Returns an Objectify Query object with a filter added to it.  If the query parameter is non-null,
+     * the new filter will be added to any existing filters already assigned to it.  If the query parameter is null,
+     * a new Query object will be created.
+     *
+     * @param query an existing Query object to reuse, or null if a new one should be created
+     * @param field the field for which the filter should be created
+     * @param value the filtering value
+     * @param daoClass the DAO class
+     * @return a Query with a newly assigned filter
+     */
+    public static <DAO, T> Query<DAO> addFilter(final Query<DAO> query,
+                                                final String field,
+                                                final T value,
+                                                Class<DAO> daoClass) {
+        Query<DAO> result;
+        if (query == null) {
+            LoadType<DAO> loader = (LoadType<DAO>) ofy().load().type(daoClass);
+            result = loader.filter(field, value);
+        } else
+            result = query.filter(field, value);
 
+        return result;
+    }
 }

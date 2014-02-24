@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.sample.webservice.service.datastore;
+package com.fizzbuzz.vroom.core.biz;
 
 /*
  * Copyright (c) 2014 Fizz Buzz LLC
@@ -14,11 +14,14 @@ package com.fizzbuzz.vroom.sample.webservice.service.datastore;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.extension.googlecloudstorage.domain.GcsFile;
-import com.fizzbuzz.vroom.extension.googlecloudstorage.service.datastore.GcsEntityCollection;
+import com.fizzbuzz.vroom.core.domain.IFile;
 
-public class ImagesEntityCollection extends GcsEntityCollection<GcsFile, ImageDao, ImageEntity> {
-    public ImagesEntityCollection() {
-        super(new ImageEntity());
-    }
+public interface IFileBiz<F extends IFile> extends ICollectionBiz<F> {
+
+    /**
+     * Adds a File to the collection.
+     *
+     * @param file
+     */
+    public void create(final F file, byte[] contents);
 }

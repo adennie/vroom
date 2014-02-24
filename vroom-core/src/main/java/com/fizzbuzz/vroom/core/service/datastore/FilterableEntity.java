@@ -14,18 +14,17 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IFile;
+import com.fizzbuzz.vroom.core.domain.IEntityObject;
 
-/**
- * Interface for "persist" classes that manage collections of domain objects
- */
-public interface IFileEntityCollection<FILE extends IFile> extends IEntityCollection<FILE> {
+public abstract class FilterableEntity<
+        EO extends IEntityObject,
+        DAO extends VroomDao<EO>,
+        FC>
+        extends VroomEntity<EO, DAO>
+        implements IFilterableEntity<EO, FC> {
 
-    /**
-     * Creates a FileEntity corresponding to a File.
-     *
-     * @param file
-     */
-    public void addElement(final FILE file, final byte[] content);
 
+    protected FilterableEntity(final Class<EO> domainClass, final Class<DAO> daoClass) {
+        super(domainClass, daoClass);
+    }
 }

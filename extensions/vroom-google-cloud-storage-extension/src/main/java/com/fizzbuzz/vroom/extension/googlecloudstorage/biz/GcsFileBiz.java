@@ -14,15 +14,16 @@ package com.fizzbuzz.vroom.extension.googlecloudstorage.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.biz.EntityBiz;
+import com.fizzbuzz.vroom.core.biz.FileEntityBiz;
+import com.fizzbuzz.vroom.core.biz.IFileBiz;
 import com.fizzbuzz.vroom.core.domain.IUrlAddressableKeyedObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.fizzbuzz.vroom.extension.googlecloudstorage.domain.IGcsFile;
 import com.fizzbuzz.vroom.extension.googlecloudstorage.service.datastore.GcsEntity;
 
 public class GcsFileBiz<F extends IGcsFile, E extends GcsEntity<F, ?>>
-        extends EntityBiz<F>
-        implements IUrlAddressableKeyedObject<LongKey> {
+        extends FileEntityBiz<F>
+        implements IUrlAddressableKeyedObject<LongKey>, IFileBiz<F> {
 
     public GcsFileBiz(E entity) {
         super(entity);

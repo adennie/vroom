@@ -17,7 +17,7 @@ package com.fizzbuzz.vroom.extension.googlecloudstorage.api.resource;
 import com.fizzbuzz.vroom.core.api.resource.KeyedResource;
 import com.fizzbuzz.vroom.core.api.resource.ResourceRegistry;
 import com.fizzbuzz.vroom.core.api.resource.VroomResource;
-import com.fizzbuzz.vroom.core.biz.IFileCollectionBiz;
+import com.fizzbuzz.vroom.core.biz.IFileBiz;
 import com.fizzbuzz.vroom.core.domain.IFile;
 import com.fizzbuzz.vroom.extension.googlecloudstorage.api.util.RepresentationContext;
 import com.google.common.io.ByteStreams;
@@ -35,7 +35,7 @@ import java.io.IOException;
 
 public abstract class FilesResource<
         F extends IFile,
-        CB extends IFileCollectionBiz<F>>
+        CB extends IFileBiz<F>>
         extends VroomResource {
 
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
@@ -60,7 +60,7 @@ public abstract class FilesResource<
                     byte[] bytes = ByteStreams.toByteArray(fileItemStream.openStream());
 
                     F file = createFile(fileName);
-                    mCollectionBiz.add(file, bytes);
+                    mCollectionBiz.create(file, bytes);
 
                     // we're not going to send a representation of the file back to the client, since they probably
                     // don't want that.  Instead, we'll send them a 201, with the URL to the created file in the

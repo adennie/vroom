@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.sample.webservice.biz;
+package com.fizzbuzz.vroom.core.service.datastore;
 
 /*
  * Copyright (c) 2014 Fizz Buzz LLC
@@ -14,18 +14,17 @@ package com.fizzbuzz.vroom.sample.webservice.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.biz.FilterableEntityCollectionBiz;
-import com.fizzbuzz.vroom.sample.webservice.domain.User;
-import com.fizzbuzz.vroom.sample.webservice.service.datastore.UsersEntityCollection;
+import com.fizzbuzz.vroom.core.domain.IEntityObject;
 
-public class UsersBiz
-        extends FilterableEntityCollectionBiz<User, UsersEntityCollection, UsersBiz.UserConstraint> {
+public abstract class FilterableTimeStampedEntity<
+        EO extends IEntityObject,
+        DAO extends TimeStampedDao<EO>,
+        FC>
+        extends TimeStampedEntity<EO, DAO>
+        implements IFilterableEntity<EO, FC> {
 
-    public enum UserConstraint {
-        EMAIL_EQUALS
-    }
 
-    public UsersBiz() {
-        super(new UsersEntityCollection());
+    protected FilterableTimeStampedEntity(final Class<EO> domainClass, final Class<DAO> daoClass) {
+        super(domainClass, daoClass);
     }
 }

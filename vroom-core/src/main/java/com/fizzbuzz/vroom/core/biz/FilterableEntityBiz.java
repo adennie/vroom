@@ -15,13 +15,13 @@ package com.fizzbuzz.vroom.core.biz;
  */
 
 import com.fizzbuzz.vroom.core.domain.IEntityObject;
-import com.fizzbuzz.vroom.core.service.datastore.IFilterableEntityCollection;
+import com.fizzbuzz.vroom.core.service.datastore.IFilterableEntity;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * A business logic class for collections of persistent entities, with filtering support.  The filtering
+ * A base class implementing filtering business logic for domain objects stored as datastore entities.  The filtering
  * constraints are expressed via a generic type.  For example, this could be an enum like
  * <pre>
  * enum MyConstraint {
@@ -29,24 +29,26 @@ import java.util.Map;
  *     CREATED_AFTER,
  *     OWNED_BY}
  * </pre>
- * The {@link #getFilteredElements} method takes a map of these constraints and values.
+ * The {@link #getMatching} method takes a map of these constraints and values.
  *
  * @param <EO> a domain object type implementing the IEntityObject interface
- * @param <EC> a domain collection type implementing the IFilterableEntityCollection interface
+ * @param <EC> a domain collection type implementing the IFilterableEntity interface
  * @param <FC> a filter constraint type
  */
-public class FilterableEntityCollectionBiz<
+public class FilterableEntityBiz<
         EO extends IEntityObject,
-        EC extends IFilterableEntityCollection<EO, FC>,
+        EC extends IFilterableEntity<EO, FC>,
         FC extends Object>
-        extends EntityCollectionBiz<EO, EC> {
+        extends EntityBiz<EO>
+        implements IFilterableBiz<EO, FC> {
 
-    public FilterableEntityCollectionBiz(final EC entityCollection) {
+    public FilterableEntityBiz(final EC entityCollection) {
         super(entityCollection);
     }
 
-    public List<EO> getFilteredElements(final Map<FC, Object> constraints) {
-        return ((IFilterableEntityCollection)getEntityCollection()).getFilteredElements(constraints);
+    @Override
+    public List<EO> getMatching(final Map<FC, Object> constraints) {
+        return ((IFilterableEntity) getEntity()).getMatching(constraints);
     }
 
 }

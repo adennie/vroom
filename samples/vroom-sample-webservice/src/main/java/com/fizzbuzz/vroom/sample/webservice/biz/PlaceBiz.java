@@ -13,13 +13,20 @@ package com.fizzbuzz.vroom.sample.webservice.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.sample.webservice.service.datastore.PlaceEntity;
-import com.fizzbuzz.vroom.core.biz.EntityBiz;
+import com.fizzbuzz.vroom.core.biz.FilterableEntityBiz;
 import com.fizzbuzz.vroom.sample.webservice.domain.Place;
+import com.fizzbuzz.vroom.sample.webservice.service.datastore.PlaceEntity;
 
 public class PlaceBiz
-        extends EntityBiz<Place> {
+        extends FilterableEntityBiz<Place, PlaceEntity, PlaceBiz.PlaceConstraint> {
 
+
+    public enum PlaceConstraint {
+        NAME_EQUALS,
+        LOCALITY_EQUALS,
+        ADMIN_AREA_LEVEL_1_EQUALS,
+        POSTAL_CODE_EQUALS
+    }
     public PlaceBiz() {
         super(new PlaceEntity());
     }
