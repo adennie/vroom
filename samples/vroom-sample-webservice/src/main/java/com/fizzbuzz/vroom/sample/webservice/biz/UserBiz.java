@@ -13,13 +13,15 @@ package com.fizzbuzz.vroom.sample.webservice.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.biz.EntityBiz;
+import com.fizzbuzz.vroom.core.biz.FilterableEntityBiz;
 import com.fizzbuzz.vroom.sample.webservice.domain.User;
 import com.fizzbuzz.vroom.sample.webservice.service.datastore.UserEntity;
 
 public class UserBiz
-        extends EntityBiz<User> {
-
+        extends FilterableEntityBiz<User, UserEntity, UserBiz.UserConstraint> {
+    public enum UserConstraint {
+        EMAIL_EQUALS
+    }
     public UserBiz() {
         super(new UserEntity());
     }

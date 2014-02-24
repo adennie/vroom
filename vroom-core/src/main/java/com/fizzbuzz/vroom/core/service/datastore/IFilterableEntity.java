@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.biz;
+package com.fizzbuzz.vroom.core.service.datastore;
 
 /*
  * Copyright (c) 2014 Fizz Buzz LLC
@@ -14,20 +14,14 @@ package com.fizzbuzz.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IFile;
-import com.fizzbuzz.vroom.core.service.datastore.IFileEntityCollection;
+import com.fizzbuzz.vroom.core.domain.DomainCollection;
+import com.fizzbuzz.vroom.core.domain.IEntityObject;
 
-public class FileEntityCollectionBiz<
-        F extends IFile,
-        EC extends IFileEntityCollection<F>>
-        extends EntityCollectionBiz<F, EC>
-        implements IFileCollectionBiz<F> {
+import java.util.Map;
 
-    public FileEntityCollectionBiz(EC entityCollection) {
-        super(entityCollection);
-    }
-
-    public void add(final F file, final byte[] content) {
-         getEntityCollection().addElement(file, content);
-    }
+public interface IFilterableEntity<
+        EO extends IEntityObject,
+        FC>
+        extends IEntity<EO> {
+    public DomainCollection<EO> getMatching(final Map<FC, Object> constraints);
 }

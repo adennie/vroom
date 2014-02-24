@@ -14,11 +14,38 @@ package com.fizzbuzz.vroom.sample.webservice.service.datastore;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.service.datastore.VroomEntity;
+import com.fizzbuzz.vroom.core.domain.DomainCollection;
+import com.fizzbuzz.vroom.core.service.datastore.FilterableEntity;
+import com.fizzbuzz.vroom.core.service.datastore.OfyUtils;
+import com.fizzbuzz.vroom.sample.webservice.biz.UserBiz;
 import com.fizzbuzz.vroom.sample.webservice.domain.User;
+import com.googlecode.objectify.cmd.Query;
 
-public class UserEntity extends VroomEntity<User, UserDao> {
+import java.util.List;
+import java.util.Map;
+
+public class UserEntity extends FilterableEntity<User, UserDao,  UserBiz.UserConstraint> {
+
+
     public UserEntity() {
         super(User.class, UserDao.class);
+    }
+
+    @Override
+    public DomainCollection<User> getMatching(final Map<UserBiz.UserConstraint, Object> constraints) {
+
+        if (constraints.isEmpty())
+            return getAll();
+
+        Query<UserDao> query = null;
+
+        for (Map.Entry<UserBiz.UserConstraint, Object> constraint : constraints.entrySet()) {
+            if (constraint.getKey().equals(UserBiz.UserConstraint.EMAIL_EQUALS)) {
+                query = OfyUtils.addFilter(query, "email", constraint.getValue(), UserDao.class);
+            }
+        }
+
+        List<UserDao> daos = query.list();
+        return toDomainCollection(daos);
     }
 }

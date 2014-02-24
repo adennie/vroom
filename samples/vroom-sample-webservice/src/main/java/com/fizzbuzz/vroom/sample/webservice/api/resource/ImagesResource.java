@@ -17,14 +17,14 @@ package com.fizzbuzz.vroom.sample.webservice.api.resource;
 import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.fizzbuzz.vroom.extension.googlecloudstorage.api.resource.FilesResource;
 import com.fizzbuzz.vroom.extension.googlecloudstorage.domain.GcsFile;
-import com.fizzbuzz.vroom.sample.webservice.biz.ImagesBiz;
+import com.fizzbuzz.vroom.sample.webservice.biz.ImageBiz;
 import org.apache.commons.fileupload.FileItemStream;
 import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Delete;
 import org.restlet.resource.Post;
 
-public class ImagesResource extends FilesResource<GcsFile, ImagesBiz> {
+public class ImagesResource extends FilesResource<GcsFile, ImageBiz> {
 
     @Override
     @Post("multipart/form-data")
@@ -53,7 +53,7 @@ public class ImagesResource extends FilesResource<GcsFile, ImagesBiz> {
 
     @Override
     protected void doInit() {
-        super.doInit(ImageResource.class, new ImagesBiz());
+        super.doInit(ImageResource.class, new ImageBiz());
     }
 
     @Override

@@ -14,11 +14,47 @@ package com.fizzbuzz.vroom.sample.webservice.service.datastore;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.service.datastore.VroomEntity;
+import com.fizzbuzz.vroom.core.domain.DomainCollection;
+import com.fizzbuzz.vroom.core.service.datastore.FilterableEntity;
+import com.fizzbuzz.vroom.core.service.datastore.OfyUtils;
+import com.fizzbuzz.vroom.sample.webservice.biz.PlaceBiz;
 import com.fizzbuzz.vroom.sample.webservice.domain.Place;
+import com.googlecode.objectify.cmd.Query;
 
-public class PlaceEntity extends VroomEntity<Place, PlaceDao> {
+import java.util.List;
+import java.util.Map;
+
+public class PlaceEntity extends FilterableEntity<Place, PlaceDao, PlaceBiz.PlaceConstraint> {
     public PlaceEntity() {
         super(Place.class, PlaceDao.class);
+    }
+    @Override
+    public DomainCollection<Place> getMatching(final Map<PlaceBiz.PlaceConstraint, Object> constraints) {
+
+        if (constraints.isEmpty())
+            return getAll();
+
+        Query<PlaceDao> query = null;
+
+        for (Map.Entry<PlaceBiz.PlaceConstraint, Object> constraint : constraints.entrySet()) {
+            if (constraint.getKey().equals(PlaceBiz.PlaceConstraint.NAME_EQUALS)) {
+                query = OfyUtils.addFilter(query, "name", constraint.getValue(), PlaceDao.class);
+            }
+
+            if (constraint.getKey().equals(PlaceBiz.PlaceConstraint.LOCALITY_EQUALS)) {
+                query = OfyUtils.addFilter(query, "location.locality", constraint.getValue(), PlaceDao.class);
+            }
+
+            if (constraint.getKey().equals(PlaceBiz.PlaceConstraint.ADMIN_AREA_LEVEL_1_EQUALS)) {
+                query = OfyUtils.addFilter(query, "location.adminAreaLevel1", constraint.getValue(), PlaceDao.class);
+            }
+
+            if (constraint.getKey().equals(PlaceBiz.PlaceConstraint.POSTAL_CODE_EQUALS)) {
+                query = OfyUtils.addFilter(query, "location.postalCode", constraint.getValue(), PlaceDao.class);
+            }
+        }
+
+        List<PlaceDao> daos = query.list();
+        return toDomainCollection(daos);
     }
 }

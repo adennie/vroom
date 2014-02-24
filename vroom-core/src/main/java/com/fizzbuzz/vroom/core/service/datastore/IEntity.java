@@ -16,6 +16,8 @@ package com.fizzbuzz.vroom.core.service.datastore;
 
 import com.fizzbuzz.vroom.core.domain.IEntityObject;
 
+import java.util.List;
+
 /**
  * Interface for classes that manage datastore entities
  */
@@ -51,4 +53,23 @@ public interface IEntity<EO extends IEntityObject> {
      */
     public void delete(final Long key);
 
+
+    /**
+     * Returns a set of domain objects corresponding to the entities in an entity collection
+     *
+     * @return the elements in the collection
+     */
+    public List<EO> getAll();
+
+    /**
+     * Deletes all entities in a collection
+     */
+    public void deleteAll();
+
+    /**
+     * Deletes entities in a collection corresponding to a list of domain objects
+     *
+     * @param domainObjects the domain objects to delete
+     */
+    public void delete(final List<EO> domainObjects);
 }

@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.service.datastore;
+package com.fizzbuzz.vroom.core.biz;
 
 /*
  * Copyright (c) 2014 Fizz Buzz LLC
@@ -14,14 +14,11 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.DomainCollection;
-import com.fizzbuzz.vroom.core.domain.IEntityObject;
+import com.fizzbuzz.vroom.core.domain.IDomainObject;
 
+import java.util.List;
 import java.util.Map;
 
-public interface IFilterableEntityCollection<
-        EO extends IEntityObject,
-        FC>
-        extends IEntityCollection<EO> {
-    public DomainCollection<EO> getFilteredElements(final Map<FC, Object> constraints);
+public interface IFilterableBiz<DO extends IDomainObject, FC> {
+    public List<DO> getMatching(final Map<FC, Object> constraints) ;
 }

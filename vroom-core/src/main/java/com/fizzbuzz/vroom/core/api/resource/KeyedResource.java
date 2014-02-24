@@ -69,6 +69,9 @@ public abstract class KeyedResource<
     public void deleteResource() {
         try {
             mBiz.delete(mKeyString);
+            // current version of Restlet returns 200 by default for successful DELETE; should be 204.
+            // TODO: remove this after upgrading to Restlet 2.2 RC3, which fixes this issue.
+            setStatus(Status.SUCCESS_NO_CONTENT);
         } catch (RuntimeException e) {
             doCatch(e);
         }

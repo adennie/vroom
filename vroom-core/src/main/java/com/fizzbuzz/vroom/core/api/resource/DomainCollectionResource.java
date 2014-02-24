@@ -29,22 +29,22 @@ import org.slf4j.LoggerFactory;
 public abstract class DomainCollectionResource<
         DC extends DomainCollection<DO>,
         DO extends IDomainObject,
-        CB extends ICollectionBiz<DO>>
+        B extends ICollectionBiz<DO>>
         extends VroomResource<DC>
         implements IDomainCollectionResource<DC, DO> {
 
     private Class<DC> mDomainCollectionClass;
-    private CB mCollectionBiz;
+    private B mBiz;
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
 
-    public CB getCollectionBiz() {
-        return mCollectionBiz;
+    public B getBiz() {
+        return mBiz;
     }
 
     public DC getResource() {
         DC result = Reflections.newInstance(mDomainCollectionClass);
         try {
-            result.addAll(mCollectionBiz.getElements());
+            result.addAll(mBiz.getAll());
         } catch (RuntimeException e) {
             doCatch(e);
         }
@@ -54,7 +54,7 @@ public abstract class DomainCollectionResource<
 
     public DO postResource(final DO element) {
         try {
-            mCollectionBiz.add(element);
+            mBiz.add(element);
             getResponse().setStatus(Status.SUCCESS_CREATED);
             // set the Location response header
             String uri = getElementUri(element);
@@ -67,7 +67,7 @@ public abstract class DomainCollectionResource<
     }
 
     public void deleteResource() {
-            mCollectionBiz.deleteAll();
+            mBiz.deleteAll();
     }
 
     @Override
@@ -84,9 +84,9 @@ public abstract class DomainCollectionResource<
     }
 
     protected void doInit(final Class<DC> domainCollectionClass,
-                          final CB collectionBiz) throws ResourceException {
+                          final B collectionBiz) throws ResourceException {
         mDomainCollectionClass = domainCollectionClass;
-        mCollectionBiz = collectionBiz;
+        mBiz = collectionBiz;
     }
 
     protected abstract String getElementUri(final DO element);

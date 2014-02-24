@@ -18,7 +18,9 @@ import com.fizzbuzz.vroom.core.domain.IEntityObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.fizzbuzz.vroom.core.service.datastore.IEntity;
 
-public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E> {
+import java.util.List;
+
+public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E>, ICollectionBiz<E> {
     private IEntity<E> mEntity;
 
     public EntityBiz(final IEntity<E> entity) {
@@ -30,8 +32,19 @@ public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E
     }
 
     @Override
+    public void add(final E domainObject) {
+        domainObject.validate();
+        getEntity().create(domainObject);
+    }
+
+    @Override
     public E get(final LongKey key) {
         return mEntity.get(key.get());
+    }
+
+    @Override
+    public List<E> getAll() {
+        return mEntity.getAll();
     }
 
     @Override
@@ -60,5 +73,15 @@ public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("invalid key string: " + keyString + ", must be convertible to Long");
         }
+    }
+
+    @Override
+    public void delete(List<E> domainObjects) {
+        getEntity().delete(domainObjects);
+    }
+
+    @Override
+    public void deleteAll() {
+        getEntity().deleteAll();
     }
 }

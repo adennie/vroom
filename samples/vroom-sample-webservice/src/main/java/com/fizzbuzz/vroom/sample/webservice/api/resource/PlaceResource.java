@@ -19,6 +19,7 @@ import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.fizzbuzz.vroom.sample.webservice.api.application.MediaTypes;
 import com.fizzbuzz.vroom.sample.webservice.biz.PlaceBiz;
 import com.fizzbuzz.vroom.sample.webservice.domain.Place;
+import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
@@ -44,6 +45,16 @@ public class PlaceResource
     public void putResource(final Place place) {
         try {
             super.putResource(place);
+        } catch (RuntimeException e) {
+            doCatch(e);
+        }
+    }
+
+    @Override
+    @Delete
+    public void deleteResource() {
+        try {
+            super.deleteResource();
         } catch (RuntimeException e) {
             doCatch(e);
         }

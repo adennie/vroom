@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.sample.webservice.biz;
+package com.fizzbuzz.vroom.core.biz;
 
 /*
  * Copyright (c) 2014 Fizz Buzz LLC
@@ -14,17 +14,26 @@ package com.fizzbuzz.vroom.sample.webservice.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.biz.FileEntityCollectionBiz;
-import com.fizzbuzz.vroom.extension.googlecloudstorage.domain.GcsFile;
-import com.fizzbuzz.vroom.sample.webservice.service.datastore.ImagesEntityCollection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.fizzbuzz.vroom.core.domain.IDomainObject;
 
-public class ImagesBiz
-        extends FileEntityCollectionBiz<GcsFile, ImagesEntityCollection> {
-    private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
+public interface ISingletonBiz<DO extends IDomainObject>{
+    /**
+     * returns the state of the object.
+     *
+     * @return the object
+     */
+    public DO get();
 
-    public ImagesBiz() {
-        super(new ImagesEntityCollection());
-    }
+    /**
+     * Updates the object's state.
+     *
+     * @param domainObject the new state for the object
+     */
+    public void update(final DO domainObject);
+
+    /**
+     * Deletes the object
+     */
+    public void delete();
+
 }
