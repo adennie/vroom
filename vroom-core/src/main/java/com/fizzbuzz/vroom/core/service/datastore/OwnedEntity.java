@@ -22,7 +22,7 @@ import com.googlecode.objectify.Key;
 
 import java.util.List;
 
-import static com.fizzbuzz.vroom.core.service.datastore.OfyManager.ofy;
+import static com.fizzbuzz.vroom.core.service.datastore.VroomDatastoreService.ofy;
 
 public class OwnedEntity<
         OWNERDO extends IEntityObject,

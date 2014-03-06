@@ -17,7 +17,6 @@ package com.fizzbuzz.vroom.sample.webservice.api.application;
 import com.fizzbuzz.vroom.core.api.application.VroomApplication;
 import com.fizzbuzz.vroom.core.api.resource.ResourceRegistry;
 import com.fizzbuzz.vroom.core.api.service.CorsService;
-import com.fizzbuzz.vroom.core.service.datastore.OfyService;
 import com.fizzbuzz.vroom.sample.webservice.api.dto_converter.PlaceConverter;
 import com.fizzbuzz.vroom.sample.webservice.api.dto_converter.PlacesConverter;
 import com.fizzbuzz.vroom.sample.webservice.api.dto_converter.UserConverter;
@@ -29,7 +28,6 @@ import com.fizzbuzz.vroom.sample.webservice.api.resource.PlaceResource;
 import com.fizzbuzz.vroom.sample.webservice.api.resource.PlacesResource;
 import com.fizzbuzz.vroom.sample.webservice.api.resource.UserResource;
 import com.fizzbuzz.vroom.sample.webservice.api.resource.UsersResource;
-import com.fizzbuzz.vroom.sample.webservice.service.datastore.SampleOfyService;
 import com.fizzbuzz.vroom.sample.webservice.util.Environment;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
@@ -115,9 +113,5 @@ public class SampleApplication
         corsService.getExposedHeaders().add("Location");
 
         getServices().add(corsService);
-    }
-    @Override
-    protected OfyService getOfyService() {
-        return new SampleOfyService();
     }
 }

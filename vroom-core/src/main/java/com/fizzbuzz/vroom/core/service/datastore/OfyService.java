@@ -16,8 +16,33 @@ package com.fizzbuzz.vroom.core.service.datastore;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
+import com.googlecode.objectify.ObjectifyService;
 
+/**
+ * This is a base class used for accessing Objectify.  Subclasses should register all @Entity-annotated classes
+ * in a static initialization block, for example:
+ * <pre>
+ * public class MyOfyService extends OfyService {
+ *   static {
+ *     factory().register(Thing.class);
+ *     factory().register(OtherThing.class);
+ *   }
+ * }
+ * </pre>
+ *
+ * The combination of the static initialization block and consistent use of this class' ofy() method throughout the
+ * rest of the code ensures that no interactions with Objectify happen before the DAO classes have been registered.
+ *
+ * Subclasses of VroomApplication must override getOfyService() and return an instance of that subclass of OfyService.
+ * VroomApplication.start() registers that instance with OfyManager, providing access to it from other Vroom
+ * code.
+ */
 public abstract class OfyService {
-    public abstract Objectify ofy();
-    public abstract ObjectifyFactory factory();
+    public Objectify ofy() {
+        return ObjectifyService.ofy();
+    }
+
+    public ObjectifyFactory factory() {
+        return ObjectifyService.factory();
+    }
 }

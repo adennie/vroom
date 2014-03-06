@@ -1,6 +1,6 @@
 package com.fizzbuzz.vroom.sample.webservice.service.datastore;
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Fizz Buzz LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,24 @@ package com.fizzbuzz.vroom.sample.webservice.service.datastore;
  */
 
 import com.fizzbuzz.vroom.core.domain.LongKey;
+import com.fizzbuzz.vroom.core.service.datastore.CreateDate;
+import com.fizzbuzz.vroom.core.service.datastore.ModDate;
 import com.fizzbuzz.vroom.core.service.datastore.VroomDao;
 import com.fizzbuzz.vroom.sample.webservice.domain.Place;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
+import org.joda.time.DateTime;
+
+import java.util.Date;
 
 @Entity
 public class PlaceDao extends VroomDao<Place> {
     @Index private String name;
     private EmbeddedLocationDao location;
+    // Note: for demonstration purposes, the two dates below are different date types, one is java.util.Date,
+    // the other is a Joda DateTime.  Nobody would make them different types in real life, of course.
+    @CreateDate Date creationDate;
+    @ModDate DateTime modificationDate;
 
     public EmbeddedLocationDao getLocation() {
         return location;
@@ -35,6 +44,7 @@ public class PlaceDao extends VroomDao<Place> {
 
     @Override
     public void fromDomainObject(final Place place) {
+        super.fromDomainObject(place);
         name = place.getName();
         location = new EmbeddedLocationDao(place.getLocation());
     }

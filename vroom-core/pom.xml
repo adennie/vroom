@@ -11,6 +11,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
@@ -26,8 +27,10 @@
 
     <properties>
         <!-- dependency versions -->
+        <assertj-core.version>1.5.0</assertj-core.version>
         <catch-exception.version>1.2.0</catch-exception.version>
         <fest-assert.version>2.0M10</fest-assert.version>
+        <fest-reflect.version>1.4.1</fest-reflect.version>
         <guava.version>14.0.1</guava.version>
         <!-- note: keep jackson version in sync with restlet version-->
         <jackson-version>1.9.8</jackson-version>
@@ -58,6 +61,14 @@
             <groupId>com.googlecode.catch-exception</groupId>
             <artifactId>catch-exception</artifactId>
             <version>${catch-exception.version}</version>
+            <exclusions>
+                <!-- fest-reflect wants to use an older version of hamcrest-core than junit 4.11, so exclude it -->
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -75,9 +86,30 @@
         </dependency>
 
         <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.easytesting</groupId>
             <artifactId>fest-assert-core</artifactId>
             <version>${fest-assert.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.easytesting</groupId>
+            <artifactId>fest-reflect</artifactId>
+            <version>${fest-reflect.version}</version>
+            <exclusions>
+                <!-- fest-reflect wants to use an older version of fest-util, so exclude it -->
+                <exclusion>
+                    <groupId>org.easytesting</groupId>
+                    <artifactId>fest-util</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Compile/runtime dependencies -->
@@ -116,6 +148,12 @@
                     <artifactId>guava</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.easytesting</groupId>
+            <artifactId>fest-reflect</artifactId>
+            <version>${fest-reflect.version}</version>
         </dependency>
 
         <dependency>

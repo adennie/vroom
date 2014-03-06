@@ -53,7 +53,6 @@ public interface IEntity<EO extends IEntityObject> {
      */
     public void delete(final Long key);
 
-
     /**
      * Returns a set of domain objects corresponding to the entities in an entity collection
      *
@@ -72,4 +71,19 @@ public interface IEntity<EO extends IEntityObject> {
      * @param domainObjects the domain objects to delete
      */
     public void delete(final List<EO> domainObjects);
+
+    /**
+     * Allocates a single ID for an entity which is not part of an entity group
+     *
+     * @return an allocated ID
+     */
+    public long allocateId();
+
+    /**
+     * Allocates a contiguous range of IDs for entities which are not part of an entity group
+     * @param num the number of keys to allocate.  Must be >= 1 and <= 1 billion.
+     *
+     * @return a list of allocated IDs
+     */
+    public List<Long> allocateIds(int num);
 }

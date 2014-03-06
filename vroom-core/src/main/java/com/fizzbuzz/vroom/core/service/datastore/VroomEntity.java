@@ -20,13 +20,12 @@ import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.fizzbuzz.vroom.core.exception.NotFoundException;
 import com.fizzbuzz.vroom.core.util.Reflections;
 import com.googlecode.objectify.Key;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.fizzbuzz.vroom.core.service.datastore.OfyManager.ofy;
+import static com.fizzbuzz.vroom.core.service.datastore.VroomDatastoreService.ofy;
 
 /**
  * Abstract base class for classes which manage datastore entities
@@ -34,7 +33,8 @@ import static com.fizzbuzz.vroom.core.service.datastore.OfyManager.ofy;
 public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao<EO>> implements IEntity<EO> {
     private final Class<EO> mDomainClass;
     private final Class<DAO> mDaoClass;
-    private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
+
+
 
     protected VroomEntity(final Class<EO> domainClass, final Class<DAO> daoClass) {
         mDomainClass = domainClass;
@@ -47,22 +47,15 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         DAO dao = createDao(domainObject);
         saveDao(dao);
 
-        // saving the DAO assigned it an ID as a side-effect; copy that to the domain object
-        domainObject.setKey(new LongKey(dao.getId()));
+        if (domainObject.getKey().get() == null) {
+            // saving the DAO assigned it an ID as a side-effect; copy that to the domain object
+            domainObject.setKey(new LongKey(dao.getId()));
+        }
     }
 
     @Override
     public EO get(final Long key) {
         return loadDao(key).toDomainObject();
-    }
-
-    public boolean exists(final Long key) {
-        try {
-            get(key);
-            return true;
-        } catch (NotFoundException e) {
-            return false;
-        }
     }
 
     @Override
@@ -98,6 +91,35 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         deleteEntitiesByKey(keys);
     }
 
+    public long allocateId() {
+        return ofy().factory().allocateId(getDaoClass()).getId();
+    }
+
+    @Override
+    public List<Long> allocateIds(int num) {
+        List result = new ArrayList(num);
+        Iterable<Key<DAO>> keys = ofy().factory().allocateIds(getDaoClass(), num);
+        // not very efficient, but the idea here is to avoid exposing Objectify types through this interface
+        for (Key<DAO> key : keys) {
+            result.add(key.getId());
+        }
+        return result;
+    }
+
+    public boolean exists(final Long key) {
+        try {
+            get(key);
+            return true;
+        } catch (NotFoundException e) {
+            return false;
+        }
+    }
+
+    public void rewriteAll() {
+        List<DAO> daos = ofy().load().type(getDaoClass()).list();
+        ofy().save().entities(daos).now();
+    }
+
     protected DomainCollection<EO> toDomainCollection(List<DAO> daoCollection) {
         DomainCollection<EO> domainCollection = new DomainCollection<>();
         for (DAO dao : daoCollection) {
@@ -106,24 +128,13 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         return domainCollection;
     }
 
-
-    private void deleteEntitiesByKey(Iterable<Key<DAO>> keys) {
-        ofy().delete().keys(keys);
-    }
-
-    public void rewriteAll() {
-        List<DAO> daos = ofy().load().type(getDaoClass()).list();
-        ofy().save().entities(daos).now();
-    }
-
-
     /**
      * Updates a DAO's state (typically in preparation for saving it to the datastore).
      * Subclasses should override if they need to assign state to the DAO beyond that which the DAO can get from
      * the domain object directly via its {@link VroomDao#fromDomainObject} method. This might include calculated,
      * generated, or derived values, state pulled from other objects or services, etc.
      *
-     * @param dao         a DAO which has been loaded from the datastore
+     * @param dao          a DAO which has been loaded from the datastore
      * @param domainObject a domain object containing state to be merged into the state of the DAO
      */
     protected void updateDao(final DAO dao, final EO domainObject) {
@@ -134,12 +145,15 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         DAO result = ofy().load().type(mDaoClass).id(key).now();
         if (result == null) {
             throw new NotFoundException("No " + mDomainClass.getSimpleName() + " found with ID " +
-                    Long.toString(key));
+                Long.toString(key));
         }
         return result;
     }
 
     protected void saveDao(final DAO dao) {
+        // set the modification date, if there is a field annotated for that.
+        setModDate(dao);
+
         ofy().save().entity(dao).now();
     }
 
@@ -155,19 +169,39 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
      * @return a DAO initialized from the domain object
      */
     protected DAO createDao(final EO domainObject) {
-        if (domainObject.getKey().get() != null)
-            throw new IllegalArgumentException("Cannot create an entity for a domain object with an existing ID; the " +
-                    "ID will be assigned by the persistence layer on the initial save operation.");
-
         // instantiate the appropriate kind of DAO
         DAO dao = Reflections.newInstance(mDaoClass);
 
         // initialize the DAO from the domain object's state
         dao.fromDomainObject(domainObject);
+
+        // set the creation date, if there is a field annotated for that.
+        setCreationDate(dao);
+
         return dao;
     }
 
     protected Class<DAO> getDaoClass() {
         return mDaoClass;
+    }
+
+    private void deleteEntitiesByKey(Iterable<Key<DAO>> keys) {
+        ofy().delete().keys(keys);
+    }
+
+    private void setCreationDate(DAO dao) {
+        // look for a @CreateDate annotation
+        Field field = Reflections.getFirstFieldAnnotatedWith(mDaoClass, Object.class, CreateDate.class);
+        if (field != null) {
+            VroomDatastoreService.getDateTimeStamper(field.getType()).stampWithNow(dao, field);
+        }
+    }
+
+    private void setModDate(DAO dao) {
+        // look for a @ModDate annotation
+        Field field = Reflections.getFirstFieldAnnotatedWith(mDaoClass, Object.class, ModDate.class);
+        if (field != null) {
+            VroomDatastoreService.getDateTimeStamper(field.getType()).stampWithNow(dao, field);
+        }
     }
 }

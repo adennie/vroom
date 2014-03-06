@@ -21,7 +21,7 @@ import com.googlecode.objectify.cmd.Query;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.fizzbuzz.vroom.core.service.datastore.OfyManager.ofy;
+import static com.fizzbuzz.vroom.core.service.datastore.VroomDatastoreService.ofy;
 
 public class OfyUtils {
     public static <DAO extends VroomDao> List<Long> getIdsFromRefs(List<Ref<DAO>> refs) {

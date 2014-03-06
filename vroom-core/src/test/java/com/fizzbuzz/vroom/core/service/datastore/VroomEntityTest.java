@@ -15,45 +15,132 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
+import com.fizzbuzz.vroom.core.domain.EntityObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyFactory;
+import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.annotation.Entity;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static com.googlecode.catchexception.CatchException.caughtException;
-import static com.googlecode.catchexception.apis.CatchExceptionBdd.then;
-import static com.googlecode.catchexception.apis.CatchExceptionBdd.when;
+import java.util.Date;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class VroomEntityTest {
+    @Rule
+    public GaeRule dsRule = new GaeRule();
+    @Rule
+    public ObjectifyRule ofyRule = new ObjectifyRule(new TestOfyService());
     TestEntityObject mTestEntityObject;
-    TestDao mTestDao;
     VroomEntity<TestEntityObject, TestDao> mTestEntity;
-
-    @Rule
-    public DataStoreRule dsRule = new DataStoreRule();
-
-    @Rule
-    public ObjectifyRule ofyRule = new ObjectifyRule();
 
     @Before
     public void setup() {
         mTestEntityObject = new TestEntityObject();
-        mTestDao = new TestDao();
-        OfyManager.getOfyService().factory().register(TestDao.class);
-        mTestEntity = new VroomEntity<TestEntityObject, TestDao>(TestEntityObject.class, TestDao.class) {};
+        mTestEntity = new VroomEntity<TestEntityObject, TestDao>(TestEntityObject.class, TestDao.class) {
+        };
 
     }
 
     @Test
-    public void createFailsWhenKeyedObjectAlreadyHasAKey() {
-        // given a keyed object with a key
-        mTestEntityObject.setKey(new LongKey(0L));
+    public void createAssignsKeyIfKeyedObjectDidntAlreadyHaveOne() {
+        assertThat(mTestEntityObject.getKey().get()).isNull();
+        mTestEntity.create(mTestEntityObject);
+        assertThat(mTestEntityObject.getKey()).isNotNull();
+    }
 
-        // when attempting to create an entity for that keyed object
-        when(mTestEntity).create(mTestEntityObject);
+    @Test
+    public void createUsesSpecifiedKeyIfProvided() {
+        LongKey key = new LongKey(123L);
+        mTestEntityObject.setKey(key);
+        mTestEntity.create(mTestEntityObject);
+        assertThat(mTestEntityObject.getKey())
+            .isNotNull()
+            .isEqualTo(key);
+    }
 
-        // then an IllegalArgumentException should be thrown
-        then(caughtException())
-                .isInstanceOf(IllegalArgumentException.class);
+
+    @Test
+    public void allocateIdReturnsValidId() {
+        Long id = mTestEntity.allocateId();
+        assertThat(id).isNotNull();
+    }
+
+    @Test
+    public void dateFieldsAreStampedAtCreateTime() {
+
+        mTestEntity.create(mTestEntityObject);
+        TestDao testDao = mTestEntity.loadDao(mTestEntityObject.getKey().get());
+        assertThat(testDao.createDate).isNotNull().isCloseTo(new Date(System.currentTimeMillis()), 1000);
+        assertThat(testDao.modDate).isNotNull().isCloseTo(new Date(System.currentTimeMillis()), 1000);
+    }
+
+    @Test
+    public void correctDateFieldsAreStampedAtModTime() {
+        // create an entity and remember its create and modify dates
+        mTestEntity.create(mTestEntityObject);
+        TestDao testDao = mTestEntity.loadDao(mTestEntityObject.getKey().get());
+        Date origCreateDate = testDao.createDate;
+        Date origModDate = testDao.modDate;
+
+        // now update it and reload the DAO
+        mTestEntity.update(mTestEntityObject);
+        testDao = mTestEntity.loadDao(mTestEntityObject.getKey().get());
+
+        // the create date shouldn't have changed
+        assertThat(testDao.createDate)
+            .isNotNull()
+            .isEqualTo(origCreateDate);
+
+        // the mod date should have been updated
+        assertThat(testDao.modDate)
+            .isNotNull().
+            isNotEqualTo(origModDate)
+            .isCloseTo(new Date(System.currentTimeMillis()), 1000);
+    }
+
+
+    private static class TestEntityObject extends EntityObject {
+        public TestEntityObject() {
+            super(new LongKey((Long) null));
+        }
+
+        @Override
+        public void validate() {
+        }
+    }
+
+    @Entity
+    private static class TestDao extends VroomDao<TestEntityObject> {
+        public @CreateDate Date createDate;
+        public @ModDate Date modDate;
+
+        @Override
+        public TestEntityObject toDomainObject() {
+            return null;
+        }
+
+        @Override
+        public void fromDomainObject(final TestEntityObject entityObject) {
+        }
+    }
+
+    public static class TestOfyService extends OfyService {
+        static {
+            ObjectifyService.factory().register(TestDao.class);
+        }
+
+        @Override
+        public Objectify ofy() {
+            return ObjectifyService.ofy();
+        }
+
+        @Override
+        public ObjectifyFactory factory() {
+            return ObjectifyService.factory();
+        }
     }
 }

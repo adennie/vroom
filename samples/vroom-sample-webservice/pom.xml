@@ -20,6 +20,7 @@
         <junit.version>4.11</junit.version>
         <objectify.version>4.0rc2</objectify.version>
         <restlet.version>2.1.4</restlet.version>
+        <servlet-api.version>2.5</servlet-api.version>
         <slf4j.version>1.7.5</slf4j.version>
 
         <!-- this value is interpolated into app.yaml and becomes the version of the deployed app engine module.  It
@@ -41,6 +42,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- provided dependencies -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Compile/runtime dependencies -->
         <dependency>
             <groupId>com.fizz-buzz.vroom</groupId>
@@ -57,6 +66,12 @@
         <dependency>
             <groupId>com.fizz-buzz.vroom</groupId>
             <artifactId>vroom-google-cloud-storage-extension</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fizz-buzz.vroom</groupId>
+            <artifactId>vroom-joda-time-extension</artifactId>
             <version>${project.version}</version>
         </dependency>
 

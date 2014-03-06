@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.service.datastore;
+package com.fizzbuzz.vroom.sample.webservice.service.datastore;
 
 /*
  * Copyright (c) 2014 Fizz Buzz LLC
@@ -14,16 +14,11 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.googlecode.objectify.annotation.Entity;
+import com.fizzbuzz.vroom.core.service.datastore.VroomEntity;
+import com.fizzbuzz.vroom.sample.webservice.domain.User.UserLogEntry;
 
-@Entity
-public class TestDao extends VroomDao<TestEntityObject> {
-    @Override
-    public TestEntityObject toDomainObject() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void fromDomainObject(final TestEntityObject keyedObject) {
+public class UserLogEntryEntity extends VroomEntity<UserLogEntry, UserLogEntryDao> {
+    public UserLogEntryEntity() {
+        super(UserLogEntry.class, UserLogEntryDao.class);
     }
 }

@@ -32,6 +32,7 @@ public class UserDao extends VroomDao<User> {
 
     @Override
     public void fromDomainObject(final User user) {
+        super.fromDomainObject(user);
         firstName = user.getFirstName();
         lastName = user.getLastName();
         email = user.getEmail();

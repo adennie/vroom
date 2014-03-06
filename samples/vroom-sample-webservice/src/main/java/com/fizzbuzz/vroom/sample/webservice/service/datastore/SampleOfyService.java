@@ -15,26 +15,24 @@ package com.fizzbuzz.vroom.sample.webservice.service.datastore;
  */
 
 import com.fizzbuzz.vroom.core.service.datastore.OfyService;
-import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.impl.translate.opt.joda.JodaTimeTranslators;
 
+/**
+ * This class registers all DAO classes with Objectify
+ * See https://code.google.com/p/objectify-appengine/wiki/BestPractices for more info.
+ */
 public class SampleOfyService extends OfyService {
     static {
         ObjectifyFactory factory = ObjectifyService.factory();
 
+        // translators must be registered *BEFORE* DAO classes
+        JodaTimeTranslators.add(factory);
+
         factory.register(ImageDao.class);
         factory.register(PlaceDao.class);
         factory.register(UserDao.class);
-    }
-
-    @Override
-    public Objectify ofy() {
-        return ObjectifyService.ofy();
-    }
-
-    @Override
-    public ObjectifyFactory factory() {
-        return ObjectifyService.factory();
+        factory.register(UserLogEntryDao.class);
     }
 }

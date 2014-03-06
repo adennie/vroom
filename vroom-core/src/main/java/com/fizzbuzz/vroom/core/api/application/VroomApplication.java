@@ -16,8 +16,6 @@ package com.fizzbuzz.vroom.core.api.application;
 
 import com.fizzbuzz.vroom.core.api.resource.ResourceRegistry;
 import com.fizzbuzz.vroom.core.api.resource.VroomResource;
-import com.fizzbuzz.vroom.core.service.datastore.OfyManager;
-import com.fizzbuzz.vroom.core.service.datastore.OfyService;
 import com.google.appengine.api.labs.modules.ModulesService;
 import com.google.appengine.api.labs.modules.ModulesServiceFactory;
 import com.google.appengine.api.utils.SystemProperty;
@@ -96,8 +94,6 @@ public abstract class VroomApplication
     public synchronized void start() throws Exception {
         super.start();
 
-        OfyManager.registerOfyService(getOfyService());
-
         // request "strict" content negotiation from Restlet
         getConnegService().setStrict(true);
     }
@@ -126,12 +122,5 @@ public abstract class VroomApplication
         mLogger.info("attaching path template {} to {}", pathTemplate, target);
         router.attach(pathTemplate, target);
     }
-
-    /**
-     * Returns the application's OfyService object.  Subclasses of VroomApplication must implement this method.
-     *
-     * @return the OfyService object
-     */
-    protected abstract OfyService getOfyService();
 }
 

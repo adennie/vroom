@@ -14,14 +14,12 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.EntityObject;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class TestEntityObject extends EntityObject {
-    public TestEntityObject() {
-        super(null);
-    }
-
-    @Override
-    public void validate() {
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface CreateDate {
 }
