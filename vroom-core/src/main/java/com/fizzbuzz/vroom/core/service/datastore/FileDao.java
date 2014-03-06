@@ -22,6 +22,7 @@ public abstract class FileDao<F extends IFile> extends VroomDao<F> {
 
     @Override
     public void fromDomainObject (final F file) {
+        super.fromDomainObject(file);
         fileName = file.getFileName();
     }
 

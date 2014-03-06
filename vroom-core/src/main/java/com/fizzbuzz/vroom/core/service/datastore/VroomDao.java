@@ -17,8 +17,6 @@ package com.fizzbuzz.vroom.core.service.datastore;
 import com.fizzbuzz.vroom.core.domain.IEntityObject;
 import com.googlecode.objectify.annotation.Id;
 
-import static com.fizzbuzz.vroom.core.service.datastore.OfyManager.ofy;
-
 public abstract class VroomDao<EO extends IEntityObject> {
     @Id private Long id;
 
@@ -41,24 +39,13 @@ public abstract class VroomDao<EO extends IEntityObject> {
      *
      * @param domainObject
      */
-    public abstract void fromDomainObject(final EO domainObject);
+    public void fromDomainObject(final EO domainObject) {
+        id = domainObject.getKey().get(); // might be null
+    }
 
     public Long getId() {
         return id;
     }
 
-    /**
-     * Allocates a datastore ID for this DAO using Objectify's
-     * {@link com.googlecode.objectify.ObjectifyFactory#allocateId(java.lang.Class<T> clazz)} method.  Subclasses
-     * should override this method if they wish to use a different ID allocation mechanism
-     *
-     * @return
-     */
-    protected Long allocateId() {
-        if (id != null)
-            throw new IllegalStateException("attempted to allocate a datastore ID for a DAO that already has one");
 
-        id = ofy().factory().allocateId(this.getClass()).getId();
-        return id;
-    }
 }

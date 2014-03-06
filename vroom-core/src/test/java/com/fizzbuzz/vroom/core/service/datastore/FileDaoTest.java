@@ -14,17 +14,25 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IEntityObject;
+import com.fizzbuzz.vroom.core.domain.File;
+import com.fizzbuzz.vroom.core.domain.LongKey;
+import org.junit.Test;
 
-public abstract class FilterableTimeStampedEntity<
-        EO extends IEntityObject,
-        DAO extends TimeStampedDao<EO>,
-        FC>
-        extends TimeStampedEntity<EO, DAO>
-        implements IFilterableEntity<EO, FC> {
+import static org.assertj.core.api.Assertions.*;
 
+public class FileDaoTest {
+    @Test
+    public void initializeFromDomainObject() {
+        String testFileName = "test-filename";
+        File file = new File(new LongKey(123L), testFileName);
+        FileDao<File> testFileDao = new FileDao<File>() {
+            @Override
+            public File toDomainObject() {
+                return null;
+            }
+        };
 
-    protected FilterableTimeStampedEntity(final Class<EO> domainClass, final Class<DAO> daoClass) {
-        super(domainClass, daoClass);
+        testFileDao.fromDomainObject(file);
+        assertThat(testFileDao.getFileName().equals(testFileName));
     }
 }

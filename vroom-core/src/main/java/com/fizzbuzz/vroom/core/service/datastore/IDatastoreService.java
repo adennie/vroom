@@ -14,24 +14,19 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.Work;
 
-public abstract class OfyManager {
-    private static OfyService mOfyService;
+public interface IDatastoreService {
 
-    public static void registerOfyService(final OfyService ofyService) {
-        mOfyService = ofyService;
+    // a paper-thin wrapper around Objectify's Work interface, for encapsulation
+    public interface Transactable<T> extends Work<T> {
     }
 
-    public static OfyService getOfyService() {
-        if (mOfyService == null) {
-            throw new IllegalStateException("no OfyService assigned");
-        }
-        return mOfyService;
-    }
-
-    public static Objectify ofy() {
-        return getOfyService().ofy();
-    }
-
+    /**
+     * Executes a Transactable task within a datastore transaction
+     * @param task the task to perform
+     * @param <T> the return type of the task
+     * @return the return value from the task
+     */
+    public <T> T doInTransaction(final Transactable<T> task);
 }

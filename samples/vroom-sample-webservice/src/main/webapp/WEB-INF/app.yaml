@@ -15,7 +15,10 @@ welcome_files:
 
 system_properties:
   java.util.logging.config.file: WEB-INF/logging.properties
-  
+
+listeners:
+  - com.fizzbuzz.vroom.sample.webservice.service.datastore.DatastoreServiceInitializer
+
 handlers:
   - url: ${vroom-sample.env.resource-root}/*
     name: restlet-servlet

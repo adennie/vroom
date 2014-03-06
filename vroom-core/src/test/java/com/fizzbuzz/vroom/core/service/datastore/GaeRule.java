@@ -21,7 +21,10 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalTaskQueueTestConfig;
 import org.junit.rules.ExternalResource;
 
-public class DataStoreRule extends ExternalResource {
+/**
+ * A JUnit rule that implements setup and teardown of a GAE LocalServiceTestHelper.
+ */
+public class GaeRule extends ExternalResource {
     private LocalServiceTestHelper mHelper;
 
     @Override

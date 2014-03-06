@@ -14,28 +14,12 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.googlecode.objectify.ObjectifyFilter;
-import org.junit.rules.ExternalResource;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-/**
- * Implementation of a JUnit rule which does Objectify setup and teardown logic.
- */
-public class ObjectifyRule extends ExternalResource {
-    private OfyService mOfyService;
-
-    public ObjectifyRule(final OfyService ofyService) {
-        mOfyService = ofyService;
-    }
-
-    @Override
-    protected void before() throws Throwable {
-        VroomDatastoreService.registerOfyService(mOfyService);
-    }
-
-    @Override
-    protected void after() {
-        ObjectifyFilter.complete();
-    }
-
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface ModDate {
 }

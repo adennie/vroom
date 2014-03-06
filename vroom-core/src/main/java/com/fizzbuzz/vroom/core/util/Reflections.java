@@ -14,7 +14,11 @@ package com.fizzbuzz.vroom.core.util;
  * limitations under the License.
  */
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Reflections {
 
@@ -45,8 +49,8 @@ public class Reflections {
      *                    target constructor
      * @param param2Class a Class object corresponding to the type of the 2nd parameter of the target class'
      *                    target constructor
-     * @param arg1      the value to pass as the constructor's 1st parameter
-     * @param arg2      the value to pass as the constructor's 2nd parameter
+     * @param arg1        the value to pass as the constructor's 1st parameter
+     * @param arg2        the value to pass as the constructor's 2nd parameter
      * @param <T>         the type of the object to be instantiated
      * @param <P1>        the type of the 1st parameter of the target constructor
      * @param <P2>        the type of the 1st parameter of the target constructor
@@ -54,10 +58,10 @@ public class Reflections {
      */
 
     public static <T, P1, P2, A1 extends P1, A2 extends P2> T newInstance(final Class<T> clazz,
-                                            final Class<P1> param1Class,
-                                            final Class<P2> param2Class,
-                                            final A1 arg1,
-                                            final A2 arg2) {
+                                                                          final Class<P1> param1Class,
+                                                                          final Class<P2> param2Class,
+                                                                          final A1 arg1,
+                                                                          final A2 arg2) {
     /*
     public static <T, P1, P2> T newInstance(final Class<T> clazz,
                                                                           final Class<P1> param1Class,
@@ -70,13 +74,14 @@ public class Reflections {
         Constructor<T> ctor = getConstructor(clazz, new Class[]{param1Class, param2Class});
         return newInstance(ctor, arg1, arg2);
     }
+
     /**
      * Instantiates an object of a specified class using a constructor with a single long parameter.
      *
      * @param clazz a Class object corresponding to the class of the object to be instantiated
      * @param param the parameter value to pass to the constructor
      * @param <T>   the type of the object to be instantiated
-     * @return      an instance of the requested class
+     * @return an instance of the requested class
      */
     public static <T> T newInstance(final Class<T> clazz,
                                     final long param) {
@@ -90,7 +95,7 @@ public class Reflections {
      *
      * @param clazz a Class object corresponding to the class of the object to be instantiated
      * @param <T>   the type of the object to be instantiated
-     * @return      an instance of the requested class
+     * @return an instance of the requested class
      */
     public static <T> T newInstance(final Class<T> clazz) {
         T result = null;
@@ -108,10 +113,10 @@ public class Reflections {
     /**
      * Instantiates an object of a specified class using the provided constructor and argument list.
      *
-     * @param ctor  the constructor to invoke
-     * @param args  the arguments to pass to the constructor
-     * @param <T>   the type of the object to be instantiated
-     * @return      an instance of the requested class
+     * @param ctor the constructor to invoke
+     * @param args the arguments to pass to the constructor
+     * @param <T>  the type of the object to be instantiated
+     * @return an instance of the requested class
      */
     public static <T> T newInstance(final Constructor<T> ctor,
                                     final Object... args) {
@@ -120,8 +125,7 @@ public class Reflections {
         try {
             ctor.setAccessible(true);
             result = ctor.newInstance(args);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("failed to instantiate class: " + ctor.getClass().getName(), e);
 
         }
@@ -131,10 +135,10 @@ public class Reflections {
     /**
      * Looks up the constructor of a given class having the signature specified by a list of parameter types
      *
-     * @param clazz       a Class object for the target type
-     * @param paramTypes  the target constructor's parameter types
-     * @param <T>         the target type
-     * @return            the constructor matching the requested signature
+     * @param clazz      a Class object for the target type
+     * @param paramTypes the target constructor's parameter types
+     * @param <T>        the target type
+     * @return the constructor matching the requested signature
      */
     public static <T> Constructor<T> getConstructor(final Class<T> clazz,
                                                     final Class<?>... paramTypes) {
@@ -149,17 +153,12 @@ public class Reflections {
 
     }
 
-    // this is just a collection of static methods. Make the constructor private to prevent instantiation.
-    private Reflections() {
-    }
-
     /**
-     *
-     * @param clazz       a Class object for the target type
-     * @param <T>         the target type
-     * @return            the default constructor for clazz, or null if one does not exist
+     * @param clazz a Class object for the target type
+     * @param <T>   the target type
+     * @return the default constructor for clazz, or null if one does not exist
      */
-    public static<T> Constructor<T> getDefaultConstructor(final Class<T> clazz) {
+    public static <T> Constructor<T> getDefaultConstructor(final Class<T> clazz) {
         Constructor[] ctors = clazz.getDeclaredConstructors();
         Constructor ctor = null;
         for (int i = 0; i < ctors.length; i++) {
@@ -170,4 +169,67 @@ public class Reflections {
         return ctor;
     }
 
+    /**
+     * Returns a list of fields in a class hierarchy having a specified annotation.
+     *
+     * @param startClass a class whose fields (and whose superclasses' fields) are to be retrieved
+     * @param stopClass  a class in the superclass hierarchy of startClass whose fields should not be retrieved
+     *                   (nor its superclasses' fields)
+     * @return
+     */
+    public static List<Field> getFieldsAnnotatedWith(Class<?> startClass,
+                                                     Class<?> stopClass,
+                                                     Class<? extends Annotation> annotationClass) {
+
+        List<Field> result = new ArrayList<>();
+        Class<?> targetClass = startClass;
+        while (targetClass != null &&
+                (stopClass == null || !(targetClass.equals(stopClass)))) {
+            Field[] fields = targetClass.getDeclaredFields();
+            for (int i = 0; i < fields.length; i++) {
+                if (fields[i].getAnnotation(annotationClass) != null) {
+                    result.add(fields[i]);
+                }
+            }
+            targetClass = targetClass.getSuperclass();
+        }
+
+        return result;
+    }
+    /**
+     * Returns the first field found in a class hierarchy having a specified annotation.
+     *
+     * @param startClass a class whose fields (and whose superclasses' fields) are to be inspected
+     * @param stopClass  a class in the superclass hierarchy of startClass whose fields should not be inspected
+     *                   (nor its superclasses' fields)
+     * @return the first field found with the specified annotation, or null if none found.
+     */
+    public static Field getFirstFieldAnnotatedWith(Class<?> startClass,
+                                                     Class<?> stopClass,
+                                                     Class<? extends Annotation> annotationClass) {
+
+        Field result = null;
+        Class<?> targetClass = startClass;
+
+        while (targetClass != null &&
+                (stopClass == null || !(targetClass.equals(stopClass)))) {
+            Field[] fields = targetClass.getDeclaredFields();
+            for (int i = 0; i < fields.length; i++) {
+                if (fields[i].getAnnotation(annotationClass) != null) {
+                    result = fields[i];
+                    break;
+                }
+            }
+            if (result != null) // already found it?
+                break;
+
+            targetClass = targetClass.getSuperclass();
+        }
+
+        return result;
+    }
+
+    // this is just a collection of static methods. Make the constructor private to prevent instantiation.
+    private Reflections() {
+    }
 }

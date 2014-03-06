@@ -14,28 +14,18 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.googlecode.objectify.ObjectifyFilter;
-import org.junit.rules.ExternalResource;
+import com.fizzbuzz.vroom.core.domain.LongKey;
 
-/**
- * Implementation of a JUnit rule which does Objectify setup and teardown logic.
- */
-public class ObjectifyRule extends ExternalResource {
-    private OfyService mOfyService;
+import java.util.List;
 
-    public ObjectifyRule(final OfyService ofyService) {
-        mOfyService = ofyService;
-    }
+public interface IGroupedEntity {
+    /**
+     * Allocates a single ID for an entity in an entity group
+     */
+    public long allocateId(final LongKey ancestorKey);
 
-    @Override
-    protected void before() throws Throwable {
-        VroomDatastoreService.registerOfyService(mOfyService);
-    }
-
-    @Override
-    protected void after() {
-        ObjectifyFilter.complete();
-    }
-
-
+    /**
+     * Allocates a contiguous range of IDs for entities in an entity group
+     */
+    public List<LongKey> allocateIds(final LongKey ancestorKey);
 }

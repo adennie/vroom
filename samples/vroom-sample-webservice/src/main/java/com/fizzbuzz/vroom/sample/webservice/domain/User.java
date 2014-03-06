@@ -17,6 +17,8 @@ package com.fizzbuzz.vroom.sample.webservice.domain;
 import com.fizzbuzz.vroom.core.domain.EntityObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
 
+import java.util.Date;
+
 public class User extends EntityObject {
     private String mFirstName;
     private String mLastName;
@@ -24,7 +26,8 @@ public class User extends EntityObject {
     private LongKey mProfileImageKey;
     private LongKey mHomeKey;
 
-    public User(final LongKey key, final String firstName, final String lastName, final String email, final LongKey profileImageKey, final LongKey homeKey) {
+    public User(final LongKey key, final String firstName, final String lastName, final String email,
+                final LongKey profileImageKey, final LongKey homeKey) {
         super(key);
         mFirstName = firstName;
         mLastName = lastName;
@@ -71,5 +74,49 @@ public class User extends EntityObject {
 
     public void setHomeKey(final LongKey homeKey) {
         mHomeKey = homeKey;
+    }
+
+    public static class UserLogEntry extends EntityObject {
+        public enum UserEventType {
+            USER_CREATED,
+            USER_PASSWORD_CHANGED,
+            USER_EMAIL_CHANGED
+        }
+
+        LongKey mUserKey;
+        UserEventType mEventType;
+        Date mDateTime;
+
+        public UserLogEntry(final LongKey key, final LongKey userKey, final UserEventType eventType,
+                            final Date dateTime) {
+            super(key);
+            mUserKey = userKey;
+            mEventType = eventType;
+            mDateTime = dateTime;
+        }
+
+        public LongKey getUserKey() {
+            return mUserKey;
+        }
+
+        public void setUserKey(final LongKey userKey) {
+            mUserKey = userKey;
+        }
+
+        public UserEventType getEventType() {
+            return mEventType;
+        }
+
+        public void setEventType(final UserEventType eventType) {
+            mEventType = eventType;
+        }
+
+        public Date getDateTime() {
+            return mDateTime;
+        }
+
+        public void setDateTime(final Date dateTime) {
+            mDateTime = dateTime;
+        }
     }
 }
