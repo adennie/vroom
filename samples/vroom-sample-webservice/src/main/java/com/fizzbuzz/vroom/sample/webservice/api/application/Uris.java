@@ -21,6 +21,7 @@ public class Uris {
     public static final String EDGE_CACHED = "/edge_cached";
     public static final String IMAGES = "/images/";
     public static final String IMAGE_TEMPLATE = IMAGES + UriHelper.tokenize(UriTokens.IMAGE_ID);
+    public static final String NON_DOMAIN_RESOURCE = "/non_domain_resource";
     public static final String PLACES = "/places/";
     public static final String PLACE_TEMPLATE = PLACES + UriHelper.tokenize(UriTokens.PLACE_ID);
     public static final String USERS = "/users/";

@@ -24,6 +24,7 @@ import com.fizzbuzz.vroom.sample.webservice.api.dto_converter.UsersConverter;
 import com.fizzbuzz.vroom.sample.webservice.api.resource.EdgeCacheResource;
 import com.fizzbuzz.vroom.sample.webservice.api.resource.ImageResource;
 import com.fizzbuzz.vroom.sample.webservice.api.resource.ImagesResource;
+import com.fizzbuzz.vroom.sample.webservice.api.resource.NonDomainResource;
 import com.fizzbuzz.vroom.sample.webservice.api.resource.PlaceResource;
 import com.fizzbuzz.vroom.sample.webservice.api.resource.PlacesResource;
 import com.fizzbuzz.vroom.sample.webservice.api.resource.UserResource;
@@ -78,6 +79,7 @@ public class SampleApplication
         ResourceRegistry.registerResource(EdgeCacheResource.class, Uris.EDGE_CACHED);
         ResourceRegistry.registerResource(ImageResource.class, Uris.IMAGE_TEMPLATE);
         ResourceRegistry.registerResource(ImagesResource.class, Uris.IMAGES);
+        ResourceRegistry.registerResource(NonDomainResource.class, Uris.NON_DOMAIN_RESOURCE);
         ResourceRegistry.registerResource(PlaceResource.class, Uris.PLACE_TEMPLATE);
         ResourceRegistry.registerResource(PlacesResource.class, Uris.PLACES);
         ResourceRegistry.registerResource(UserResource.class, Uris.USER_TEMPLATE);
