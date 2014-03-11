@@ -15,15 +15,14 @@ Vroom leverages several best-of-breed open source libraries, including:
  - Jackson (for JSON<->POJO serialization/deserialization)
  - Objectify (for interacting with App Engine datastore)
 
-Vroom makes common use cases easy to implement by providing boilerplate code and API glue, leaving you to focus on the "special sauce" of your application.  Examples include:
+Vroom makes it easy to implement common use cases by providing structure, boilerplate code, and API glue, leaving you to focus on the "special sauce" of your application.  Examples include:
 - CRUD (create/read/update/delete) operations on persistent resources
 - (optional) automatic timestamping of creation/modification date properties on datastore entities
 - retrieving collections of resources
 - querying to filter collection results
 - uploading and retrieving files using GCS
 - uploading and retrieving images, leveraging GAE's ImagesService to perform requested transformations
-- supporting multiple resource representations, allowing you to evolve your DTO classes while still supporting older clients
-
+- supporting multiple resource representations, allowing you to evolve your representations while still supporting older clients
 
 Vroom includes
  - the core Vroom framework library
