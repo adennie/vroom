@@ -4,7 +4,7 @@ Vroom
 A Java framework for building RESTful web services on Google App Engine
 ---
 
-**Vroom** makes it easier to build real-world web services on GAE by:
+**Vroom** makes it easy to build real-world web services on GAE by:
 
 1. establishing a 3-tier framework into which you can organize your code - an API tier, a business logic tier, and a service  tier.  This keeps the code in each tier simpler and more focused, reduces coupling, and increases testability.
 2. providing base classes in each tier to simplify the implementation of common use cases such as CRUD operations and collections with filtering.
