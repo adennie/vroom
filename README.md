@@ -25,10 +25,10 @@ Vroom makes it easy to implement common use cases by providing structure, boiler
 - supporting multiple resource representations, allowing you to evolve your representations while still supporting older clients
 
 Vroom includes
- - the core Vroom framework library
+ - the core Vroom framework library.
  - a small library of helper base classes for implementing Vroom-compatible Data Transfer Objects (DTOs).  This is useful for sharing code with Java clients such as Android apps.
- - (optional) extension libraries for integrating Google Cloud Storage, the Google Maps API, and the Joda Time library
- - a sample RESTful web service built using Vroom, demonstrating common use cases, including use of the Vroom extensions
+ - (optional) extension libraries for integrating Google Cloud Storage, the Google Maps API, and the Joda Time library.
+ - a sample RESTful web service built using Vroom, demonstrating common use cases, including use of the Vroom extensions.
 
 Note: Vroom is currently in a pre-1.0 stage, and changing rapidly.  Breaking changes are likely.  You've been warned.
 
