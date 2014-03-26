@@ -15,6 +15,7 @@ package com.fizzbuzz.vroom.core.service.datastore;
  */
 
 import com.fizzbuzz.vroom.core.domain.IEntityObject;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Id;
 
 public abstract class VroomDao<EO extends IEntityObject> {
@@ -43,9 +44,21 @@ public abstract class VroomDao<EO extends IEntityObject> {
         id = domainObject.getKey().get(); // might be null
     }
 
+    /**
+     * Returns this entity's ID.
+     *
+     * @return the ID
+     */
     public Long getId() {
         return id;
     }
 
-
+    /**
+     * Returns this entity's key.
+     *
+     * @return the key
+     */
+    public Key<?> getKey() {
+        return Key.create(getClass(), id);
+    }
 }

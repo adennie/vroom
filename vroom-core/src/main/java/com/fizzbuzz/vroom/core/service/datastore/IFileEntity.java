@@ -15,7 +15,7 @@ package com.fizzbuzz.vroom.core.service.datastore;
 
 import com.fizzbuzz.vroom.core.domain.IFile;
 
-public interface IFileEntity<F extends IFile> extends IEntity<F> {
+public interface IFileEntity<F extends IFile> {
 
     public void create(final F file, final byte[] bytes);
 }

@@ -16,15 +16,22 @@ package com.fizzbuzz.vroom.core.service.datastore;
 
 import com.fizzbuzz.vroom.core.domain.IEntityObject;
 
-public abstract class FilterableEntity<
-        EO extends IEntityObject,
-        DAO extends VroomDao<EO>,
-        FC>
-        extends VroomEntity<EO, DAO>
-        implements IFilterableEntity<EO, FC> {
+import java.util.Collection;
 
+public interface IParentedEntity<EO extends IEntityObject> {
+    public void delete(final Long parentId, final Long id);
 
-    protected FilterableEntity(final Class<EO> domainClass, final Class<DAO> daoClass) {
-        super(domainClass, daoClass);
-    }
+    /**
+     * Deletes parented entities corresponding to a collection of domain objects
+     *
+     * @param parentId
+     * @param domainObjects
+     */
+    public void delete(final Long parentId, final Collection<EO> domainObjects);
+
+    /**
+     * Delete all entities of the kind corresponding to EO which have the specified parent
+     * @param parentId
+     */
+    public void deleteAll(Long parentId);
 }

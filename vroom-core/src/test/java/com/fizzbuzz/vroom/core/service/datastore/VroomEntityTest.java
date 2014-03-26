@@ -17,8 +17,6 @@ package com.fizzbuzz.vroom.core.service.datastore;
 
 import com.fizzbuzz.vroom.core.domain.EntityObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.annotation.Entity;
 import org.junit.Before;
@@ -27,6 +25,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
+import static com.fizzbuzz.vroom.core.service.datastore.VroomDatastoreService.ofy;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class VroomEntityTest {
@@ -71,9 +70,8 @@ public class VroomEntityTest {
 
     @Test
     public void dateFieldsAreStampedAtCreateTime() {
-
         mTestEntity.create(mTestEntityObject);
-        TestDao testDao = mTestEntity.loadDao(mTestEntityObject.getKey().get());
+        TestDao testDao = ofy().load().type(TestDao.class).id(mTestEntityObject.getKey().get()).now();
         assertThat(testDao.createDate).isNotNull().isCloseTo(new Date(System.currentTimeMillis()), 1000);
         assertThat(testDao.modDate).isNotNull().isCloseTo(new Date(System.currentTimeMillis()), 1000);
     }
@@ -88,7 +86,7 @@ public class VroomEntityTest {
 
         // now update it and reload the DAO
         mTestEntity.update(mTestEntityObject);
-        testDao = mTestEntity.loadDao(mTestEntityObject.getKey().get());
+        testDao = ofy().load().type(TestDao.class).id(mTestEntityObject.getKey().get()).now();
 
         // the create date shouldn't have changed
         assertThat(testDao.createDate)
@@ -106,10 +104,6 @@ public class VroomEntityTest {
     private static class TestEntityObject extends EntityObject {
         public TestEntityObject() {
             super(new LongKey((Long) null));
-        }
-
-        @Override
-        public void validate() {
         }
     }
 
@@ -131,16 +125,6 @@ public class VroomEntityTest {
     public static class TestOfyService extends OfyService {
         static {
             ObjectifyService.factory().register(TestDao.class);
-        }
-
-        @Override
-        public Objectify ofy() {
-            return ObjectifyService.ofy();
-        }
-
-        @Override
-        public ObjectifyFactory factory() {
-            return ObjectifyService.factory();
         }
     }
 }

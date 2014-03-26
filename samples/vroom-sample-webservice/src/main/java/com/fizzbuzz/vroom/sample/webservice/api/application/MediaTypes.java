@@ -26,18 +26,6 @@ public class MediaTypes {
         UsersMediaTypes.register(metadataService);
     }
 
-    public static class NonDomainResultMediaTypes {
-        // v1.0
-        public static final String JSON_V1_0 = "non-domain-result-1.0-json";
-        public static final MediaType JSON_V1_0_MEDIATYPE =
-            MediaType.register("application/vnd.vroomsample.non-domain-result-v1+json; level=0",
-                "Vroom Non-Domain Result JSON version 1.0");
-
-        public static void register(final MetadataService metadataService) {
-            metadataService.addExtension(JSON_V1_0, JSON_V1_0_MEDIATYPE);
-        }
-    }
-
     public static class PlaceMediaTypes {
         // v1.0
         public static final String JSON_V1_0 = "place-1.0-json";

@@ -33,7 +33,4 @@ public class File extends EntityObject implements IFile {
         mFileName = filename;
     }
 
-    @Override
-    public void validate() {
-    }
 }

@@ -18,6 +18,7 @@ import com.fizzbuzz.vroom.core.domain.IEntityObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.fizzbuzz.vroom.core.service.datastore.IEntity;
 
+import java.util.Collection;
 import java.util.List;
 
 public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E>, ICollectionBiz<E> {
@@ -32,9 +33,13 @@ public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E
     }
 
     @Override
-    public void add(final E domainObject) {
-        domainObject.validate();
-        getEntity().create(domainObject);
+    public void add(final E entityObject) {
+        getEntity().create(entityObject);
+    }
+
+    @Override
+    public void add(Collection<E> domainObjects) {
+        getEntity().create(domainObjects);
     }
 
     @Override
@@ -76,7 +81,7 @@ public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E
     }
 
     @Override
-    public void delete(List<E> domainObjects) {
+    public void delete(Collection<E> domainObjects) {
         getEntity().delete(domainObjects);
     }
 

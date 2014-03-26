@@ -15,15 +15,13 @@ package com.fizzbuzz.vroom.extension.googlecloudstorage.biz;
  */
 
 import com.fizzbuzz.vroom.core.biz.FileEntityBiz;
-import com.fizzbuzz.vroom.core.biz.IFileBiz;
 import com.fizzbuzz.vroom.core.domain.IUrlAddressableKeyedObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.fizzbuzz.vroom.extension.googlecloudstorage.domain.IGcsFile;
 import com.fizzbuzz.vroom.extension.googlecloudstorage.service.datastore.GcsEntity;
 
-public class GcsFileBiz<F extends IGcsFile, E extends GcsEntity<F, ?>>
-        extends FileEntityBiz<F>
-        implements IUrlAddressableKeyedObject<LongKey>, IFileBiz<F> {
+public class GcsFileBiz<F extends IGcsFile, E extends GcsEntity<F, ?>> extends FileEntityBiz<F, E>
+        implements IUrlAddressableKeyedObject<LongKey> {
 
     public GcsFileBiz(E entity) {
         super(entity);

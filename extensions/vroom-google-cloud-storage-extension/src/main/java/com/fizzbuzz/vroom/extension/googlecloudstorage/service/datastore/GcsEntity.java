@@ -13,7 +13,8 @@ package com.fizzbuzz.vroom.extension.googlecloudstorage.service.datastore;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.service.datastore.FileEntity;
+import com.fizzbuzz.vroom.core.service.datastore.IFileEntity;
+import com.fizzbuzz.vroom.core.service.datastore.VroomEntity;
 import com.fizzbuzz.vroom.extension.googlecloudstorage.domain.IGcsFile;
 import com.fizzbuzz.vroom.extension.googlecloudstorage.exception.GcsException;
 import com.fizzbuzz.vroom.extension.googlecloudstorage.service.gcs.GcsFileObject;
@@ -24,7 +25,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.UUID;
 
-public class GcsEntity<F extends IGcsFile, DAO extends GcsDao<F>> extends FileEntity<F, DAO> {
+public abstract class GcsEntity<F extends IGcsFile, DAO extends GcsDao<F>> extends VroomEntity<F,
+    DAO> implements IFileEntity<F> {
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
 
     public GcsEntity(Class<F> doClass, Class<DAO> daoClass) {

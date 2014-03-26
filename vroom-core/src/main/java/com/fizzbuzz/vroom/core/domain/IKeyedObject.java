@@ -14,7 +14,7 @@ package com.fizzbuzz.vroom.core.domain;
  * limitations under the License.
  */
 
-public interface IKeyedObject<K extends KeyType> extends IDomainObject {
+public interface IKeyedObject<K extends KeyType> {
     public K getKey();
 
     public void setKey(final K key);

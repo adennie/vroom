@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.domain;
+package com.fizzbuzz.vroom.core.service.datastore;
 
 /*
  * Copyright (c) 2014 Fizz Buzz LLC
@@ -14,7 +14,19 @@ package com.fizzbuzz.vroom.core.domain;
  * limitations under the License.
  */
 
-import java.util.ArrayList;
+import com.fizzbuzz.vroom.core.domain.IEntityObject;
+import com.googlecode.objectify.Key;
 
-public class DomainCollection<DO extends IDomainObject> extends ArrayList<DO> {
+public abstract class ParentedDao<EO extends IEntityObject> extends VroomDao<EO> {
+
+    @Override
+    public Key<?> getKey() {
+        return Key.create(getParentKey(), getClass(), getId());
+    }
+
+    /**
+     * Returns the key of the parent entity.
+     * @return
+     */
+    public abstract Key<?> getParentKey();
 }

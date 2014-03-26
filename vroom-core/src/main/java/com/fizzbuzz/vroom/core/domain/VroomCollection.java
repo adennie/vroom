@@ -14,6 +14,7 @@ package com.fizzbuzz.vroom.core.domain;
  * limitations under the License.
  */
 
-public interface IDomainObject {
-    public void validate();
+import java.util.ArrayList;
+
+public class VroomCollection<DO> extends ArrayList<DO> {
 }

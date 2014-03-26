@@ -15,7 +15,7 @@ package com.fizzbuzz.vroom.sample.webservice.api.resource;
  */
 
 import com.fizzbuzz.vroom.core.domain.LongKey;
-import com.fizzbuzz.vroom.extension.googlecloudstorage.api.resource.FilesResource;
+import com.fizzbuzz.vroom.extension.googlecloudstorage.api.resource.GcsFilesResource;
 import com.fizzbuzz.vroom.extension.googlecloudstorage.domain.GcsFile;
 import com.fizzbuzz.vroom.sample.webservice.biz.ImageBiz;
 import org.apache.commons.fileupload.FileItemStream;
@@ -24,7 +24,7 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.Delete;
 import org.restlet.resource.Post;
 
-public class ImagesResource extends FilesResource<GcsFile, ImageBiz> {
+public class ImagesResource extends GcsFilesResource<GcsFile, ImageBiz> {
 
     @Override
     @Post("multipart/form-data")

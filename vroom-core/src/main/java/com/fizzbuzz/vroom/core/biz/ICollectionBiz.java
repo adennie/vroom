@@ -14,11 +14,10 @@ package com.fizzbuzz.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IDomainObject;
-
+import java.util.Collection;
 import java.util.List;
 
-public interface ICollectionBiz<DO extends IDomainObject> {
+public interface ICollectionBiz<DO> {
     /**
      * Returns the list of domain objects within a collection
      * @return the list of domain objects
@@ -33,6 +32,13 @@ public interface ICollectionBiz<DO extends IDomainObject> {
     public void add(final DO domainObject);
 
     /**
+     * Adds domain objects to the collection
+     *
+     * @param domainObjects
+     */
+    public void add(final Collection<DO> domainObjects);
+
+    /**
      * Deletes all domain objects in the collection
      */
     public void deleteAll();
@@ -41,5 +47,5 @@ public interface ICollectionBiz<DO extends IDomainObject> {
      * Deletes a list of domain objects
      * @param domainCollection
      */
-    public void delete(List<DO> domainCollection);
+    public void delete(Collection<DO> domainCollection);
 }

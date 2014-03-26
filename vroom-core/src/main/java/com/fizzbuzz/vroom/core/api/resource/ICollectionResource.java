@@ -14,7 +14,21 @@ package com.fizzbuzz.vroom.core.api.resource;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IDomainObject;
+import com.fizzbuzz.vroom.core.domain.VroomCollection;
+import org.restlet.representation.Representation;
+import org.restlet.representation.Variant;
 
-public abstract class DomainResource<DO extends IDomainObject> extends VroomResource {
+public interface ICollectionResource<
+        DC extends VroomCollection<DO>,
+        DO>
+        extends IVroomResource<DC> {
+
+    public DC getResource();
+
+    public DO postResource(final DO element);
+
+    public void deleteResource();
+
+    public Representation toRepresentation(final Object source, final Variant target);
+
 }

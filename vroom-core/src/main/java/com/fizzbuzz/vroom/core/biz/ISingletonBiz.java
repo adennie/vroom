@@ -14,9 +14,7 @@ package com.fizzbuzz.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IDomainObject;
-
-public interface ISingletonBiz<DO extends IDomainObject>{
+public interface ISingletonBiz<DO>{
     /**
      * returns the state of the object.
      *
