@@ -73,7 +73,7 @@ public class ResourceRegistry {
         return UriHelper.getLongTokenValue(uri, VroomApplication.getRootUrl() + uriTemplate, idToken);
     }
 
-    public static <R extends IDomainCollectionResource> String getPath(
+    public static <R extends ICollectionResource> String getPath(
             Class<R> collectionResourceClass) {
         return VroomApplication.getServerUrl() + VroomApplication.getRootUrl() + ResourceRegistry.getPathTemplate
                 (collectionResourceClass);

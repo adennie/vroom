@@ -15,8 +15,7 @@ package com.fizzbuzz.vroom.core.api.resource;
  */
 
 import com.fizzbuzz.vroom.core.biz.ICollectionBiz;
-import com.fizzbuzz.vroom.core.domain.DomainCollection;
-import com.fizzbuzz.vroom.core.domain.IDomainObject;
+import com.fizzbuzz.vroom.core.domain.VroomCollection;
 import com.fizzbuzz.vroom.core.util.Reflections;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
@@ -26,14 +25,14 @@ import org.restlet.resource.ResourceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class DomainCollectionResource<
-        DC extends DomainCollection<DO>,
-        DO extends IDomainObject,
+public abstract class VroomCollectionResource<
+        DC extends VroomCollection<DO>,
+        DO,
         B extends ICollectionBiz<DO>>
         extends VroomResource<DC>
-        implements IDomainCollectionResource<DC, DO> {
+        implements ICollectionResource<DC, DO> {
 
-    private Class<DC> mDomainCollectionClass;
+    private Class<DC> mCollectionClass;
     private B mBiz;
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
 
@@ -42,7 +41,7 @@ public abstract class DomainCollectionResource<
     }
 
     public DC getResource() {
-        DC result = Reflections.newInstance(mDomainCollectionClass);
+        DC result = Reflections.newInstance(mCollectionClass);
         try {
             result.addAll(mBiz.getAll());
         } catch (RuntimeException e) {
@@ -83,9 +82,9 @@ public abstract class DomainCollectionResource<
         return result;
     }
 
-    protected void doInit(final Class<DC> domainCollectionClass,
+    protected void doInit(final Class<DC> collectionClass,
                           final B collectionBiz) throws ResourceException {
-        mDomainCollectionClass = domainCollectionClass;
+        mCollectionClass = collectionClass;
         mBiz = collectionBiz;
     }
 

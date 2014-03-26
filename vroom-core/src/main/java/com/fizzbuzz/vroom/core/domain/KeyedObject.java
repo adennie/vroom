@@ -35,9 +35,4 @@ public abstract class KeyedObject<K extends KeyType> implements IKeyedObject<K> 
     public void setKey(final K key) {
         mKey = key;
     }
-
-    @Override
-    public void validate() {
-        // subclasses should override to provide domain-specific validation
-    }
 }

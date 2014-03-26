@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.domain;
+package com.fizzbuzz.vroom.core.service.datastore;
 
 /*
  * Copyright (c) 2014 Fizz Buzz LLC
@@ -14,6 +14,18 @@ package com.fizzbuzz.vroom.core.domain;
  * limitations under the License.
  */
 
-public interface IDomainObject {
-    public void validate();
+import com.fizzbuzz.vroom.core.domain.LongKey;
+
+import java.util.List;
+
+public interface IParentedEntity {
+    /**
+     * Allocates a single ID for an entity in an entity group
+     */
+    public long allocateId(final LongKey ancestorKey);
+
+    /**
+     * Allocates a contiguous range of IDs for entities in an entity group
+     */
+    public List<LongKey> allocateIds(final LongKey ancestorKey);
 }

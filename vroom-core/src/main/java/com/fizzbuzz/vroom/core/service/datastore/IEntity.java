@@ -16,6 +16,7 @@ package com.fizzbuzz.vroom.core.service.datastore;
 
 import com.fizzbuzz.vroom.core.domain.IEntityObject;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -24,11 +25,19 @@ import java.util.List;
 public interface IEntity<EO extends IEntityObject> {
 
     /**
-     * Creates a new entity corresponding to a entity object
+     * Creates a new entity corresponding to a domain object
      *
      * @param domainObject the domain object
      */
     public void create(EO domainObject);
+
+    /**
+     * Creates new entities corresponding to a collection of domain objects
+     *
+     * @param domainObjects the domain objects
+     */
+    public void create(Collection<EO> domainObjects);
+
 
     /**
      * Returns the KeyedObject having the provided key
@@ -40,37 +49,61 @@ public interface IEntity<EO extends IEntityObject> {
 
     /**
      * Updates an entity's state.  Often this will require merging the state of the provided entity object with the
-     * existing saved state of that object and then saving that new, merged state.
+     * existing state of that object's corresponding entity and then saving that new, merged state.
      *
      * @param domainObject the new state for the entity object
      */
     public void update(final EO domainObject);
 
     /**
-     * Deletes the domain object having the provided key
+     * Updates the states of entities corresponding to a collection of domain objects.  Often this will require
+     * merging the states of the provided domain objects with the existing states of those objects' corresponding
+     * entities and then saving those new, merged states.
+     *
+     * @param domainObjects the domain objects
+     */
+    public void update(final Collection<EO> domainObjects);
+
+    /**
+     * Deletes the entity having the provided key
      *
      * @param key the domain object's key
      */
     public void delete(final Long key);
 
     /**
-     * Returns a set of domain objects corresponding to the entities in an entity collection
+     * Deletes the entity corresponding to the provided domain object
+     *
+     * @param domainObject the domain object whose corresponding entity should be deleted
+     */
+    public void delete(final EO domainObject);
+
+    /**
+     * Returns a collection of domain objects corresponding to "all" entities (where "all" is defined by the
+     * implementing subclass)
      *
      * @return the elements in the collection
      */
     public List<EO> getAll();
 
     /**
-     * Deletes all entities in a collection
+     * Deletes all entities (where "all" is defined by the implementing subclass)
      */
     public void deleteAll();
 
     /**
-     * Deletes entities in a collection corresponding to a list of domain objects
+     * Deletes entities corresponding to those in a collection of domain objects
      *
      * @param domainObjects the domain objects to delete
      */
-    public void delete(final List<EO> domainObjects);
+    public void delete(final Collection<EO> domainObjects);
+
+    /**
+     * Deletes entities corresponding to those in a collection of domain objects
+     *
+     * @param keys the keys of the entities to delete
+     */
+    public void deleteKeys(final Collection<Long> keys);
 
     /**
      * Allocates a single ID for an entity which is not part of an entity group
@@ -81,8 +114,8 @@ public interface IEntity<EO extends IEntityObject> {
 
     /**
      * Allocates a contiguous range of IDs for entities which are not part of an entity group
-     * @param num the number of keys to allocate.  Must be >= 1 and <= 1 billion.
      *
+     * @param num the number of keys to allocate.  Must be >= 1 and <= 1 billion.
      * @return a list of allocated IDs
      */
     public List<Long> allocateIds(int num);

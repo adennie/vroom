@@ -14,11 +14,9 @@ package com.fizzbuzz.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IDomainObject;
-
 import java.util.List;
 
-public interface ICollectionBiz<DO extends IDomainObject> {
+public interface ICollectionBiz<DO> {
     /**
      * Returns the list of domain objects within a collection
      * @return the list of domain objects

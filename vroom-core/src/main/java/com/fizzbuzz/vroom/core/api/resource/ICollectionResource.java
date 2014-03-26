@@ -14,14 +14,13 @@ package com.fizzbuzz.vroom.core.api.resource;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.DomainCollection;
-import com.fizzbuzz.vroom.core.domain.IDomainObject;
+import com.fizzbuzz.vroom.core.domain.VroomCollection;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 
-public interface IDomainCollectionResource<
-        DC extends DomainCollection<DO>,
-        DO extends IDomainObject>
+public interface ICollectionResource<
+        DC extends VroomCollection<DO>,
+        DO>
         extends IVroomResource<DC> {
 
     public DC getResource();
