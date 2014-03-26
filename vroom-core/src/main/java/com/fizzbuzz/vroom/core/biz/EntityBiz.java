@@ -32,9 +32,8 @@ public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E
     }
 
     @Override
-    public void add(final E domainObject) {
-        domainObject.validate();
-        getEntity().create(domainObject);
+    public void add(final E entityObject) {
+        getEntity().create(entityObject);
     }
 
     @Override

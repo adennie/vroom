@@ -1,7 +1,7 @@
 package com.fizzbuzz.vroom.core.api.dto_converter;
 
 /*
- * Copyright (c) 2013 Fizz Buzz LLC
+ * Copyright (c) 2014 Fizz Buzz LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,9 @@ package com.fizzbuzz.vroom.core.api.dto_converter;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.api.resource.IDomainCollectionResource;
+import com.fizzbuzz.vroom.core.api.resource.ICollectionResource;
 import com.fizzbuzz.vroom.core.api.resource.ResourceRegistry;
-import com.fizzbuzz.vroom.core.domain.DomainCollection;
-import com.fizzbuzz.vroom.core.domain.IDomainObject;
+import com.fizzbuzz.vroom.core.domain.VroomCollection;
 import com.fizzbuzz.vroom.core.util.Reflections;
 import com.fizzbuzz.vroom.dto.SimpleCollectionDto;
 import com.fizzbuzz.vroom.dto.VroomDto;
@@ -36,8 +35,8 @@ import java.util.List;
 public abstract class DomainCollectionConverter<
         DTC extends SimpleCollectionDto<DTO>,
         DTO extends VroomDto,
-        DC extends DomainCollection<DO>,
-        DO extends IDomainObject>
+        DC extends VroomCollection<DO>,
+        DO>
         extends ConverterHelper {
 
     private final Class<DC> mDomainCollectionClass;
@@ -159,7 +158,7 @@ public abstract class DomainCollectionConverter<
                                            final Variant target,
                                            final Resource resource) throws IOException {
 
-        SimpleCollectionDto<DTO> dtc = toDto((IDomainCollectionResource<DC, DO>) resource, (DomainCollection<DO>) source);
+        SimpleCollectionDto<DTO> dtc = toDto((ICollectionResource<DC, DO>) resource, (VroomCollection<DO>) source);
 
         // create a JacksonRepresentation for the DTC
         JacksonRepresentation<?> jacksonRep = new JacksonRepresentation<SimpleCollectionDto<DTO>>(target.getMediaType(), dtc);
@@ -167,8 +166,8 @@ public abstract class DomainCollectionConverter<
         return jacksonRep;
     }
 
-    protected SimpleCollectionDto<DTO> toDto(IDomainCollectionResource<DC, DO> resource,
-                                       final DomainCollection<DO> domainCollection) {
+    protected SimpleCollectionDto<DTO> toDto(ICollectionResource<DC, DO> resource,
+                                       final VroomCollection<DO> domainCollection) {
         // first convert the DO objects into DTO objects
         List<DTO> dtos = new ArrayList<DTO>();
         for (DO domainObject : domainCollection) {

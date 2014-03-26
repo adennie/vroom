@@ -14,7 +14,7 @@ package com.fizzbuzz.vroom.sample.webservice.service.datastore;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.DomainCollection;
+import com.fizzbuzz.vroom.core.domain.VroomCollection;
 import com.fizzbuzz.vroom.core.service.datastore.FilterableEntity;
 import com.fizzbuzz.vroom.core.service.datastore.OfyUtils;
 import com.fizzbuzz.vroom.sample.webservice.biz.UserBiz;
@@ -32,7 +32,7 @@ public class UserEntity extends FilterableEntity<User, UserDao,  UserBiz.UserCon
     }
 
     @Override
-    public DomainCollection<User> getMatching(final Map<UserBiz.UserConstraint, Object> constraints) {
+    public VroomCollection<User> getMatching(final Map<UserBiz.UserConstraint, Object> constraints) {
 
         if (constraints.isEmpty())
             return getAll();

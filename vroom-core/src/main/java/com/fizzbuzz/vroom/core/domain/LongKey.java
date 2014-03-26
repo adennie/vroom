@@ -15,6 +15,9 @@ package com.fizzbuzz.vroom.core.domain;
  */
 
 public class LongKey extends KeyType<Long> {
+    public LongKey() {
+        this((Long)null);
+    }
     public LongKey(final Long key) {
         super(key);
     }

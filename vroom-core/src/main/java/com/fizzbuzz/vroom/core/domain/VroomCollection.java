@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.api.resource;
+package com.fizzbuzz.vroom.core.domain;
 
 /*
  * Copyright (c) 2014 Fizz Buzz LLC
@@ -14,7 +14,7 @@ package com.fizzbuzz.vroom.core.api.resource;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IDomainObject;
+import java.util.ArrayList;
 
-public abstract class DomainResource<DO extends IDomainObject> extends VroomResource {
+public class VroomCollection<DO> extends ArrayList<DO> {
 }

@@ -107,10 +107,6 @@ public class VroomEntityTest {
         public TestEntityObject() {
             super(new LongKey((Long) null));
         }
-
-        @Override
-        public void validate() {
-        }
     }
 
     @Entity

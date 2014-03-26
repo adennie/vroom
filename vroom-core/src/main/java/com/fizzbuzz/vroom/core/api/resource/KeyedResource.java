@@ -28,7 +28,7 @@ public abstract class KeyedResource<
         K extends KeyType,
         B extends IKeyedObjectBiz<KO, K>,
         KO extends IKeyedObject<K>>
-        extends DomainResource<KO> {
+        extends VroomResource<KO> {
 
     private String mKeyString;
     private B mBiz;
@@ -47,7 +47,7 @@ public abstract class KeyedResource<
         return result;
     }
 
-    public void putResource(final KO domainObject) {
+    public void putResource(final KO keyedObject) {
         try {
             // by default, return 204, since we're not returning any representation. Subclasses that override
             // putResource() can change the response status if needed.
@@ -55,12 +55,12 @@ public abstract class KeyedResource<
 
             // make sure the client isn't trying to PUT a resource value with an ID that doesn't match the one
             // identified by the request URL.
-            if (!domainObject.getKey().toString().equals(mKeyString)) {
+            if (!keyedObject.getKey().toString().equals(mKeyString)) {
                 throw new IllegalArgumentException("The ID of the resource in the request body does not match the ID " +
                         "of the resource in the request URL");
             }
 
-            mBiz.update(domainObject);
+            mBiz.update(keyedObject);
         } catch (RuntimeException e) {
             doCatch(e);
         }

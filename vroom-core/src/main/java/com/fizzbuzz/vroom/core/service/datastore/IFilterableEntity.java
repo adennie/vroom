@@ -14,7 +14,7 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.DomainCollection;
+import com.fizzbuzz.vroom.core.domain.VroomCollection;
 import com.fizzbuzz.vroom.core.domain.IEntityObject;
 
 import java.util.Map;
@@ -23,5 +23,5 @@ public interface IFilterableEntity<
         EO extends IEntityObject,
         FC>
         extends IEntity<EO> {
-    public DomainCollection<EO> getMatching(final Map<FC, Object> constraints);
+    public VroomCollection<EO> getMatching(final Map<FC, Object> constraints);
 }

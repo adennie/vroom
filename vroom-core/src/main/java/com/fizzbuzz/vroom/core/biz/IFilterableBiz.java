@@ -14,11 +14,9 @@ package com.fizzbuzz.vroom.core.biz;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.IDomainObject;
-
 import java.util.List;
 import java.util.Map;
 
-public interface IFilterableBiz<DO extends IDomainObject, FC> {
+public interface IFilterableBiz<DO, FC> {
     public List<DO> getMatching(final Map<FC, Object> constraints) ;
 }

@@ -14,8 +14,8 @@ package com.fizzbuzz.vroom.sample.webservice.domain;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.DomainCollection;
+import com.fizzbuzz.vroom.core.domain.VroomCollection;
 import com.fizzbuzz.vroom.core.domain.File;
 
-public class Images extends DomainCollection<File> {
+public class Images extends VroomCollection<File> {
 }

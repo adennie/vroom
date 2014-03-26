@@ -14,7 +14,7 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.DomainCollection;
+import com.fizzbuzz.vroom.core.domain.VroomCollection;
 import com.fizzbuzz.vroom.core.domain.IEntityObject;
 import com.fizzbuzz.vroom.core.domain.IOwnedEntityObject;
 import com.fizzbuzz.vroom.core.domain.LongKey;
@@ -54,7 +54,7 @@ public class OwnedEntity<
     }
 
     @Override
-    public DomainCollection<OWNEDDO> getAll() {
+    public VroomCollection<OWNEDDO> getAll() {
         List<OWNEDDAO> daos = ofy().load().type(getDaoClass())
                 .filter("owner", Key.create(mOwnerDaoClass, mOwnerKey.get())).list();
         return toDomainCollection(daos);
