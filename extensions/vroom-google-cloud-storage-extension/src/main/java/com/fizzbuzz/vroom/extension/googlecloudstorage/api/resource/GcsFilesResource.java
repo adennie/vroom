@@ -18,8 +18,8 @@ import com.fizzbuzz.vroom.core.api.resource.KeyedResource;
 import com.fizzbuzz.vroom.core.api.resource.ResourceRegistry;
 import com.fizzbuzz.vroom.core.api.resource.VroomResource;
 import com.fizzbuzz.vroom.core.biz.IFileBiz;
-import com.fizzbuzz.vroom.core.domain.IFile;
 import com.fizzbuzz.vroom.extension.googlecloudstorage.api.util.RepresentationContext;
+import com.fizzbuzz.vroom.extension.googlecloudstorage.domain.IGcsFile;
 import com.google.common.io.ByteStreams;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
@@ -33,13 +33,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-public abstract class FilesResource<
-        F extends IFile,
-        CB extends IFileBiz<F>>
+public abstract class GcsFilesResource<
+        F extends IGcsFile,
+        B extends IFileBiz<F>>
         extends VroomResource {
 
     private final Logger mLogger = LoggerFactory.getLogger(PackageLogger.TAG);
-    private CB mCollectionBiz;
+    private B mBiz;
     private Class<? extends KeyedResource> mElementResourceClass;
 
     /**
@@ -60,7 +60,7 @@ public abstract class FilesResource<
                     byte[] bytes = ByteStreams.toByteArray(fileItemStream.openStream());
 
                     F file = createFile(fileName);
-                    mCollectionBiz.create(file, bytes);
+                    mBiz.create(file, bytes);
 
                     // we're not going to send a representation of the file back to the client, since they probably
                     // don't want that.  Instead, we'll send them a 201, with the URL to the created file in the
@@ -85,7 +85,7 @@ public abstract class FilesResource<
      * Deletes a collection of files
      */
     public void deleteResource() {
-        mCollectionBiz.deleteAll();
+        mBiz.deleteAll();
     }
 
     /**
@@ -101,10 +101,10 @@ public abstract class FilesResource<
         return ResourceRegistry.getCanonicalUri(mElementResourceClass, element.getKeyAsString());
     }
 
-    protected void doInit(final Class<? extends KeyedResource> elementResourceClass, final CB collectionBiz)
+    protected void doInit(final Class<? extends KeyedResource> elementResourceClass, final B collectionBiz)
             throws ResourceException {
         mElementResourceClass = elementResourceClass;
-        mCollectionBiz = collectionBiz;
+        mBiz = collectionBiz;
     }
 
     /**

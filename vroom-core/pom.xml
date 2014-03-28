@@ -110,6 +110,7 @@
                     <artifactId>fest-util</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>test</scope>
         </dependency>
 
         <!-- Compile/runtime dependencies -->

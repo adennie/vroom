@@ -15,8 +15,9 @@ package com.fizzbuzz.vroom.sample.webservice.service.datastore;
  */
 
 import com.fizzbuzz.vroom.core.domain.VroomCollection;
-import com.fizzbuzz.vroom.core.service.datastore.FilterableEntity;
+import com.fizzbuzz.vroom.core.service.datastore.IFilterableEntity;
 import com.fizzbuzz.vroom.core.service.datastore.OfyUtils;
+import com.fizzbuzz.vroom.core.service.datastore.VroomEntity;
 import com.fizzbuzz.vroom.sample.webservice.biz.UserBiz;
 import com.fizzbuzz.vroom.sample.webservice.domain.User;
 import com.googlecode.objectify.cmd.Query;
@@ -24,7 +25,9 @@ import com.googlecode.objectify.cmd.Query;
 import java.util.List;
 import java.util.Map;
 
-public class UserEntity extends FilterableEntity<User, UserDao,  UserBiz.UserConstraint> {
+public class UserEntity
+    extends VroomEntity<User, UserDao>
+    implements IFilterableEntity<User, UserBiz.UserConstraint> {
 
 
     public UserEntity() {

@@ -21,7 +21,6 @@ import java.util.Map;
 
 public interface IFilterableEntity<
         EO extends IEntityObject,
-        FC>
-        extends IEntity<EO> {
+        FC> {
     public VroomCollection<EO> getMatching(final Map<FC, Object> constraints);
 }

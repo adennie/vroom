@@ -15,14 +15,16 @@ package com.fizzbuzz.vroom.core.biz;
  */
 
 import com.fizzbuzz.vroom.core.domain.IFile;
+import com.fizzbuzz.vroom.core.service.datastore.IEntity;
 import com.fizzbuzz.vroom.core.service.datastore.IFileEntity;
 
 public class FileEntityBiz<
-        F extends IFile>
+        F extends IFile,
+        E extends IFileEntity<F> & IEntity<F>>
         extends EntityBiz<F>
         implements IFileBiz<F> {
 
-    public FileEntityBiz(final IFileEntity<F> entity) {
+    public FileEntityBiz(final E entity) {
         super(entity);
     }
 

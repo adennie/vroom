@@ -48,11 +48,27 @@ public interface IEntity<EO extends IEntityObject> {
     public EO get(final Long key);
 
     /**
-     * Updates an entity's state.  Often this will require merging the state of the provided entity object with the
-     * existing state of that object's corresponding entity and then saving that new, merged state.
+     * Returns a collection of domain objects corresponding to "all" entities (where "all" is defined by the
+     * implementing subclass)
      *
-     * @param domainObject the new state for the entity object
+     * @return the elements in the collection
      */
+    public List<EO> getAll();
+
+    /**
+     * Returns a list of entity IDs corresponding to "all" entities (where "all" is defined by the
+     * implementing subclass)
+     *
+     * @return
+     */
+    public List<Long> getAllIds();
+
+        /**
+         * Updates an entity's state.  Often this will require merging the state of the provided entity object with the
+         * existing state of that object's corresponding entity and then saving that new, merged state.
+         *
+         * @param domainObject the new state for the entity object
+         */
     public void update(final EO domainObject);
 
     /**
@@ -77,14 +93,6 @@ public interface IEntity<EO extends IEntityObject> {
      * @param domainObject the domain object whose corresponding entity should be deleted
      */
     public void delete(final EO domainObject);
-
-    /**
-     * Returns a collection of domain objects corresponding to "all" entities (where "all" is defined by the
-     * implementing subclass)
-     *
-     * @return the elements in the collection
-     */
-    public List<EO> getAll();
 
     /**
      * Deletes all entities (where "all" is defined by the implementing subclass)

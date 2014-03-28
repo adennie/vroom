@@ -15,6 +15,7 @@ package com.fizzbuzz.vroom.core.biz;
  */
 
 import com.fizzbuzz.vroom.core.domain.IEntityObject;
+import com.fizzbuzz.vroom.core.service.datastore.IEntity;
 import com.fizzbuzz.vroom.core.service.datastore.IFilterableEntity;
 
 import java.util.List;
@@ -32,18 +33,18 @@ import java.util.Map;
  * The {@link #getMatching} method takes a map of these constraints and values.
  *
  * @param <EO> a domain object type implementing the IEntityObject interface
- * @param <EC> a domain collection type implementing the IFilterableEntity interface
+ * @param <E> a domain collection type implementing the IFilterableEntity interface
  * @param <FC> a filter constraint type
  */
 public class FilterableEntityBiz<
         EO extends IEntityObject,
-        EC extends IFilterableEntity<EO, FC>,
+        E extends IEntity<EO> &IFilterableEntity<EO, FC>,
         FC extends Object>
         extends EntityBiz<EO>
         implements IFilterableBiz<EO, FC> {
 
-    public FilterableEntityBiz(final EC entityCollection) {
-        super(entityCollection);
+    public FilterableEntityBiz(final E entity) {
+        super(entity);
     }
 
     @Override

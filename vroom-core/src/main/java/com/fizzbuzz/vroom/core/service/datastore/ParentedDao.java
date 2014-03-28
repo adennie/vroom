@@ -15,16 +15,18 @@ package com.fizzbuzz.vroom.core.service.datastore;
  */
 
 import com.fizzbuzz.vroom.core.domain.IEntityObject;
+import com.googlecode.objectify.Key;
 
-public abstract class FilterableEntity<
-        EO extends IEntityObject,
-        DAO extends VroomDao<EO>,
-        FC>
-        extends VroomEntity<EO, DAO>
-        implements IFilterableEntity<EO, FC> {
+public abstract class ParentedDao<EO extends IEntityObject> extends VroomDao<EO> {
 
-
-    protected FilterableEntity(final Class<EO> domainClass, final Class<DAO> daoClass) {
-        super(domainClass, daoClass);
+    @Override
+    public Key<?> getKey() {
+        return Key.create(getParentKey(), getClass(), getId());
     }
+
+    /**
+     * Returns the key of the parent entity.
+     * @return
+     */
+    public abstract Key<?> getParentKey();
 }

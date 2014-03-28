@@ -14,18 +14,24 @@ package com.fizzbuzz.vroom.core.service.datastore;
  * limitations under the License.
  */
 
-import com.fizzbuzz.vroom.core.domain.LongKey;
+import com.fizzbuzz.vroom.core.domain.IEntityObject;
 
-import java.util.List;
+import java.util.Collection;
 
-public interface IParentedEntity {
-    /**
-     * Allocates a single ID for an entity in an entity group
-     */
-    public long allocateId(final LongKey ancestorKey);
+public interface IParentedEntity<EO extends IEntityObject> {
+    public void delete(final Long parentId, final Long id);
 
     /**
-     * Allocates a contiguous range of IDs for entities in an entity group
+     * Deletes parented entities corresponding to a collection of domain objects
+     *
+     * @param parentId
+     * @param domainObjects
      */
-    public List<LongKey> allocateIds(final LongKey ancestorKey);
+    public void delete(final Long parentId, final Collection<EO> domainObjects);
+
+    /**
+     * Delete all entities of the kind corresponding to EO which have the specified parent
+     * @param parentId
+     */
+    public void deleteAll(Long parentId);
 }
