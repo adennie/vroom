@@ -25,6 +25,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import static com.fizzbuzz.vroom.core.service.datastore.VroomDatastoreService.ofy;
 
@@ -57,6 +58,7 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
     public void create(Collection<EO> domainObjects) {
         List<DAO> daos = new ArrayList<>();
         for (EO domainObject : domainObjects) {
+            validate(domainObject);
             daos.add(createDao(domainObject));
         }
         saveDaos(daos);
@@ -69,8 +71,7 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
 
     @Override
     public VroomCollection<EO> getAll() {
-        List<DAO> daos = ofy().load().type(getDaoClass()).list();
-        return toDomainCollection(daos);
+        return toDomainCollection(loadAllDaos());
     }
 
     @Override
@@ -81,6 +82,7 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
 
     @Override
     public void update(final EO domainObject) {
+        validate(domainObject);
         DAO dao = loadDao(domainObject.getKey().get());
         updateDao(dao, domainObject);
         saveDao(dao);
@@ -88,10 +90,18 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
 
     @Override
     public void update(Collection<EO> domainObjects) {
-        List<DAO> daos = new ArrayList<>();
         for (EO domainObject : domainObjects) {
-            daos.add(loadDao(domainObject));
+            validate(domainObject);
         }
+
+        List<DAO> daos = new ArrayList<>();
+        Map<Long, DAO> map = loadDaos(domainObjects);
+        for (EO eo : domainObjects) {
+            DAO dao = map.get(eo.getKey().get());
+            updateDao(dao, eo);
+            daos.add(dao);
+        }
+
         saveDaos(daos);
     }
 
@@ -171,6 +181,9 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         ofy().save().entities(daos).now();
     }
 
+    protected List<DAO> loadAllDaos() {
+        return ofy().load().type(getDaoClass()).list();
+    }
 
     protected VroomCollection<EO> toDomainCollection(List<DAO> daoCollection) {
         VroomCollection<EO> domainCollection = new VroomCollection<>();
@@ -197,7 +210,7 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         DAO result = ofy().load().type(mDaoClass).id(id).now();
         if (result == null) {
             throw new NotFoundException("No " + mDomainClass.getSimpleName() + " found with ID " +
-                Long.toString(id));
+                    Long.toString(id));
         }
         return result;
     }
@@ -206,9 +219,17 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         DAO result = (DAO) ofy().load().key(key).now();
         if (result == null) {
             throw new NotFoundException("No " + mDomainClass.getSimpleName() + " found with key " +
-                key.toString());
+                    key.toString());
         }
         return result;
+    }
+
+    protected Map<Long, DAO> loadDaosWithIds(final Collection<Long> ids) {
+        return ofy().load().type(mDaoClass).ids(ids);
+    }
+
+    protected Map<Long, DAO> loadDaos(final Collection<EO> domainObjects) {
+        return loadDaosWithIds(toIds(domainObjects));
     }
 
     /**
@@ -225,7 +246,7 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
     protected DAO loadParentedDao(final Class<? extends VroomDao> parentDaoClass, final Long parentKey,
                                   EO domainObject) {
         DAO result = ofy().load().type(mDaoClass).parent(Key.create(parentDaoClass,
-            parentKey)).id(domainObject.getKey().get()).now();
+                parentKey)).id(domainObject.getKey().get()).now();
         return result;
     }
 

@@ -80,6 +80,10 @@ public abstract class VroomApplication
         return mServerUrl;
     }
 
+    public static String buildUrlFromPath(final String resourcePath) {
+        return mServerUrl + mRootUrl + resourcePath;
+    }
+
     @Override
     public void handle(final Request request, final Response response) {
         mLogger.info("request received: {}", request);

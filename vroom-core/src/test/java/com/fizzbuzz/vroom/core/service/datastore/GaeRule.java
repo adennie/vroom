@@ -29,7 +29,8 @@ public class GaeRule extends ExternalResource {
 
     @Override
     protected void before() throws Throwable {
-        mHelper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig(),
+        mHelper = new LocalServiceTestHelper(
+                new LocalDatastoreServiceTestConfig().setDefaultHighRepJobPolicyUnappliedJobPercentage(100),
                 new LocalBlobstoreServiceTestConfig(), new LocalTaskQueueTestConfig(),
                 new LocalMemcacheServiceTestConfig());
         mHelper.setUp();

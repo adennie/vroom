@@ -14,15 +14,29 @@ package com.fizzbuzz.vroom.core.domain;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public class LongKey extends KeyType<Long> {
-    public LongKey() {
-        this((Long)null);
+    public static Collection<Long> toValues(final Collection<LongKey> keys) {
+        List<Long> result = new ArrayList<>();
+        for (LongKey key : keys) {
+            Long value = key.get();
+            result.add(key.get());
+        }
+        return result;
     }
+
+    public LongKey() {
+        this((Long) null);
+    }
+
     public LongKey(final Long key) {
         super(key);
     }
 
     public LongKey(final String keyAsString) {
-            super(Long.parseLong(keyAsString));
+        super(Long.parseLong(keyAsString));
     }
 }

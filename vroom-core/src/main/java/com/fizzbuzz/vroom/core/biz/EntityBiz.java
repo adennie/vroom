@@ -85,6 +85,10 @@ public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E
         getEntity().delete(domainObjects);
     }
 
+    public void deleteKeys(Collection<LongKey> keys) {
+        getEntity().deleteKeys(LongKey.toValues(keys));
+    }
+
     @Override
     public void deleteAll() {
         getEntity().deleteAll();
