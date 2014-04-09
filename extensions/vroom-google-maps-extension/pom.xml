@@ -15,7 +15,6 @@
 
     <properties>
         <geocoder-java.version>0.15</geocoder-java.version>
-        <junit.version>4.11</junit.version>
     </properties>
 
     <dependencies>
