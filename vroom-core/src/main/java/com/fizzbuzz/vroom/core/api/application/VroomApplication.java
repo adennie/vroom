@@ -81,7 +81,7 @@ public abstract class VroomApplication
     }
 
     public static String buildUrlFromPath(final String resourcePath) {
-        return mServerUrl + mRootUrl + resourcePath;
+        return getServerUrl() + mRootUrl + resourcePath;
     }
 
     @Override
