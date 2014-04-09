@@ -16,7 +16,6 @@
     <properties>
         <!-- dependency versions -->
         <commons-fileupload.version>1.2</commons-fileupload.version>
-        <junit.version>4.11</junit.version>
     </properties>
 
     <dependencies>

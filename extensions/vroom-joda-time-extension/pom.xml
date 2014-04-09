@@ -13,11 +13,6 @@
     <artifactId>vroom-joda-time-extension</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <joda-time.version>2.3</joda-time.version>
-        <junit.version>4.11</junit.version>
-    </properties>
-
     <dependencies>
         <!-- test dependencies -->
         <dependency>
