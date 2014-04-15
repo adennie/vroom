@@ -15,14 +15,13 @@ package com.fizzbuzz.vroom.core.biz;
  */
 
 import java.util.Collection;
-import java.util.List;
 
 public interface ICollectionBiz<DO> {
     /**
-     * Returns the list of domain objects within a collection
-     * @return the list of domain objects
+     * Returns a collection of domain objects
+     * @return the collection
      */
-    public List<DO> getAll();
+    public Collection<DO> getAll();
 
     /**
      * Adds a domain object to the collection.

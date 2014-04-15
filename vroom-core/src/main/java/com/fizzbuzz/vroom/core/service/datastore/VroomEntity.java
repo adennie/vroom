@@ -43,7 +43,7 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
 
     @Override
     public void create(final EO domainObject) {
-        validate(domainObject);
+        onCreate(domainObject);
 
         DAO dao = createDao(domainObject);
         saveDao(dao);
@@ -58,7 +58,7 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
     public void create(Collection<EO> domainObjects) {
         List<DAO> daos = new ArrayList<>();
         for (EO domainObject : domainObjects) {
-            validate(domainObject);
+            onCreate(domainObject);
             daos.add(createDao(domainObject));
         }
         saveDaos(daos);
@@ -82,7 +82,7 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
 
     @Override
     public void update(final EO domainObject) {
-        validate(domainObject);
+        onUpdate(domainObject);
         DAO dao = loadDao(domainObject.getKey().get());
         updateDao(dao, domainObject);
         saveDao(dao);
@@ -90,13 +90,11 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
 
     @Override
     public void update(Collection<EO> domainObjects) {
-        for (EO domainObject : domainObjects) {
-            validate(domainObject);
-        }
 
         List<DAO> daos = new ArrayList<>();
         Map<Long, DAO> map = loadDaos(domainObjects);
         for (EO eo : domainObjects) {
+            onUpdate(eo);
             DAO dao = map.get(eo.getKey().get());
             updateDao(dao, eo);
             daos.add(dao);
@@ -107,33 +105,33 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
 
     @Override
     public void delete(final Long key) {
-        ofy().delete().type(mDaoClass).id(key).now();
+        EO domainObject = get(key);
+        delete(domainObject);
     }
 
     @Override
     public void delete(EO domainObject) {
-        DAO dao = createDao(domainObject);
+        onDelete(domainObject);
+        DAO dao = loadDao(domainObject);
+        onDeleteDao(dao);
         ofy().delete().entity(dao).now();
     }
 
     @Override
     public void deleteAll() {
-        Iterable<Key<DAO>> keys = ofy().load().type(getDaoClass()).keys();
-        delete(keys);
+        delete(getAll());
     }
 
     @Override
     public void delete(Collection<EO> entityObjectCollection) {
         List<Key<DAO>> keys = new ArrayList<>();
-        for (EO entityObjectObject : entityObjectCollection) {
-            keys.add(Key.create(getDaoClass(), entityObjectObject.getKey().toString()));
+        for (EO domainObject : entityObjectCollection) {
+            onDelete(domainObject);
+            DAO dao = loadDao(domainObject);
+            onDeleteDao(dao);
+            keys.add(Key.create(getDaoClass(), domainObject.getKey().toString()));
         }
         delete(keys);
-    }
-
-    @Override
-    public void deleteKeys(Collection<Long> keys) {
-        ofy().delete().type(mDaoClass).ids(keys);
     }
 
     @Override
@@ -253,14 +251,14 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
     protected void saveDao(final DAO dao) {
         // set the modification date, if there is a field annotated for that.
         setModDate(dao);
-        validateDao(dao); // just about to save; make sure everything is good
+        onSaveDao(dao); // just about to save; make sure everything is good
         ofy().save().entity(dao).now();
     }
 
     protected void saveDaos(final Collection<DAO> daos) {
         for (DAO dao : daos) {
             setModDate(dao);
-            validateDao(dao); // just about to save; make sure everything is good
+            onSaveDao(dao); // just about to save; make sure everything is good
         }
         ofy().save().entities(daos).now();
     }
@@ -301,10 +299,19 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         return result;
     }
 
-    protected void validate(EO domainObject) {
+    protected void onCreate(EO domainObject) {
     }
 
-    protected void validateDao(DAO dao) {
+    protected void onUpdate(EO domainObject) {
+    }
+
+    protected void onDelete(EO domainObject) {
+    }
+
+    protected void onSaveDao(DAO dao) {
+    }
+
+    protected void onDeleteDao(DAO dao) {
     }
 
     protected List<Long> toIds(final Collection<EO> entityObjects) {
