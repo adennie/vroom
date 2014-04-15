@@ -19,7 +19,7 @@
     <parent>
         <groupId>com.fizz-buzz.vroom</groupId>
         <artifactId>vroom-maven-parent</artifactId>
-        <version>0.9.13-SNAPSHOT</version>
+        <version>0.9.13</version>
     </parent>
 
     <artifactId>vroom-core</artifactId>
