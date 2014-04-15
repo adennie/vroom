@@ -19,7 +19,6 @@ import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.fizzbuzz.vroom.core.service.datastore.IEntity;
 
 import java.util.Collection;
-import java.util.List;
 
 public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E>, ICollectionBiz<E> {
     private IEntity<E> mEntity;
@@ -33,12 +32,16 @@ public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E
     }
 
     @Override
-    public void add(final E entityObject) {
-        getEntity().create(entityObject);
+    public void add(final E domainObject) {
+        onAdd(domainObject);
+        getEntity().create(domainObject);
     }
 
     @Override
     public void add(Collection<E> domainObjects) {
+        for (E domainObject : domainObjects) {
+            onAdd(domainObject);
+        }
         getEntity().create(domainObjects);
     }
 
@@ -48,7 +51,7 @@ public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E
     }
 
     @Override
-    public List<E> getAll() {
+    public Collection<E> getAll() {
         return mEntity.getAll();
     }
 
@@ -62,12 +65,14 @@ public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E
     }
 
     @Override
-    public void update(final E entityObject) {
-        mEntity.update(entityObject);
+    public void update(final E domainObject) {
+        onUpdate(domainObject);
+        mEntity.update(domainObject);
     }
 
     @Override
     public void delete(final LongKey key) {
+        onDelete(mEntity.get(key.get()));
         mEntity.delete(key.get());
     }
 
@@ -82,15 +87,25 @@ public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E
 
     @Override
     public void delete(Collection<E> domainObjects) {
+        for (E domainObject : domainObjects) {
+            onDelete(domainObject);
+        }
         getEntity().delete(domainObjects);
-    }
-
-    public void deleteKeys(Collection<LongKey> keys) {
-        getEntity().deleteKeys(LongKey.toValues(keys));
     }
 
     @Override
     public void deleteAll() {
+        Collection<E> domainObjects = getAll();
+        for (E domainObject : domainObjects) {
+            onDelete(domainObject);
+        }
         getEntity().deleteAll();
+    }
+
+    protected void onAdd(E entityObject) {
+    }
+    protected void onUpdate(E entityObject) {
+    }
+    protected void onDelete(E entityObject) {
     }
 }

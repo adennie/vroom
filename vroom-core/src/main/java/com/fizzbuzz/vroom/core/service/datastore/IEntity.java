@@ -107,13 +107,6 @@ public interface IEntity<EO extends IEntityObject> {
     public void delete(final Collection<EO> domainObjects);
 
     /**
-     * Deletes entities corresponding to those in a collection of domain objects
-     *
-     * @param keys the keys of the entities to delete
-     */
-    public void deleteKeys(final Collection<Long> keys);
-
-    /**
      * Allocates a single ID for an entity which is not part of an entity group
      *
      * @return an allocated ID
