@@ -15,6 +15,7 @@ package com.fizzbuzz.vroom.sample.webservice.service.datastore;
 
 import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.fizzbuzz.vroom.core.service.datastore.CreateDate;
+import com.fizzbuzz.vroom.core.service.datastore.InboundRef;
 import com.fizzbuzz.vroom.core.service.datastore.ModDate;
 import com.fizzbuzz.vroom.core.service.datastore.VroomDao;
 import com.fizzbuzz.vroom.sample.webservice.domain.Place;
@@ -25,6 +26,7 @@ import org.joda.time.DateTime;
 import java.util.Date;
 
 @Entity
+@InboundRef(daoClass = UserDao.class, fieldName = "home")
 public class PlaceDao extends VroomDao<Place> {
     @Index private String name;
     private EmbeddedLocationDao location;
