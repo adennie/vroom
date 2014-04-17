@@ -19,6 +19,7 @@ import com.fizzbuzz.vroom.sample.webservice.domain.User.UserLogEntry;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Parent;
 
 import java.util.Date;
 
@@ -26,7 +27,7 @@ import java.util.Date;
 public class UserLogEntryDao extends VroomDao<UserLogEntry> {
     UserLogEntry.UserEventType eventType;
     Date dateTime;
-    private Ref<UserDao> user;
+    @Parent private Ref<UserDao> user;
 
     @Override
     public void fromDomainObject(final UserLogEntry userLogEntry) {

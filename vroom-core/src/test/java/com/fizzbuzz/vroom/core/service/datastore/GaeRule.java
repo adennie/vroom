@@ -17,9 +17,14 @@ package com.fizzbuzz.vroom.core.service.datastore;
 import com.google.appengine.tools.development.testing.LocalBlobstoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalMemcacheServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalTaskQueueTestConfig;
 import org.junit.rules.ExternalResource;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * A JUnit rule that implements setup and teardown of a GAE LocalServiceTestHelper.
@@ -27,12 +32,12 @@ import org.junit.rules.ExternalResource;
 public class GaeRule extends ExternalResource {
     private LocalServiceTestHelper mHelper;
 
+    private GaeRule(LocalServiceTestConfig... configs) {
+        mHelper = new LocalServiceTestHelper(configs);
+    }
+
     @Override
     protected void before() throws Throwable {
-        mHelper = new LocalServiceTestHelper(
-                new LocalDatastoreServiceTestConfig().setDefaultHighRepJobPolicyUnappliedJobPercentage(100),
-                new LocalBlobstoreServiceTestConfig(), new LocalTaskQueueTestConfig(),
-                new LocalMemcacheServiceTestConfig());
         mHelper.setUp();
     }
 
@@ -40,4 +45,47 @@ public class GaeRule extends ExternalResource {
     protected void after() {
         mHelper.tearDown();
     }
+
+    public static class Builder {
+        private boolean mWithDatastore = false;
+        private boolean mWithBlobstore = false;
+        private boolean mWithTaskQueue = false;
+        private boolean mWithMemcache = false;
+        private int mUnappliedPct = 0;
+
+        public Builder withDatastore() {
+            mWithDatastore = true;
+            return this;
+        }
+        public Builder setUnappliedJobPct(final int pct) {
+            mUnappliedPct = pct;
+            return this;
+        }
+        public Builder withBlobstore() {
+            mWithBlobstore = true;
+            return this;
+        }
+        public Builder withTaskQueue() {
+            mWithTaskQueue = true;
+            return this;
+        }
+        public Builder withMemcache() {
+            mWithMemcache = true;
+            return this;
+        }
+        public GaeRule build() {
+            List<LocalServiceTestConfig> configs = new ArrayList<>();
+            if (mWithDatastore)
+                configs.add(new LocalDatastoreServiceTestConfig().setDefaultHighRepJobPolicyUnappliedJobPercentage
+                        (mUnappliedPct));
+            if (mWithMemcache)
+                configs.add(new LocalMemcacheServiceTestConfig());
+            if (mWithBlobstore)
+                configs.add(new LocalBlobstoreServiceTestConfig());
+            if (mWithTaskQueue)
+                configs.add(new LocalTaskQueueTestConfig());
+            return new GaeRule((configs.toArray(new LocalServiceTestConfig[configs.size()])));
+        }
+    }
 }
+
