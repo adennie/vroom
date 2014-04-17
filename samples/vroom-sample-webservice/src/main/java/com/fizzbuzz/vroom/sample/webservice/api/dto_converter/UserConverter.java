@@ -47,7 +47,7 @@ public class UserConverter
         String homeRef = null;
         LongKey homeKey = user.getHomeKey();
         if (homeKey != null)
-            ResourceRegistry.getCanonicalUri(PlaceResource.class, homeKey.toString());
+            homeRef = ResourceRegistry.getCanonicalUri(PlaceResource.class, homeKey.toString());
 
         return new UserDto(getCanonicalUri(user), user.getFirstName(), user.getLastName(), user.getEmail(),
                 profileImageRef, homeRef);

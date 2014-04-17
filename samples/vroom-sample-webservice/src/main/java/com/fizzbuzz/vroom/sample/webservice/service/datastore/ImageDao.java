@@ -15,11 +15,13 @@ package com.fizzbuzz.vroom.sample.webservice.service.datastore;
  */
 
 import com.fizzbuzz.vroom.core.domain.LongKey;
+import com.fizzbuzz.vroom.core.service.datastore.InboundRef;
 import com.fizzbuzz.vroom.extension.googlecloudstorage.domain.GcsFile;
 import com.fizzbuzz.vroom.extension.googlecloudstorage.service.datastore.GcsDao;
 import com.googlecode.objectify.annotation.Entity;
 
 @Entity
+@InboundRef(daoClass = UserDao.class, fieldName = "profileImage")
 public class ImageDao extends GcsDao<GcsFile> {
     @Override
     public GcsFile toDomainObject() {

@@ -28,7 +28,7 @@ public class UserDao extends VroomDao<User> {
     @Index private String lastName;
     @Index private String email;
     private Ref<GcsDao> profileImage;
-    private Ref<PlaceDao> home;
+    @Index private Ref<PlaceDao> home;
 
     @Override
     public void fromDomainObject(final User user) {
