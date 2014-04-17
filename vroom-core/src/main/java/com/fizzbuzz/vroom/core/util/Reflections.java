@@ -18,6 +18,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Reflections {
@@ -196,6 +197,7 @@ public class Reflections {
 
         return result;
     }
+
     /**
      * Returns the first field found in a class hierarchy having a specified annotation.
      *
@@ -205,8 +207,8 @@ public class Reflections {
      * @return the first field found with the specified annotation, or null if none found.
      */
     public static Field getFirstFieldAnnotatedWith(Class<?> startClass,
-                                                     Class<?> stopClass,
-                                                     Class<? extends Annotation> annotationClass) {
+                                                   Class<?> stopClass,
+                                                   Class<? extends Annotation> annotationClass) {
 
         Field result = null;
         Class<?> targetClass = startClass;
@@ -222,6 +224,36 @@ public class Reflections {
             }
             if (result != null) // already found it?
                 break;
+
+            targetClass = targetClass.getSuperclass();
+        }
+
+        return result;
+    }
+
+    /**
+     * Returns a collection of type annotations found in a class hierarchy
+     *
+     * @param startClass      a class whose type annotations (and whose superclasses' type annotations) are to be
+     *                        inspected
+     * @param stopClass       a class in the superclass hierarchy of startClass whose type annotations should not be
+     *                        inspected (nor its superclasses')
+     * @param annotationClass the type annotation class to look for
+     * @param <T>
+     * @return
+     */
+    public static <T extends Annotation> Collection<T> getClassAnnotations(Class<?> startClass,
+                                                                           Class<?> stopClass,
+                                                                           Class<T> annotationClass) {
+
+        List<T> result = new ArrayList<>();
+        Class<?> targetClass = startClass;
+
+        while (targetClass != null &&
+                (stopClass == null || !(targetClass.equals(stopClass)))) {
+            T anno = targetClass.getAnnotation(annotationClass);
+            if (anno != null)
+                result.add(anno);
 
             targetClass = targetClass.getSuperclass();
         }

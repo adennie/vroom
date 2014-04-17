@@ -20,6 +20,7 @@ import com.fizzbuzz.vroom.core.domain.VroomCollection;
 import com.fizzbuzz.vroom.core.exception.NotFoundException;
 import com.fizzbuzz.vroom.core.util.Reflections;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Ref;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -312,6 +313,7 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
     }
 
     protected void onDeleteDao(DAO dao) {
+        checkForInboundRefs(dao);
     }
 
     protected List<Long> toIds(final Collection<EO> entityObjects) {
@@ -320,6 +322,41 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
             result.add(eo.getKey().get());
         }
         return result;
+    }
+
+    protected void checkForInboundRefs(DAO dao) {
+        //  inspect the class hierarchy looking for @InboundRef and @InboundRefs annotations, collecting them up.
+        Collection<InboundRef> inboundRefList = Reflections.getClassAnnotations(mDaoClass, Object.class,
+                InboundRef.class);
+        Collection<InboundRefs> inboundRefsList = Reflections.getClassAnnotations(mDaoClass, Object.class,
+                InboundRefs.class);
+        for (InboundRefs inboundRefs : inboundRefsList) {
+            for (InboundRef ref :inboundRefs.value()) {
+                inboundRefList.add(ref);
+            }
+        }
+
+        boolean foundRefs = false;
+        StringBuilder refsBuilder = new StringBuilder();
+        for (InboundRef ref : inboundRefList) {
+            // look for entities of the referring DAO class with the referring field's value pointing to "dao"
+            List<VroomDao> referringDaos = (List<VroomDao>)ofy().load().type(ref.daoClass())
+                    .filter(ref.fieldName(), Ref.create(dao.getKey())).limit(10).list();
+            if (!referringDaos.isEmpty()) {
+                foundRefs = true;
+                for (VroomDao referringDao : referringDaos) {
+                    refsBuilder.append(referringDao.getClass().getSimpleName()
+                            + " (ID= " + referringDao.getId() + ")\n");
+                }
+            }
+        }
+        if (foundRefs) {
+            String reason = "The " + mDaoClass.getSimpleName() + " with ID " + dao.getId()
+                    + " is referenced by another entity or entities, and therefore cannot be deleted.\n"
+                    + "The following entities refer to this one (first 10 of each referring entity kind shown)\n"
+                    + refsBuilder.toString();
+            throw new IllegalStateException(reason);
+        }
     }
 
     private void delete(Iterable<Key<DAO>> keys) {
