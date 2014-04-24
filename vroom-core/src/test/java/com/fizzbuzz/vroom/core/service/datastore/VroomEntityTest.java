@@ -27,7 +27,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.fizzbuzz.vroom.core.service.datastore.VroomDatastoreService.ofy;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -135,14 +137,9 @@ public class VroomEntityTest {
         referencedEntity.create(mTestEntityObject);
         ReferencedDao2 referencedDao = referencedEntity.loadDao(mTestEntityObject.getKey().get());
 
-        // create and save a ReferringDao2 entity that refers to referencedDao's ID
-        ReferringObject referringObject = new ReferringObject(mTestEntityObject.getKey());
-        VroomEntity<ReferringObject, ReferringDao2> referringEntity1 =
-                new VroomEntity<ReferringObject, ReferringDao2>(ReferringObject.class, ReferringDao2.class) {
-                };
-        referringEntity1.create(referringObject);
 
-        // now create and save
+        // create and save a ReferringDao3 entity that refers to referencedDao's ID in a list field
+        ReferringObject referringObject = new ReferringObject(mTestEntityObject.getKey());
         VroomEntity<ReferringObject, ReferringDao3> referringEntity2 =
                 new VroomEntity<ReferringObject, ReferringDao3>(ReferringObject.class, ReferringDao3.class) {
                 };
@@ -239,7 +236,7 @@ public class VroomEntityTest {
 
     @Entity
     @InboundRefs({@InboundRef(daoClass = ReferringDao2.class, fieldName = "fooRef"),
-            @InboundRef(daoClass = ReferringDao3.class, fieldName = "barRef")})
+            @InboundRef(daoClass = ReferringDao3.class, fieldName = "listOfRefs")})
     private static class ReferencedDao2 extends VroomDao<TestEntityObject> {
         @Override
         public TestEntityObject toDomainObject() {
@@ -266,9 +263,10 @@ public class VroomEntityTest {
             fooRef = Ref.create(Key.create(ReferencedDao2.class, referringObject.getRefKey().get()));
         }
     }
+
     @Entity
     private static class ReferringDao3 extends VroomDao<ReferringObject> {
-        @Index private Ref<ReferencedDao2> barRef;
+        @Index private List<Ref<ReferencedDao2>> listOfRefs;
 
         @Override
         public ReferringObject toDomainObject() {
@@ -277,7 +275,8 @@ public class VroomEntityTest {
 
         @Override
         public void fromDomainObject(final ReferringObject referringObject) {
-            barRef = Ref.create(Key.create(ReferencedDao2.class, referringObject.getRefKey().get()));
+            listOfRefs = new ArrayList<>();
+            listOfRefs.add(Ref.create(Key.create(ReferencedDao2.class, referringObject.getRefKey().get())));
         }
     }
 }

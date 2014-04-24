@@ -152,18 +152,22 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
     }
 
     /**
-     * Checks for existence of an un-parented entity.  Use
+     * Checks for existence of an un-parented entity.
      *
      * @param id the ID of the entity
      * @return true if the entity exists, else false
      */
-    public boolean exists(final Long id) {
+    public boolean exists(final Long id, final boolean transactionless) {
         try {
-            get(id);
+            loadDao(Key.create(mDaoClass, id), transactionless);
             return true;
         } catch (NotFoundException e) {
             return false;
         }
+    }
+
+    public boolean exists(final Long id) {
+        return exists(id, false);
     }
 
     public boolean exists(final EO domainObject) {
@@ -214,13 +218,19 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         return result;
     }
 
-    protected DAO loadDao(final Key key) {
-        DAO result = (DAO) ofy().load().key(key).now();
+    protected DAO loadDao(final Key key, final boolean transactionless) {
+        DAO result = transactionless
+                ? (DAO) ofy().transactionless().load().key(key).now()
+                : (DAO) ofy().load().key(key).now();
         if (result == null) {
             throw new NotFoundException("No " + mDomainClass.getSimpleName() + " found with key " +
                     key.toString());
         }
         return result;
+    }
+
+    protected DAO loadDao(final Key key) {
+        return loadDao(key, false);
     }
 
     protected Map<Long, DAO> loadDaosWithIds(final Collection<Long> ids) {
