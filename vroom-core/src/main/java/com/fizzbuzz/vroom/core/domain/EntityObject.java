@@ -18,4 +18,7 @@ public abstract class EntityObject extends KeyedObject<LongKey> implements IEnti
     public EntityObject(final LongKey key) {
         super(key);
     }
+
+    public void validate() {
+    }
 }
