@@ -311,9 +311,11 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
     }
 
     protected void onCreate(EO domainObject) {
+        domainObject.validate();
     }
 
     protected void onUpdate(EO domainObject) {
+        domainObject.validate();
     }
 
     protected void onDelete(EO domainObject) {

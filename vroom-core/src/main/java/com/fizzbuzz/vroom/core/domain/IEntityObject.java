@@ -19,4 +19,5 @@ package com.fizzbuzz.vroom.core.domain;
  * convenient and mnemonic shorthand for IKeyedObject<LongKey>.
  */
 public interface IEntityObject extends IKeyedObject<LongKey> {
+    public void validate();
 }
