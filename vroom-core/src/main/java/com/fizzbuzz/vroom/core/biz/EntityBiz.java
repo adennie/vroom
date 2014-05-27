@@ -47,7 +47,7 @@ public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E
 
     @Override
     public E get(final LongKey key) {
-        return mEntity.get(key.get());
+        return mEntity.get(key);
     }
 
     @Override
@@ -72,8 +72,8 @@ public abstract class EntityBiz<E extends IEntityObject> implements IEntityBiz<E
 
     @Override
     public void delete(final LongKey key) {
-        onDelete(mEntity.get(key.get()));
-        mEntity.delete(key.get());
+        onDelete(mEntity.get(key));
+        mEntity.delete(key);
     }
 
     @Override

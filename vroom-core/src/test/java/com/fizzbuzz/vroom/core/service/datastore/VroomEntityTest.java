@@ -69,8 +69,8 @@ public class VroomEntityTest {
 
     @Test
     public void allocateId_returnsValidId() {
-        Long id = mTestEntity.allocateId();
-        assertThat(id).isNotNull();
+        LongKey key = mTestEntity.allocateKey();
+        assertThat(key).isNotNull();
     }
 
     @Test

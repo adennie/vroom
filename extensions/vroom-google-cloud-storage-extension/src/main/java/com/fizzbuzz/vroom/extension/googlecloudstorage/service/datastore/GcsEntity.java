@@ -13,6 +13,7 @@ package com.fizzbuzz.vroom.extension.googlecloudstorage.service.datastore;
  * limitations under the License.
  */
 
+import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.fizzbuzz.vroom.core.service.datastore.IFileEntity;
 import com.fizzbuzz.vroom.core.service.datastore.VroomEntity;
 import com.fizzbuzz.vroom.extension.googlecloudstorage.domain.IGcsFile;
@@ -51,7 +52,7 @@ public abstract class GcsEntity<F extends IGcsFile, DAO extends GcsDao<F>> exten
     }
 
     @Override
-    public void delete(final Long key) {
+    public void delete(final LongKey key) {
         GcsFileObject gcsFileObject = getGcsFileObject(key);
         try {
             gcsFileObject.delete();
@@ -62,8 +63,8 @@ public abstract class GcsEntity<F extends IGcsFile, DAO extends GcsDao<F>> exten
     }
 
 
-    public GcsFileObject getGcsFileObject(Long key) {
-        DAO dao = loadDao(key);
+    public GcsFileObject getGcsFileObject(LongKey key) {
+        DAO dao = loadDao(key.get());
         GcsFileObject result = new GcsFileObject(dao.getBucketName(), dao.getGcsFileName());
         return result;
     }

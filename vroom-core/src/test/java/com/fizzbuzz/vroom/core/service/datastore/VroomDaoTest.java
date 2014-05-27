@@ -43,8 +43,8 @@ public class VroomDaoTest {
         // there's no setter for the "id" field, so set it via reflection
         field("id").ofType(Long.class).in(mTestDao).set(TEST_ID);
         try {
-            // the allocateId() method is protected, so invoke it via reflection
-            method("allocateId").in(mTestDao).invoke();
+            // the allocateKey() method is protected, so invoke it via reflection
+            method("allocateKey").in(mTestDao).invoke();
         }
         catch (RuntimeException e) {
             assertThat(e.getClass().isAssignableFrom(IllegalStateException.class));
@@ -52,7 +52,7 @@ public class VroomDaoTest {
     }
     @Test
     public void testAllocateIdSucceedsWhenIdIsNull() throws Exception {
-        mTestDao.allocateId();
+        mTestDao.allocateKey();
         assertThat(mTestDao.getId()).isNotNull();
     }
 */

@@ -15,6 +15,7 @@ package com.fizzbuzz.vroom.core.service.datastore;
  */
 
 import com.fizzbuzz.vroom.core.domain.IEntityObject;
+import com.fizzbuzz.vroom.core.domain.LongKey;
 import com.fizzbuzz.vroom.core.domain.VroomCollection;
 import com.googlecode.objectify.Key;
 
@@ -41,34 +42,34 @@ public abstract class ParentedEntity<
     }
 
     @Override
-    public long allocateId() {
-        return ofy().factory().allocateId(mParentDaoClass, getDaoClass()).getId();
+    public LongKey allocateKey() {
+        return new LongKey(ofy().factory().allocateId(mParentDaoClass, getDaoClass()).getId());
     }
 
     @Override
-    public List<Long> allocateIds(int num) {
-        List result = new ArrayList(num);
+    public List<LongKey> allocateKeys(int num) {
+        List<LongKey> result = new ArrayList<>(num);
         Iterable<Key<DAO>> keys = ofy().factory().allocateIds(mParentDaoClass, getDaoClass(), num);
         // not very efficient, but the idea here is to avoid exposing Objectify types through this interface
         for (Key<DAO> key : keys) {
-            result.add(key.getId());
+            result.add(new LongKey(key.getId()));
         }
         return result;
     }
 
     @Override
-    public void delete(final Long parentId, final Long id) {
-        delete(getParentKey(parentId), id);
+    public void delete(final LongKey parentKey, final LongKey childKey) {
+        delete(getParentKey(parentKey), childKey.get());
     }
 
     @Override
-    public void delete(Long parentId, Collection<EO> entityObjects) {
-        delete(getParentKey(parentId), toIds(entityObjects));
+    public void delete(LongKey parentKey, Collection<EO> entityObjects) {
+        delete(getParentKey(parentKey), toIds(entityObjects));
     }
 
     @Override
-    public void deleteAll(Long parentId) {
-        deleteAll(getParentKey(parentId));
+    public void deleteAll(LongKey parentKey) {
+        deleteAll(getParentKey(parentKey));
     }
 
     protected void delete(final Key<?> parentKey, final Long id) {
@@ -76,7 +77,7 @@ public abstract class ParentedEntity<
     }
 
     protected void delete(VroomDao parentDao, Collection<Long> ids) {
-        delete(getParentKey(parentDao.getId()), ids);
+        delete(parentDao.getKey(), ids);
     }
 
     protected void delete(Key<?> parentKey, Collection<Long> ids) {
@@ -118,8 +119,8 @@ public abstract class ParentedEntity<
         return toIds(keys);
     }
 
-    protected Key<?> getParentKey(final Long parentId) {
-        return Key.create(mParentDaoClass, parentId);
+    protected Key<?> getParentKey(final LongKey parentKey) {
+        return Key.create(mParentDaoClass, parentKey.get());
     }
 
 }
