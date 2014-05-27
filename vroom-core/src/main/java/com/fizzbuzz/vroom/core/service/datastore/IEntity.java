@@ -15,6 +15,7 @@ package com.fizzbuzz.vroom.core.service.datastore;
  */
 
 import com.fizzbuzz.vroom.core.domain.IEntityObject;
+import com.fizzbuzz.vroom.core.domain.LongKey;
 
 import java.util.Collection;
 import java.util.List;
@@ -42,10 +43,10 @@ public interface IEntity<EO extends IEntityObject> {
     /**
      * Returns the KeyedObject having the provided key
      *
-     * @param key the entity object's key
+     * @param key the entity object's LongKey
      * @return the entity object corresponding to the provided key
      */
-    public EO get(final Long key);
+    public EO get(final LongKey key);
 
     /**
      * Returns a collection of domain objects corresponding to "all" entities (where "all" is defined by the
@@ -56,19 +57,11 @@ public interface IEntity<EO extends IEntityObject> {
     public List<EO> getAll();
 
     /**
-     * Returns a list of entity IDs corresponding to "all" entities (where "all" is defined by the
-     * implementing subclass)
+     * Updates an entity's state.  Often this will require merging the state of the provided entity object with the
+     * existing state of that object's corresponding entity and then saving that new, merged state.
      *
-     * @return
+     * @param domainObject the new state for the entity object
      */
-    public List<Long> getAllIds();
-
-        /**
-         * Updates an entity's state.  Often this will require merging the state of the provided entity object with the
-         * existing state of that object's corresponding entity and then saving that new, merged state.
-         *
-         * @param domainObject the new state for the entity object
-         */
     public void update(final EO domainObject);
 
     /**
@@ -85,7 +78,7 @@ public interface IEntity<EO extends IEntityObject> {
      *
      * @param key the domain object's key
      */
-    public void delete(final Long key);
+    public void delete(final LongKey key);
 
     /**
      * Deletes the entity corresponding to the provided domain object
@@ -107,17 +100,17 @@ public interface IEntity<EO extends IEntityObject> {
     public void delete(final Collection<EO> domainObjects);
 
     /**
-     * Allocates a single ID for an entity which is not part of an entity group
+     * Allocates a single LongKey for an entity which is not part of an entity group
      *
-     * @return an allocated ID
+     * @return an allocated LongKey
      */
-    public long allocateId();
+    public LongKey allocateKey();
 
     /**
-     * Allocates a contiguous range of IDs for entities which are not part of an entity group
+     * Allocates a contiguous range of LongKeys for entities which are not part of an entity group
      *
      * @param num the number of keys to allocate.  Must be >= 1 and <= 1 billion.
-     * @return a list of allocated IDs
+     * @return a list of allocated LongKeys
      */
-    public List<Long> allocateIds(int num);
+    public List<LongKey> allocateKeys(int num);
 }

@@ -28,7 +28,7 @@ public class GcsImageBiz<F extends IGcsFile, E extends GcsEntity<F, ?>>
     }
 
     public String getServingUrl(LongKey fileKey, Integer size) {
-        GcsFileObject gcsFileObject = ((E)getEntity()).getGcsFileObject(fileKey.get());
+        GcsFileObject gcsFileObject = ((E)getEntity()).getGcsFileObject(fileKey);
         GcsImageObject gcsImage = new GcsImageObject(gcsFileObject.getBucketName(), gcsFileObject.getFileName());
         return gcsImage.getServingUrl(size);
     }

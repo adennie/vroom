@@ -15,23 +15,32 @@ package com.fizzbuzz.vroom.core.service.datastore;
  */
 
 import com.fizzbuzz.vroom.core.domain.IEntityObject;
+import com.fizzbuzz.vroom.core.domain.LongKey;
 
 import java.util.Collection;
 
 public interface IParentedEntity<EO extends IEntityObject> {
-    public void delete(final Long parentId, final Long id);
+    /**
+     * Deletes a parented entity
+     *
+     * @param parentKey the parent entity
+     * @param childKey  the child entity
+     */
+    public void delete(final LongKey parentKey, final LongKey childKey);
 
     /**
      * Deletes parented entities corresponding to a collection of domain objects
      *
-     * @param parentId
-     * @param domainObjects
+     * @param parentKey     the parent entity
+     * @param domainObjects the domain objects whose corresponding entities should be deleted (must all have the same
+     *                      parent entity identified by parentKey)
      */
-    public void delete(final Long parentId, final Collection<EO> domainObjects);
+    public void delete(final LongKey parentKey, final Collection<EO> domainObjects);
 
     /**
      * Delete all entities of the kind corresponding to EO which have the specified parent
-     * @param parentId
+     *
+     * @param parentKey
      */
-    public void deleteAll(Long parentId);
+    public void deleteAll(LongKey parentKey);
 }

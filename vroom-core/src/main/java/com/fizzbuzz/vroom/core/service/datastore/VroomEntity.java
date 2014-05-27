@@ -66,19 +66,21 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
     }
 
     @Override
-    public EO get(final Long id) {
-        return loadDao(id).toDomainObject();
+    public EO get(final LongKey key) {
+        return loadDao(key.get()).toDomainObject();
+    }
+
+    public EO get(Key<DAO> key) {
+        return loadDao(key).toDomainObject();
+    }
+
+    public EO get(Ref<DAO> ref) {
+        return loadDao(ref.getKey()).toDomainObject();
     }
 
     @Override
     public VroomCollection<EO> getAll() {
         return toDomainCollection(loadAllDaos());
-    }
-
-    @Override
-    public List<Long> getAllIds() {
-        List<Key<DAO>> keys = ofy().load().type(getDaoClass()).keys().list();
-        return toIds(keys);
     }
 
     @Override
@@ -105,7 +107,7 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
     }
 
     @Override
-    public void delete(final Long key) {
+    public void delete(final LongKey key) {
         EO domainObject = get(key);
         delete(domainObject);
     }
@@ -136,43 +138,105 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
     }
 
     @Override
-    public long allocateId() {
-        return ofy().factory().allocateId(getDaoClass()).getId();
+    public LongKey allocateKey() {
+        return new LongKey(ofy().factory().allocateId(getDaoClass()).getId());
     }
 
     @Override
-    public List<Long> allocateIds(int num) {
-        List result = new ArrayList(num);
+    public List<LongKey> allocateKeys(int num) {
+        List<LongKey> result = new ArrayList<>(num);
         Iterable<Key<DAO>> keys = ofy().factory().allocateIds(getDaoClass(), num);
         // not very efficient, but the idea here is to avoid exposing Objectify types through this interface
         for (Key<DAO> key : keys) {
-            result.add(key.getId());
+            result.add(new LongKey(key.getId()));
         }
         return result;
     }
 
     /**
-     * Checks for existence of an un-parented entity.
+     * Checks for existence of an un-parented entity corresponding to a provided domain object.  The check is
+     * performed within the context of the current transaction (if any).
+     *
+     * @param domainObject a domain object
+     * @return true if the entity exists, else false
+     */
+    public boolean exists(final EO domainObject) {
+        return exists(domainObject.getKey().get(), true);
+    }
+
+    /**
+     * Checks for existence of an un-parented entity corresponding to a provided domain object.
+     *
+     * @param domainObject    a domain object
+     * @param transactionless if true, and this call is currently running inside a transaction,
+     *                        the check for existence will be done outside the current transaction (useful to
+     *                        avoid XG transaction limit)
+     * @return true if the entity exists, else false
+     */
+    public boolean exists(final EO domainObject, final boolean transactionless) {
+        return exists(domainObject.getKey().get(), transactionless);
+    }
+
+    /**
+     * Checks for existence of an un-parented entity.  The check is performed within the context of the current
+     * transaction (if any).
      *
      * @param id the ID of the entity
      * @return true if the entity exists, else false
      */
-    public boolean exists(final Long id, final boolean transactionless) {
-        try {
-            loadDao(Key.create(mDaoClass, id), transactionless);
-            return true;
-        } catch (NotFoundException e) {
-            return false;
-        }
-    }
-
     public boolean exists(final Long id) {
         return exists(id, false);
     }
 
-    public boolean exists(final EO domainObject) {
+    /**
+     * Checks for existence of an un-parented entity.
+     *
+     * @param id              the ID of the entity
+     * @param transactionless if true, and this call is currently running inside a transaction,
+     *                        the check for existence will be done outside the current transaction (useful to
+     *                        avoid XG transaction limit)
+     * @return true if the entity exists, else false
+     */
+    public boolean exists(final Long id, final boolean transactionless) {
+        return exists(Key.create(mDaoClass, id), transactionless);
+    }
+
+    /**
+     * Checks for existence of an entity.  The check is performed within the context of the current
+     * transaction (if any).
+     *
+     * @param ref a reference to the entity
+     * @return true if the entity exists, else false
+     */
+    public boolean exists(final Ref<DAO> ref) {
+        return exists(ref, false);
+    }
+
+    /**
+     * Checks for existence of an entity.
+     *
+     * @param ref             a reference to the entity
+     * @param transactionless if true, and this call is currently running inside a transaction,
+     *                        the check for existence will be done outside the current transaction (useful to
+     *                        avoid XG transaction limit)
+     * @return true if the entity exists, else false
+     */
+    public boolean exists(final Ref<DAO> ref, final boolean transactionless) {
+        return exists(ref.getKey(), transactionless);
+    }
+
+    /**
+     * Checks for existence of an entity.
+     *
+     * @param key             the Key of the entity
+     * @param transactionless if true, and this call is currently running inside a transaction,
+     *                        the check for existence will be done outside the current transaction (useful to
+     *                        avoid XG transaction limit)
+     * @return true if the entity exists, else false
+     */
+    public boolean exists(final Key key, final boolean transactionless) {
         try {
-            loadDao(createDao(domainObject).getKey());
+            loadDao(key, transactionless);
             return true;
         } catch (NotFoundException e) {
             return false;
@@ -182,6 +246,11 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
     public void rewriteAll() {
         List<DAO> daos = ofy().load().type(getDaoClass()).list();
         ofy().save().entities(daos).now();
+    }
+
+    protected List<Long> getAllIds() {
+        List<Key<DAO>> keys = ofy().load().type(getDaoClass()).keys().list();
+        return toIds(keys);
     }
 
     protected List<DAO> loadAllDaos() {
@@ -209,15 +278,35 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         dao.fromDomainObject(domainObject);
     }
 
+    /**
+     * Loads a DAO.  Loading is performed with the context of the current transaction (if any).
+     *
+     * @param id the ID of the entity to be loaded into the DAO
+     * @return the loaded DAO
+     */
     protected DAO loadDao(final Long id) {
-        DAO result = ofy().load().type(mDaoClass).id(id).now();
-        if (result == null) {
-            throw new NotFoundException("No " + mDomainClass.getSimpleName() + " found with ID " +
-                    Long.toString(id));
-        }
-        return result;
+        return loadDao(Key.create(mDaoClass, id));
     }
 
+    /**
+     * Loads a DAO.  Loading is performed within the context of the current transaction (if any).
+     *
+     * @param key the key of the entity to be loaded into the DAO
+     * @return the loaded DAO
+     */
+    protected DAO loadDao(final Key key) {
+        return loadDao(key, false);
+    }
+
+    /**
+     * Loads a DAO.
+     *
+     * @param key             the key of the entity to be loaded into the DAO
+     * @param transactionless if true, and this call is currently running inside a transaction,
+     *                        the load will be done outside the current transaction (useful to
+     *                        avoid XG transaction limit)
+     * @return the loaded DAO
+     */
     protected DAO loadDao(final Key key, final boolean transactionless) {
         DAO result = transactionless
                 ? (DAO) ofy().transactionless().load().key(key).now()
@@ -229,9 +318,6 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         return result;
     }
 
-    protected DAO loadDao(final Key key) {
-        return loadDao(key, false);
-    }
 
     protected Map<Long, DAO> loadDaosWithIds(final Collection<Long> ids) {
         return ofy().load().type(mDaoClass).ids(ids);
@@ -343,7 +429,7 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         Collection<InboundRefs> inboundRefsList = Reflections.getClassAnnotations(mDaoClass, Object.class,
                 InboundRefs.class);
         for (InboundRefs inboundRefs : inboundRefsList) {
-            for (InboundRef ref :inboundRefs.value()) {
+            for (InboundRef ref : inboundRefs.value()) {
                 inboundRefList.add(ref);
             }
         }
@@ -352,7 +438,7 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         StringBuilder refsBuilder = new StringBuilder();
         for (InboundRef ref : inboundRefList) {
             // look for entities of the referring DAO class with the referring field's value pointing to "dao"
-            List<VroomDao> referringDaos = (List<VroomDao>)ofy().load().type(ref.daoClass())
+            List<VroomDao> referringDaos = (List<VroomDao>) ofy().load().type(ref.daoClass())
                     .filter(ref.fieldName(), Ref.create(dao.getKey())).limit(10).list();
             if (!referringDaos.isEmpty()) {
                 foundRefs = true;

@@ -38,14 +38,14 @@ public class UserBiz
     public void add(final User user) {
         // pre-allocate an ID for the user entity so we can use it in the UserLogEntry that references this
         // user, and then save both the user and the log entry together in a single idempotent transaction.
-        user.setKey(new LongKey(getEntity().allocateId()));
+        user.setKey(getEntity().allocateKey());
 
         // preallocate an ID for the user log entry, too (if we don't preallocate the ID, more than one entity could
         // be created if the transaction is retried).
         final UserLogEntryEntity userLogEntryEntity = new UserLogEntryEntity();
-        final long userLogEntryId = userLogEntryEntity.allocateId();
+        final LongKey userLogEntryKey = userLogEntryEntity.allocateKey();
 
-        final UserLogEntry userCreatedEntry = new UserLogEntry(new LongKey(userLogEntryId), user.getKey(),
+        final UserLogEntry userCreatedEntry = new UserLogEntry(userLogEntryKey, user.getKey(),
                 UserLogEntry.UserEventType.USER_CREATED, new Date(System.currentTimeMillis()));
 
         new VroomDatastoreService().doInTransaction(new IDatastoreService.Transactable<Void>() {
