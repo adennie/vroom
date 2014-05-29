@@ -97,8 +97,8 @@ public abstract class ParentedEntity<
         return getAllWithAncestor(ancestorDao.getKey());
     }
 
-    protected VroomCollection<EO> getAllWithAncestor(Class<? extends VroomDao> ancestorDaoClass, Long ancestorId) {
-        return getAllWithAncestor(Key.create(ancestorDaoClass, ancestorId));
+    protected VroomCollection<EO> getAllWithAncestor(Class<? extends VroomDao> ancestorDaoClass, LongKey ancestorKey) {
+        return getAllWithAncestor(Key.create(ancestorDaoClass, ancestorKey.get()));
     }
 
     protected VroomCollection<EO> getAllWithAncestor(Key<?> ancestorKey) {
@@ -110,8 +110,8 @@ public abstract class ParentedEntity<
         return getAllIdsWithAncestor(ancestorDao.getKey());
     }
 
-    protected List<Long> getAllIdsWithAncestor(Class<? extends VroomDao> ancestorDaoClass, Long ancestorId) {
-        return getAllIdsWithAncestor(Key.create(ancestorDaoClass, ancestorId));
+    protected List<Long> getAllIdsWithAncestor(Class<? extends VroomDao> ancestorDaoClass, LongKey ancestorKey) {
+        return getAllIdsWithAncestor(Key.create(ancestorDaoClass, ancestorKey.get()));
     }
 
     protected List<Long> getAllIdsWithAncestor(Key<?> ancestorKey) {
