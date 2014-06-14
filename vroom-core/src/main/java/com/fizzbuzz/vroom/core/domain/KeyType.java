@@ -26,7 +26,7 @@ public abstract class KeyType<T> {
     }
 
     public String toString() {
-        return mKey.toString();
+        return (mKey ==null)?null:mKey.toString();
     }
 
     @Override

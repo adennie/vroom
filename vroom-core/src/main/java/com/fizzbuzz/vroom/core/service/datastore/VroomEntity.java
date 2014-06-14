@@ -69,7 +69,7 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
         // datastore back into them
         for (int i = 0; i < eos.size(); i++) {
             EO eo = eos.get(i);
-            if (eo.getKey() == null || eo.getKey().get() == 0)
+            if (eo.getKey() == null || eo.getKey().get() == null)
                 eos.get(i).setKey(new LongKey(daos.get(i).getId()));
         }
     }
