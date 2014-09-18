@@ -39,4 +39,8 @@ public class LongKey extends KeyType<Long> {
     public LongKey(final String keyAsString) {
         super(Long.parseLong(keyAsString));
     }
+
+    public boolean isUnassigned() {
+        return get() == null || get().equals(0L);
+    }
 }
