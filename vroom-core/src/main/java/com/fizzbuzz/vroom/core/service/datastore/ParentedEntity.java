@@ -41,9 +41,8 @@ public abstract class ParentedEntity<
         mParentDaoClass = parentDaoClass;
     }
 
-    @Override
-    public LongKey allocateKey() {
-        return new LongKey(ofy().factory().allocateId(mParentDaoClass, getDaoClass()).getId());
+    public LongKey allocateKey(LongKey parentKey) {
+        return new LongKey(ofy().factory().allocateId(Key.create(mParentDaoClass, parentKey.get()), getDaoClass()).getId());
     }
 
     @Override
