@@ -45,10 +45,9 @@ public abstract class ParentedEntity<
         return new LongKey(ofy().factory().allocateId(Key.create(mParentDaoClass, parentKey.get()), getDaoClass()).getId());
     }
 
-    @Override
-    public List<LongKey> allocateKeys(int num) {
+    public List<LongKey> allocateKeys(LongKey parentKey, int num) {
         List<LongKey> result = new ArrayList<>(num);
-        Iterable<Key<DAO>> keys = ofy().factory().allocateIds(mParentDaoClass, getDaoClass(), num);
+        Iterable<Key<DAO>> keys = ofy().factory().allocateIds(Key.create(mParentDaoClass, parentKey.get()), getDaoClass(), num);
         // not very efficient, but the idea here is to avoid exposing Objectify types through this interface
         for (Key<DAO> key : keys) {
             result.add(new LongKey(key.getId()));
