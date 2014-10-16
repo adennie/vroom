@@ -260,14 +260,16 @@ public abstract class VroomResource<R> extends ServerResource implements IVroomR
 
         if (cachedString != null) {
             // cache hit.  Create a StringRepresentation from the cached string and return it.
+            mLogger.debug("VroomResource.get: found representation in memcache for url={}", cacheKey.getResourceUrl());
             try {
                 result = new StringRepresentation(cachedString.getValue(), variant.getMediaType());
             } catch (IOException e) {
                 mLogger.warn("VroomResource.get: failed to create StringRepresentation from cached value", e);
             }
-            mLogger.debug("VroomResource.get: found representation in memcache for url={}", cacheKey.getResourceUrl());
-        } else {
-            // cache miss.  First, build the representation from scratch
+        }
+
+        if (result == null) {
+            // cache miss, or exception attempting to use cached value.  First, build the representation from scratch
             Representation originalRep = super.get(variant);
 
             // if the cache key is in the "do-not-cache" set, just return the representation we have, otherwise
