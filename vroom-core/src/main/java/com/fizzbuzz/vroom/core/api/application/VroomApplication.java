@@ -131,7 +131,6 @@ public abstract class VroomApplication
 
         // initialize the dagger object graph
         mObjectGraph = ObjectGraph.create(getModules().toArray());
-        mObjectGraph.inject(this);
     }
 
     public ObjectGraph getObjectGraph() {

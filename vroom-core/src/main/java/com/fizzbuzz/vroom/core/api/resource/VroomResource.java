@@ -215,7 +215,6 @@ public abstract class VroomResource<R> extends ServerResource implements IVroomR
         return ResourceRegistry.getPathTemplate(this.getClass());
     }
 
-    // this is really just here to provide access to the doInit method from the unit test
     @Override
     protected void doInit() throws ResourceException {
         super.doInit();

@@ -84,6 +84,7 @@ public abstract class VroomCollectionResource<
 
     protected void doInit(final Class<DC> collectionClass,
                           final B collectionBiz) throws ResourceException {
+        super.doInit();
         mCollectionClass = collectionClass;
         mBiz = collectionBiz;
     }

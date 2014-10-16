@@ -103,6 +103,7 @@ public abstract class GcsFilesResource<
 
     protected void doInit(final Class<? extends KeyedResource> elementResourceClass, final B collectionBiz)
             throws ResourceException {
+        super.doInit();
         mElementResourceClass = elementResourceClass;
         mBiz = collectionBiz;
     }
