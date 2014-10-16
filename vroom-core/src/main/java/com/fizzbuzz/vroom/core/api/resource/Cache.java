@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.exception;
+package com.fizzbuzz.vroom.core.api.resource;
 
 /*
  * Copyright (c) 2014 Fizz Buzz LLC
@@ -14,19 +14,12 @@ package com.fizzbuzz.vroom.core.exception;
  * limitations under the License.
  */
 
-public class NotModifiedException extends RuntimeException {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    private static final long serialVersionUID = 3195519487641189972L;
-
-    public NotModifiedException(final String message) {
-        super(message);
-    }
-
-    public NotModifiedException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-
-    public NotModifiedException(final Throwable cause) {
-        super(cause);
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Cache {
 }

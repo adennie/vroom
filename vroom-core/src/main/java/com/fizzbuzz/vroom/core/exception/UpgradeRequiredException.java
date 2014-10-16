@@ -14,10 +14,9 @@ package com.fizzbuzz.vroom.core.exception;
  * limitations under the License.
  */
 
-public class UpgradeRequiredException
-        extends RuntimeException {
+public class UpgradeRequiredException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -5149608405445143358L;
 
     public UpgradeRequiredException(final String message) {
         super(message);

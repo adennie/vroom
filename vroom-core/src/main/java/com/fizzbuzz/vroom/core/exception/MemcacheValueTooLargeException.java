@@ -14,19 +14,23 @@ package com.fizzbuzz.vroom.core.exception;
  * limitations under the License.
  */
 
-public class NotModifiedException extends RuntimeException {
+public class MemcacheValueTooLargeException extends RuntimeException {
 
-    private static final long serialVersionUID = 3195519487641189972L;
+    private static final long serialVersionUID = 8128978488486780045L;
 
-    public NotModifiedException(final String message) {
+    public MemcacheValueTooLargeException() {
+        super();
+    }
+
+    public MemcacheValueTooLargeException(final String message) {
         super(message);
     }
 
-    public NotModifiedException(final String message, final Throwable cause) {
+    public MemcacheValueTooLargeException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public NotModifiedException(final Throwable cause) {
+    public MemcacheValueTooLargeException(final Throwable cause) {
         super(cause);
     }
 }

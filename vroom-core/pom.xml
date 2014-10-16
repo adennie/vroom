@@ -27,10 +27,22 @@
 
     <properties>
         <!-- dependency versions -->
+        <assertj-core.version>1.6.1</assertj-core.version>
+        <dagger.version>1.2.2</dagger.version>
         <fest-reflect.version>1.4.1</fest-reflect.version>
+        <mockito.version>1.9.5</mockito.version>
     </properties>
 
     <dependencies>
+        <!-- compile dependencies -->
+        <dependency>
+            <groupId>com.squareup.dagger</groupId>
+            <artifactId>dagger-compiler</artifactId>
+            <version>${dagger.version}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+
         <!-- test dependencies -->
         <dependency>
             <groupId>com.google.appengine</groupId>
@@ -102,7 +114,20 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Compile/runtime dependencies -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- runtime dependencies -->
         <dependency>
             <groupId>com.fizz-buzz.vroom</groupId>
             <artifactId>vroom-dto</artifactId>
@@ -138,6 +163,12 @@
                     <artifactId>guava</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.dagger</groupId>
+            <artifactId>dagger</artifactId>
+            <version>${dagger.version}</version>
         </dependency>
 
         <dependency>
@@ -188,6 +219,14 @@
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
+                <dependencies>
+                    <!-- use dagger-compiler for annotation processing during compilation -->
+                    <dependency>
+                        <groupId>com.squareup.dagger</groupId>
+                        <artifactId>dagger-compiler</artifactId>
+                        <version>${dagger.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <plugin>

@@ -14,10 +14,9 @@ package com.fizzbuzz.vroom.core.exception;
  * limitations under the License.
  */
 
-public class NotFoundException
-        extends RuntimeException {
+public class NotFoundException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 493513417819583980L;
 
     public NotFoundException() {
         super("no message provided by caller");

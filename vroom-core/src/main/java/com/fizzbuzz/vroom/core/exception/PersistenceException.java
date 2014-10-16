@@ -16,7 +16,7 @@ package com.fizzbuzz.vroom.core.exception;
 
 public class PersistenceException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 8759903827204387094L;
 
     public PersistenceException() {
         super("no message provided by caller");

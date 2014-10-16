@@ -1,4 +1,4 @@
-package com.fizzbuzz.vroom.core.exception;
+package com.fizzbuzz.vroom.core.util;
 
 /*
  * Copyright (c) 2014 Fizz Buzz LLC
@@ -14,19 +14,10 @@ package com.fizzbuzz.vroom.core.exception;
  * limitations under the License.
  */
 
-public class NotModifiedException extends RuntimeException {
-
-    private static final long serialVersionUID = 3195519487641189972L;
-
-    public NotModifiedException(final String message) {
-        super(message);
+class PackageLogger {
+    // This class exists just to define a static string for use by other classes in this package. Make the constructor
+    // private to prevent instantiation.
+    private PackageLogger() {
     }
 
-    public NotModifiedException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-
-    public NotModifiedException(final Throwable cause) {
-        super(cause);
-    }
-}
+    public static final String TAG = "com.fizzbuzz.vroom.core.util";}

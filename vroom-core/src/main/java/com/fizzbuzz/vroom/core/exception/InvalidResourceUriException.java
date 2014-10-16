@@ -14,14 +14,9 @@ package com.fizzbuzz.vroom.core.exception;
  * limitations under the License.
  */
 
-public class InvalidResourceUriException
-        extends RuntimeException {
+public class InvalidResourceUriException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
-
-    public InvalidResourceUriException() {
-        super("no message provided by caller");
-    }
+    private static final long serialVersionUID = 4701180692412010950L;
 
     public InvalidResourceUriException(final String invalidUrl) {
         super(generateMessage(invalidUrl));
