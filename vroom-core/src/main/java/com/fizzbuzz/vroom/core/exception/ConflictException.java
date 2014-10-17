@@ -14,10 +14,9 @@ package com.fizzbuzz.vroom.core.exception;
  * limitations under the License.
  */
 
-public class ConflictException
-        extends RuntimeException {
+public class ConflictException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 7011635379473151138L;
 
     public ConflictException(final String conflictingEntity, final String conflictingProperty,
             final String conflictingValue) {

@@ -82,7 +82,7 @@ public abstract class KeyedResource<
     }
 
     protected void doInit(final B biz) throws ResourceException {
-
+        super.doInit();
         mBiz = biz;
 
         // get the resource ID from the URL
