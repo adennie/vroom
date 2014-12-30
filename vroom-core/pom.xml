@@ -12,7 +12,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -34,15 +35,6 @@
     </properties>
 
     <dependencies>
-        <!-- compile dependencies -->
-        <dependency>
-            <groupId>com.squareup.dagger</groupId>
-            <artifactId>dagger-compiler</artifactId>
-            <version>${dagger.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-
         <!-- test dependencies -->
         <dependency>
             <groupId>com.google.appengine</groupId>
@@ -172,12 +164,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.easytesting</groupId>
-            <artifactId>fest-reflect</artifactId>
-            <version>${fest-reflect.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.restlet.gae</groupId>
             <artifactId>org.restlet</artifactId>
             <version>${restlet.version}</version>
@@ -225,6 +211,12 @@
                         <groupId>com.squareup.dagger</groupId>
                         <artifactId>dagger-compiler</artifactId>
                         <version>${dagger.version}</version>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>com.google.guava</groupId>
+                                <artifactId>guava</artifactId>
+                            </exclusion>
+                        </exclusions>
                     </dependency>
                 </dependencies>
             </plugin>

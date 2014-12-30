@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -101,10 +102,15 @@
             <artifactId>objectify</artifactId>
             <version>${objectify.version}</version>
             <exclusions>
-                <!-- objectify wants to use an older version of appengine-api-1.0-sdk, so override it -->
+                <!-- objectify wants to use an older version of appengine-api-1.0-sdk, so exclude it -->
                 <exclusion>
                     <groupId>com.google.appengine</groupId>
                     <artifactId>appengine-api-1.0-sdk</artifactId>
+                </exclusion>
+                <!-- objectify wants to use an older version of guava, so exclude it -->
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -242,7 +248,8 @@
             <id>vroom-sample-prod</id>
             <properties>
                 <!-- allowed origins for CORS requests.  -->
-                <vroom-sample.env.cors.allowed-origins>http://vroom-sample.appspot.com</vroom-sample.env.cors.allowed-origins>
+                <vroom-sample.env.cors.allowed-origins>http://vroom-sample.appspot.com
+                </vroom-sample.env.cors.allowed-origins>
                 <vroom-sample.env.api-base-url>http://api.vroom-sample.appspot.com/root/</vroom-sample.env.api-base-url>
             </properties>
         </profile>
