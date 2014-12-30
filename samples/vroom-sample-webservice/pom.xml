@@ -91,12 +91,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.googlecode.objectify</groupId>
             <artifactId>objectify</artifactId>
             <version>${objectify.version}</version>
@@ -106,6 +100,10 @@
                     <groupId>com.google.appengine</groupId>
                     <artifactId>appengine-api-1.0-sdk</artifactId>
                 </exclusion>
+                    <exclusion>
+                        <groupId>com.google.guava</groupId>
+                        <artifactId>guava</artifactId>
+                    </exclusion>
             </exclusions>
         </dependency>
 

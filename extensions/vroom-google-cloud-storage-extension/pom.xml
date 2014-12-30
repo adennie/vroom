@@ -30,13 +30,6 @@
             <groupId>com.fizz-buzz.vroom</groupId>
             <artifactId>vroom-core</artifactId>
             <version>${project.version}</version>
-            <exclusions>
-                <!-- appengine-gcs-client requires guava 15 (hard minimum), but vroom-core specifies 14.0.1 -->
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -48,6 +41,18 @@
         <dependency>
             <groupId>com.google.appengine.tools</groupId>
             <artifactId>appengine-gcs-client</artifactId>
+            <version>RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.api-client</groupId>
+                    <artifactId>google-api-client</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
             <version>RELEASE</version>
         </dependency>
 
