@@ -69,7 +69,7 @@
         <assertj-core.version>1.5.0</assertj-core.version>
         <catch-exception.version>1.2.0</catch-exception.version>
         <fest-assert.version>2.0M10</fest-assert.version>
-        <guava.version>15.0</guava.version>
+        <guava.version>18.0</guava.version>
         <joda-time.version>2.3</joda-time.version>
         <junit.version>4.11</junit.version>
         <objectify.version>4.0rc2</objectify.version>

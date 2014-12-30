@@ -15,7 +15,9 @@
 
     <properties>
         <!-- dependency versions -->
+        <apppengine-gcs-client-version>0.4.4</apppengine-gcs-client-version>
         <commons-fileupload.version>1.2</commons-fileupload.version>
+        <google-api-client-appengine.version>1.19.0</google-api-client-appengine.version>
     </properties>
 
     <dependencies>
@@ -30,13 +32,6 @@
             <groupId>com.fizz-buzz.vroom</groupId>
             <artifactId>vroom-core</artifactId>
             <version>${project.version}</version>
-            <exclusions>
-                <!-- appengine-gcs-client requires guava 15 (hard minimum), but vroom-core specifies 14.0.1 -->
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -48,7 +43,26 @@
         <dependency>
             <groupId>com.google.appengine.tools</groupId>
             <artifactId>appengine-gcs-client</artifactId>
-            <version>RELEASE</version>
+            <version>${apppengine-gcs-client-version}</version>
+            <exclusions>
+                <!-- app-engine-gcs-client 0.4.4 depends on google-api-client-appengine with a version
+                     range of [1.19,2.0), which picks up the latest (currently 1.19.1), but this results
+                     in divergence for transitive dependencies on google-api-client.  Other dependency
+                     chains resolve to 1.19.0, so we exclude google-api-client-appengine here and
+                     add an explicit dependency on 1.19.0 below -->
+                <exclusion>
+                    <groupId>com.google.api-client</groupId>
+                    <artifactId>google-api-client-appengine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- see exclusion above; this dependency can be removed when app-engine-gcs-client is updated to eliminate
+             divergent dependencies on google-api-client -->
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client-appengine</artifactId>
+            <version>${google-api-client-appengine.version}</version>
         </dependency>
 
         <!-- test dependencies -->
