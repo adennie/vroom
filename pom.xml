@@ -63,11 +63,12 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <appengine.target.version>1.8.9</appengine.target.version>
+        <appengine.target.version>1.9.17</appengine.target.version>
 
         <!-- dependency versions -->
         <assertj-core.version>1.5.0</assertj-core.version>
         <catch-exception.version>1.2.0</catch-exception.version>
+        <dagger.version>1.2.2</dagger.version> <!-- keep in sync w/vroom -->
         <fest-assert.version>2.0M10</fest-assert.version>
         <guava.version>18.0</guava.version>
         <joda-time.version>2.3</joda-time.version>

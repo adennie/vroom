@@ -17,10 +17,8 @@ package com.fizzbuzz.vroom.sample.webservice.api.application;
 import com.fizzbuzz.vroom.core.api.application.VroomApplication;
 import com.fizzbuzz.vroom.core.api.resource.ResourceRegistry;
 import com.fizzbuzz.vroom.core.api.service.CorsService;
-import com.fizzbuzz.vroom.sample.webservice.api.dto_converter.PlaceConverter;
-import com.fizzbuzz.vroom.sample.webservice.api.dto_converter.PlacesConverter;
-import com.fizzbuzz.vroom.sample.webservice.api.dto_converter.UserConverter;
-import com.fizzbuzz.vroom.sample.webservice.api.dto_converter.UsersConverter;
+import com.fizzbuzz.vroom.sample.webservice.api.ApiModule;
+import com.fizzbuzz.vroom.sample.webservice.api.dto_converter.*;
 import com.fizzbuzz.vroom.sample.webservice.api.resource.*;
 import com.fizzbuzz.vroom.sample.webservice.util.Environment;
 import org.restlet.data.MediaType;
@@ -91,6 +89,14 @@ public class SampleApplication
 
         super.start();
     }
+
+    @Override
+    protected List<Object> getModules() {
+        List<Object> modules = super.getModules();
+        modules.add(new ApiModule());
+        return modules;
+    }
+
 
     private void configureCors() {
 
