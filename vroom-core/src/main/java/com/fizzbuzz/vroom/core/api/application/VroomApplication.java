@@ -35,7 +35,7 @@ import java.util.Map;
 
 
 public abstract class VroomApplication
-        extends Application {
+    extends Application {
 
     public enum ExecutionContext {
         DEVELOPMENT,
@@ -80,7 +80,7 @@ public abstract class VroomApplication
         if (mServerUrl == null) {
             ModulesService modulesService = ModulesServiceFactory.getModulesService();
             mServerUrl = "http://" + modulesService.getVersionHostname(modulesService.getCurrentModule(),
-                    modulesService.getCurrentVersion());
+                modulesService.getCurrentVersion());
         }
 
         return mServerUrl;
@@ -97,7 +97,7 @@ public abstract class VroomApplication
             Router router = new Router(getContext());
 
             for (Map.Entry<Class<? extends VroomResource>, String> entry : ResourceRegistry.getPathTemplates()
-                    .entrySet()) {
+                .entrySet()) {
                 attach(router, entry.getValue(), entry.getKey());
             }
 
@@ -138,20 +138,11 @@ public abstract class VroomApplication
     }
 
     protected void attach(Router router, String pathTemplate, java.lang.Class<? extends org.restlet.resource
-            .ServerResource> targetResource) {
+        .ServerResource> target) {
         // note: trace-level messages are not shown by default; change log level to FINEST in logging.properties
         // to see them
-        mLogger.trace("attaching path template {} to {}", pathTemplate, targetResource);
-
-        /*
-        // uncomment this code (and comment out the other router.attach() call) to enable logging of incoming headers
-        LogHeadersFilter headersFilter = new LogHeadersFilter(getContext());
-        headersFilter.setNext(targetResource);
-        router.attach(pathTemplate, headersFilter);
-        */
-
-        router.attach(pathTemplate, targetResource);
-
+        mLogger.trace("attaching path template {} to {}", pathTemplate, target);
+        router.attach(pathTemplate, target);
     }
 
     /**
