@@ -64,6 +64,15 @@
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-storage</artifactId>
             <version>${google-api-services-storage.version}</version>
+            <!-- google-api-services-storage depends on google-api-client (1.19.1), which depends on
+                 guava-jdk5, which we don't really want in the classpath because we have a newer, non-jdk5
+                 version of guava on the classpath also, and we want that newer version.  -->
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava-jdk5</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- test dependencies -->
