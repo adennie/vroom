@@ -17,7 +17,7 @@
         <!-- dependency versions -->
         <apppengine-gcs-client-version>0.4.4</apppengine-gcs-client-version>
         <commons-fileupload.version>1.2</commons-fileupload.version>
-        <google-api-client-appengine.version>1.19.0</google-api-client-appengine.version>
+        <google-api-services-storage.version>v1-rev25-1.19.1</google-api-services-storage.version>
     </properties>
 
     <dependencies>
@@ -47,12 +47,13 @@
             <exclusions>
                 <!-- app-engine-gcs-client 0.4.4 depends on google-api-client-appengine with a version
                      range of [1.19,2.0), which picks up the latest (currently 1.19.1), but this results
-                     in divergence for transitive dependencies on google-api-client.  Other dependency
-                     chains resolve to 1.19.0, so we exclude google-api-client-appengine here and
-                     add an explicit dependency on 1.19.0 below -->
+                     in divergent transitive dependencies on google-api-client; in particular,
+                     appengine-gcs-client 0.4.4 depends on google-api-services-storage v1-rev15-1.19.0, which
+                     depends on google-api-client 1.19.0.  To work around this, we exclude google-api-services-storage
+                     -->
                 <exclusion>
-                    <groupId>com.google.api-client</groupId>
-                    <artifactId>google-api-client-appengine</artifactId>
+                    <groupId>com.google.apis</groupId>
+                    <artifactId>google-api-services-storage</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -60,9 +61,9 @@
         <!-- see exclusion above; this dependency can be removed when app-engine-gcs-client is updated to eliminate
              divergent dependencies on google-api-client -->
         <dependency>
-            <groupId>com.google.api-client</groupId>
-            <artifactId>google-api-client-appengine</artifactId>
-            <version>${google-api-client-appengine.version}</version>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-storage</artifactId>
+            <version>${google-api-services-storage.version}</version>
         </dependency>
 
         <!-- test dependencies -->
