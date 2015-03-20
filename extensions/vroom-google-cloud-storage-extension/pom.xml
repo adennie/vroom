@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -18,6 +19,7 @@
         <apppengine-gcs-client-version>0.4.4</apppengine-gcs-client-version>
         <commons-fileupload.version>1.2</commons-fileupload.version>
         <google-api-services-storage.version>v1-rev25-1.19.1</google-api-services-storage.version>
+        <google-apis.version>1.20.0</google-apis.version>
     </properties>
 
     <dependencies>
@@ -44,35 +46,61 @@
             <groupId>com.google.appengine.tools</groupId>
             <artifactId>appengine-gcs-client</artifactId>
             <version>${apppengine-gcs-client-version}</version>
+
             <exclusions>
-                <!-- app-engine-gcs-client 0.4.4 depends on google-api-client-appengine with a version
-                     range of [1.19,2.0), which picks up the latest (currently 1.19.1), but this results
-                     in divergent transitive dependencies on google-api-client; in particular,
-                     appengine-gcs-client 0.4.4 depends on google-api-services-storage v1-rev15-1.19.0, which
-                     depends on google-api-client 1.19.0.  To work around this, we exclude google-api-services-storage
-                     -->
                 <exclusion>
                     <groupId>com.google.apis</groupId>
                     <artifactId>google-api-services-storage</artifactId>
                 </exclusion>
+
+                <exclusion>
+                    <groupId>com.google.http-client</groupId>
+                    <artifactId>google-http-client-appengine</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>com.google.http-client</groupId>
+                    <artifactId>google-http-client</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
-        <!-- see exclusion above; this dependency can be removed when app-engine-gcs-client is updated to eliminate
-             divergent dependencies on google-api-client -->
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-storage</artifactId>
             <version>${google-api-services-storage.version}</version>
-            <!-- google-api-services-storage depends on google-api-client (1.19.1), which depends on
-                 guava-jdk5, which we don't really want in the classpath because we have a newer, non-jdk5
-                 version of guava on the classpath also, and we want that newer version.  -->
             <exclusions>
+                <exclusion>
+                    <groupId>com.google.api-client</groupId>
+                    <artifactId>google-api-client</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>${google-apis.version}</version>
+            <exclusions>
+                <!-- google-api-client depends on guava-jdk5, which we don't really want in the classpath because we
+                     have a newer, non-jdk5 version of guava on the classpath also, and we want that newer version.  -->
                 <exclusion>
                     <groupId>com.google.guava</groupId>
                     <artifactId>guava-jdk5</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.http-client</groupId>
+            <artifactId>google-http-client-appengine</artifactId>
+            <version>${google-apis.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.http-client</groupId>
+            <artifactId>google-http-client</artifactId>
+            <version>${google-apis.version}</version>
         </dependency>
 
         <!-- test dependencies -->
