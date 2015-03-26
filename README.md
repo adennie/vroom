@@ -30,5 +30,3 @@ Vroom includes
  - (optional) extension libraries for integrating Google Cloud Storage, the Google Maps API, the GAE ImagesService, and the Joda Time library.
  - a sample RESTful web service built using Vroom, demonstrating common use cases, including use of the Vroom extensions.
 
-Note: Vroom is currently in a pre-1.0 stage, and changing rapidly.  Breaking changes are likely.  You've been warned.
-
