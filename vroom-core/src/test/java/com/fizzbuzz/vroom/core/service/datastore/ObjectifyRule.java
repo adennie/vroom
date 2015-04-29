@@ -15,13 +15,18 @@ package com.fizzbuzz.vroom.core.service.datastore;
  */
 
 import com.googlecode.objectify.ObjectifyFilter;
+import com.googlecode.objectify.ObjectifyService;
 import org.junit.rules.ExternalResource;
+
+import java.io.Closeable;
+import java.io.IOException;
 
 /**
  * Implementation of a JUnit rule which does Objectify setup and teardown logic.
  */
 public class ObjectifyRule extends ExternalResource {
     private OfyService mOfyService;
+    private Closeable mOfySession;
 
     public ObjectifyRule(final OfyService ofyService) {
         mOfyService = ofyService;
@@ -30,11 +35,16 @@ public class ObjectifyRule extends ExternalResource {
     @Override
     protected void before() throws Throwable {
         VroomDatastoreService.registerOfyService(mOfyService);
+        mOfySession = mOfyService.begin();
     }
 
     @Override
     protected void after() {
-        ObjectifyFilter.complete();
+        try {
+            mOfySession.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

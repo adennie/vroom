@@ -15,9 +15,7 @@ package com.fizzbuzz.vroom.sample.webservice.service.datastore;
  */
 
 import com.fizzbuzz.vroom.sample.webservice.domain.LinearMeasurement;
-import com.googlecode.objectify.annotation.Embed;
 
-@Embed
 public class EmbeddedLinearMeasurementDao {
     private long quantity;
     private LinearMeasurement.Unit unit;

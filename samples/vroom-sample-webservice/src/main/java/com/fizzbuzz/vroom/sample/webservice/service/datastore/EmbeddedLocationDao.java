@@ -15,16 +15,17 @@ package com.fizzbuzz.vroom.sample.webservice.service.datastore;
 
 import com.fizzbuzz.vroom.sample.webservice.domain.Location;
 import com.google.appengine.api.datastore.GeoPt;
-import com.googlecode.objectify.annotation.Embed;
 import com.googlecode.objectify.annotation.Index;
 
-@Embed
 public class EmbeddedLocationDao {
     private String address;
     private String formattedAddress;
-    @Index private String locality;
-    @Index private String adminAreaLevel1;
-    @Index private String postalCode;
+    @Index
+    private String locality;
+    @Index
+    private String adminAreaLevel1;
+    @Index
+    private String postalCode;
     private String country;
     private GeoPt geoPt;
 
