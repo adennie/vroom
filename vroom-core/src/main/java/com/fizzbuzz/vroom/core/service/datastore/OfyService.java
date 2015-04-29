@@ -18,6 +18,8 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 
+import java.io.Closeable;
+
 /**
  * This is a base class used for accessing Objectify.  Subclasses should register all @Entity-annotated classes
  * in a static initialization block, for example:
@@ -41,6 +43,8 @@ public abstract class OfyService {
     public Objectify ofy() {
         return ObjectifyService.ofy();
     }
+
+    public Closeable begin() {return ObjectifyService.begin();}
 
     public ObjectifyFactory factory() {
         return ObjectifyService.factory();
