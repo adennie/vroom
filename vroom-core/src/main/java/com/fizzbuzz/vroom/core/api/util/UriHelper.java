@@ -67,7 +67,7 @@ public class UriHelper {
 
         // extract the token values from the URI using the template as a guide
         Template template = new Template(uriPathTemplate);
-        Map<String, Object> tokens = new HashMap<String, Object>();
+        Map<String, Object> tokens = new HashMap<>();
         template.parse(path, tokens);
         return tokens;
     }
