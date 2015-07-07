@@ -34,11 +34,11 @@ public abstract class VroomDao<EO extends IEntityObject> {
      * to assign values to fields based on the domain object's state.
      * <p/>
      * Note: if the values of any fields in the DAO need to be generated or calculated, it is recommended to
-     * accomplish this be providing setters in the DAO class and calling them from the Entity class' {@link
+     * accomplish this by providing setters in the DAO class and calling them from the Entity class' {@link
      * VroomEntity#createDao} and/or {@link VroomEntity#updateDao} overrides.  This way,
      * persistence-related business logic is kept in one class.
      *
-     * @param domainObject
+     * @param domainObject the domain object
      */
     public void fromDomainObject(final EO domainObject) {
         id = domainObject.getKey().get(); // might be null

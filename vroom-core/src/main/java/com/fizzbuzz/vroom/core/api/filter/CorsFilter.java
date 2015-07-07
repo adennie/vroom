@@ -15,7 +15,6 @@ package com.fizzbuzz.vroom.core.api.filter;
  */
 
 import com.fizzbuzz.vroom.core.api.service.CorsService;
-import com.fizzbuzz.vroom.core.api.service.CorsService;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;

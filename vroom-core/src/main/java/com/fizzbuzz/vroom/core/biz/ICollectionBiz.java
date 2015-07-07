@@ -26,14 +26,14 @@ public interface ICollectionBiz<DO> {
     /**
      * Adds a domain object to the collection.
      *
-     * @param domainObject
+     * @param domainObject domain object to add
      */
     public void add(final DO domainObject);
 
     /**
      * Adds domain objects to the collection
      *
-     * @param domainObjects
+     * @param domainObjects domain objects to add
      */
     public void add(final Collection<DO> domainObjects);
 
@@ -43,8 +43,8 @@ public interface ICollectionBiz<DO> {
     public void deleteAll();
 
     /**
-     * Deletes a list of domain objects
-     * @param domainCollection
+     * Deletes a collection of domain objects
+     * @param domainCollection collection of domain objects to delete
      */
     public void delete(Collection<DO> domainCollection);
 }
