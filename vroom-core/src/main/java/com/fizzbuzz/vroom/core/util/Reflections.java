@@ -55,6 +55,8 @@ public class Reflections {
      * @param <T>         the type of the object to be instantiated
      * @param <P1>        the type of the 1st parameter of the target constructor
      * @param <P2>        the type of the 1st parameter of the target constructor
+     * @param <A1>        the type of the value to supply for the 1st parameter of the target constructor
+     * @param <A2>        the type of the value to supply for the 2nd parameter of the target constructor
      * @return an instance of the requested class
      */
 
@@ -176,7 +178,8 @@ public class Reflections {
      * @param startClass a class whose fields (and whose superclasses' fields) are to be retrieved
      * @param stopClass  a class in the superclass hierarchy of startClass whose fields should not be retrieved
      *                   (nor its superclasses' fields)
-     * @return
+     * @param annotationClass the annotation to look for
+     * @return the list of fields
      */
     public static List<Field> getFieldsAnnotatedWith(Class<?> startClass,
                                                      Class<?> stopClass,
@@ -204,6 +207,7 @@ public class Reflections {
      * @param startClass a class whose fields (and whose superclasses' fields) are to be inspected
      * @param stopClass  a class in the superclass hierarchy of startClass whose fields should not be inspected
      *                   (nor its superclasses' fields)
+     * @param annotationClass the annotation to look for
      * @return the first field found with the specified annotation, or null if none found.
      */
     public static Field getFirstFieldAnnotatedWith(Class<?> startClass,
@@ -238,9 +242,9 @@ public class Reflections {
      *                        inspected
      * @param stopClass       a class in the superclass hierarchy of startClass whose type annotations should not be
      *                        inspected (nor its superclasses')
-     * @param annotationClass the type annotation class to look for
-     * @param <T>
-     * @return
+     * @param annotationClass the annotation class to look for
+     * @param <T>             the type of the annotation class to look for
+     * @return                the collection of type annotations found
      */
     public static <T extends Annotation> Collection<T> getClassAnnotations(Class<?> startClass,
                                                                            Class<?> stopClass,

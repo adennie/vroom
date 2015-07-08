@@ -16,7 +16,7 @@ package com.fizzbuzz.vroom.core.domain;
 
 /**
  * An interface for domain objects which are stored as entities in the datastore.  This is primarily just a
- * convenient and mnemonic shorthand for IKeyedObject<LongKey>.
+ * convenient and mnemonic shorthand for {@code IKeyedObject<LongKey>}.
  */
 public interface IEntityObject extends IKeyedObject<LongKey> {
     public void validate();

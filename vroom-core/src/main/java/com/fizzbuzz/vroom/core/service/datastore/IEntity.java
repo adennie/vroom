@@ -109,7 +109,8 @@ public interface IEntity<EO extends IEntityObject> {
     /**
      * Allocates a contiguous range of LongKeys for entities which are not part of an entity group
      *
-     * @param num the number of keys to allocate.  Must be >= 1 and <= 1 billion.
+     * @param num the number of keys to allocate.  Must be greater than or equal to 1, and less than or equal to 1
+     *            billion.
      * @return a list of allocated LongKeys
      */
     public List<LongKey> allocateKeys(int num);

@@ -19,7 +19,8 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Id;
 
 public abstract class VroomDao<EO extends IEntityObject> {
-    @Id private Long id;
+    @Id
+    private Long id;
 
     /**
      * Creates a domain object of the type associated with this DAO class and initializes it from the state of the DAO.
@@ -32,7 +33,7 @@ public abstract class VroomDao<EO extends IEntityObject> {
      * Updates the state of the DAO using information taken from a domain object.  This method is used both
      * when creating new datastore entities and when updating existing ones.  Subclasses should override as needed
      * to assign values to fields based on the domain object's state.
-     * <p/>
+     * <p>
      * Note: if the values of any fields in the DAO need to be generated or calculated, it is recommended to
      * accomplish this by providing setters in the DAO class and calling them from the Entity class' {@link
      * VroomEntity#createDao} and/or {@link VroomEntity#updateDao} overrides.  This way,

@@ -340,8 +340,8 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
      * Loads an (unparented) entity corresponding to a domain object.  Note: subclasses which manage parented entities
      * should override and invoke loadParentedDao()
      *
-     * @param domainObject
-     * @return
+     * @param domainObject the domain object
+     * @return the DAO corresponding to the domain object
      */
     protected DAO loadDao(final EO domainObject) {
         return loadDao(domainObject.getKey().get());
@@ -371,7 +371,7 @@ public abstract class VroomEntity<EO extends IEntityObject, DAO extends VroomDao
 
     /**
      * Creates a DAO of the type associated with the provided domain object
-     * <p/>
+     * <p>
      * Note: if the values of any fields in the DAO need to be generated or calculated at creation time,
      * it is recommended to accomplish this be providing setters in the DAO class and calling them from an override
      * of this method.  This way, persistence-related business logic stays within the entity class (and out of the

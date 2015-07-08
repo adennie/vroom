@@ -26,7 +26,7 @@ public abstract class ParentedDao<EO extends IEntityObject> extends VroomDao<EO>
 
     /**
      * Returns the key of the parent entity.
-     * @return
+     * @return the parent's key
      */
     public abstract Key<?> getParentKey();
 }
