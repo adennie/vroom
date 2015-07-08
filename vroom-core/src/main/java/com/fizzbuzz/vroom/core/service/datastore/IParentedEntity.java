@@ -40,7 +40,7 @@ public interface IParentedEntity<EO extends IEntityObject> {
     /**
      * Delete all entities of the kind corresponding to EO which have the specified parent
      *
-     * @param parentKey
+     * @param parentKey parent key
      */
     public void deleteAll(LongKey parentKey);
 }

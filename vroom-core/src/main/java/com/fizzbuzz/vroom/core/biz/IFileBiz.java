@@ -21,7 +21,7 @@ public interface IFileBiz<F extends IFile> extends ICollectionBiz<F> {
     /**
      * Adds a File to the collection.
      *
-     * @param file
+     * @param file create a file with the specified contents
      */
     public void create(final F file, byte[] contents);
 }
