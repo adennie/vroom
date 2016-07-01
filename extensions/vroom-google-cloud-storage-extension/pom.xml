@@ -18,7 +18,7 @@
         <apppengine-gcs-client-version>0.4.4</apppengine-gcs-client-version>
         <commons-fileupload.version>1.2</commons-fileupload.version>
         <google-api-services-storage.version>v1-rev25-1.19.1</google-api-services-storage.version>
-        <google-apis.version>1.20.0</google-apis.version>
+        <google-apis.version>1.22.0</google-apis.version>
     </properties>
 
     <dependencies>
